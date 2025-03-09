@@ -1,14 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import * as React from "react"
 import { Slider } from "@/components/ui/slider"
+import { VoiceSelection } from "@/lib/interfaces&types"
 
 interface DAWSectionProps {
   selectedVoices: string[]
   timeRange: [number, number]
-  setTimeRange: (range: [number, number]) => void
   audioFile: File | null
+  voiceSelections: VoiceSelection[];
+  setVoiceSelections: React.Dispatch<React.SetStateAction<VoiceSelection[]>>
+  duration: number
+  audioBuffer: ArrayBuffer | any
 }
 
 // Voice colors with better contrast
@@ -20,24 +25,13 @@ const VOICE_COLORS = [
   "#9B59B6", // Purple
 ]
 
-interface VoiceSelection {
-  voice: string
-  range: [number, number]
-  color: string
-}
-
-export function DAWSection({ selectedVoices, timeRange, setTimeRange, audioFile }: DAWSectionProps) {
+export function DAWSection({ selectedVoices, timeRange, voiceSelections, setVoiceSelections, duration, audioBuffer }: DAWSectionProps) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
   const [isDragging, setIsDragging] = React.useState<{ voice: string; handle: "start" | "end" } | null>(null)
   const [currentTime, setCurrentTime] = React.useState(0)
-  const [duration, setDuration] = React.useState(0) // Update 1: Initial duration set to 0
-  const [audioBuffer, setAudioBuffer] = React.useState<AudioBuffer | null>(null)
-  const [voiceSelections, setVoiceSelections] = React.useState<VoiceSelection[]>([])
-  const [dragTime, setDragTime] = React.useState<number | null>(null)
-  const [dragPosition, setDragPosition] = React.useState<{ x: number; y: number } | null>(null)
+  // const [dragTime, setDragTime] = React.useState<number | null>(null)
+  // const [dragPosition, setDragPosition] = React.useState<{ x: number; y: number } | null>(null)
   const [dragInfo, setDragInfo] = React.useState<{ time: number; x: number; handle: "start" | "end" } | null>(null)
-
-  console.log("timeRange: ", timeRange);
 
   React.useEffect(() => {}, [dragInfo, isDragging, voiceSelections])
   
@@ -55,21 +49,6 @@ export function DAWSection({ selectedVoices, timeRange, setTimeRange, audioFile 
       return newSelections
     })
   }, [selectedVoices, timeRange])
-
-  React.useEffect(() => {
-    if (audioFile) {
-      const reader = new FileReader()
-      reader.onload = async (e) => {
-        const arrayBuffer = e.target?.result as ArrayBuffer
-        const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-        const decodedBuffer = await audioContext.decodeAudioData(arrayBuffer)
-        setAudioBuffer(decodedBuffer)
-        setDuration(decodedBuffer.duration)
-        setTimeRange([0, decodedBuffer.duration])
-      }
-      reader.readAsArrayBuffer(audioFile)
-    }
-  }, [audioFile, setTimeRange])
 
   const drawWaveform = React.useCallback(() => {
     const canvas = canvasRef.current

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
 import * as React from "react"
@@ -9,7 +10,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { AdvancedSettings } from "./advanced-settings"
+import axios from "axios"
 
 const voiceModels = [
   { id: "1", name: "Voice Model 1" },
@@ -37,7 +38,6 @@ export function YouTubeSection({
   setPitch,
 }: YouTubeSectionProps) {
   const [open, setOpen] = React.useState(false)
-  const [showAdvanced, setShowAdvanced] = React.useState(false)
 
   return (
     <div className="space-y-4">
@@ -110,20 +110,6 @@ export function YouTubeSection({
           <span className="text-white min-w-[2ch] text-center text-sm">{pitch}</span>
         </div>
       </div>
-
-      <Button
-        variant="link"
-        className="text-white/60 p-0 h-auto text-xs uppercase hover:text-white"
-        onClick={() => setShowAdvanced(true)}
-      >
-        Advanced Settings
-      </Button>
-
-      <div className="pt-4">
-        <Button className="w-full bg-black hover:bg-black/80 text-white">Convert</Button>
-      </div>
-
-      <AdvancedSettings open={showAdvanced} onOpenChange={setShowAdvanced} />
     </div>
   )
 }

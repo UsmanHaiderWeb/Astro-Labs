@@ -19,7 +19,7 @@ const HomePage = () => {
     }, [])
 
     return (
-        <div className="flex-1 flex flex-col items-center justify-center space-y-6 px-4">
+        <div className="flex-1 flex flex-col items-center justify-center space-y-6 px-4 pointer-events-none">
             {/* Center Logo */}
             <div className="h-[100px] flex items-center justify-center">
                 <img

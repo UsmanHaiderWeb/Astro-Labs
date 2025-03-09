@@ -9,7 +9,6 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { AdvancedSettings } from "./advanced-settings"
 
 const voiceModels = [
   { id: "1", name: "Cover" },
@@ -29,7 +28,6 @@ interface AudioSectionProps {
 
 export function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFileUpload }: AudioSectionProps) {
   const [open, setOpen] = React.useState(false)
-  const [showAdvanced, setShowAdvanced] = React.useState(false)
   const [fileName, setFileName] = React.useState<string | null>(null)
   const fileInputRef = React.useRef<HTMLInputElement>(null)
 
@@ -123,20 +121,6 @@ export function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitc
           <span className="text-white min-w-[2ch] text-center">{pitch}</span>
         </div>
       </div>
-
-      <Button
-        variant="link"
-        className="text-white/60 p-0 h-auto text-xs uppercase hover:text-white"
-        onClick={() => setShowAdvanced(true)}
-      >
-        Advanced Settings
-      </Button>
-
-      <div className="pt-2">
-        <Button className="w-full bg-black hover:bg-black/80 text-white text-sm py-2">Convert</Button>
-      </div>
-
-      <AdvancedSettings open={showAdvanced} onOpenChange={setShowAdvanced} />
     </div>
   )
 }

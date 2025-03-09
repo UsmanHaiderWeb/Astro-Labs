@@ -1,10 +1,9 @@
 import * as React from 'react'
-import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
 
 function Header() {
     return (
-        <header className="w-full py-4 px-6">
+        <header className="w-full py-4 px-6 pointer-events-none">
             <nav className="max-w-[1920px] mx-auto flex items-center justify-between">
                 {/* Logo */}
                 <Link to="/" className="bg-white/10 px-4 py-2 rounded-md">
