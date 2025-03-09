@@ -1,0 +1,143 @@
+"use client"
+
+import * as React from "react"
+import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
+import { Upload } from "lucide-react"
+import { Slider } from "@/components/ui/slider"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Check } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { AdvancedSettings } from "./advanced-settings"
+
+const voiceModels = [
+  { id: "1", name: "Cover" },
+  { id: "2", name: "Main Vocals" },
+  { id: "3", name: "Background Vocals" },
+  { id: "4", name: "Instrumentals" },
+  { id: "5", name: "Harmony" },
+]
+
+interface AudioSectionProps {
+  selectedVoices: string[]
+  setSelectedVoices: (voices: string[]) => void
+  pitch: number
+  setPitch: (pitch: number) => void
+  onFileUpload: (file: File) => void
+}
+
+export function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFileUpload }: AudioSectionProps) {
+  const [open, setOpen] = React.useState(false)
+  const [showAdvanced, setShowAdvanced] = React.useState(false)
+  const [fileName, setFileName] = React.useState<string | null>(null)
+  const fileInputRef = React.useRef<HTMLInputElement>(null)
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      if (file.size <= 10 * 1024 * 1024 && (file.type === "audio/mpeg" || file.type === "audio/wav")) {
+        setFileName(file.name)
+        onFileUpload(file)
+      } else {
+        alert("Please upload an MP3 or WAV file under 10MB.")
+      }
+    }
+  }
+
+  const handleChooseFile = () => {
+    fileInputRef.current?.click()
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="space-y-1">
+        <Label className="text-white/60 uppercase text-xs">Upload Audio</Label>
+        <div className="border border-dashed border-white/10 rounded-lg p-3 text-center">
+          <input type="file" ref={fileInputRef} onChange={handleFileChange} accept=".mp3,.wav" className="hidden" />
+          <Button variant="ghost" className="text-white text-xs h-6 hover:bg-transparent hover:text-white" onClick={handleChooseFile}>
+            <Upload className="h-3 w-3 mr-1" />
+            {fileName || "Choose File"}
+          </Button>
+          <p className="text-xs text-gray-400 mt-1">Supported formats: MP3, WAV (max 10MB)</p>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label className="text-white/60 uppercase text-xs">Voice</Label>
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              className="w-full justify-between bg-black/50 border-none text-white hover:bg-black/50 hover:text-white"
+              aria-expanded={open}
+            >
+              {selectedVoices.length === 0 ? "Select Voice Models" : `${selectedVoices.length} selected`}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-full p-0 bg-[#1a1a1a] border-white/10">
+            <Command className="bg-transparent">
+              <CommandInput placeholder="Search voice models..." className="text-white" />
+              <CommandList>
+                <CommandEmpty>No voice model found.</CommandEmpty>
+                <CommandGroup>
+                  {voiceModels.map((voice) => (
+                    <CommandItem
+                      key={voice.id}
+                      onSelect={() => {
+                        const newSelected = selectedVoices.includes(voice.name)
+                          ? selectedVoices.filter((name) => name !== voice.name)
+                          : [...selectedVoices, voice.name]
+                        setSelectedVoices(newSelected)
+                      }}
+                      className="text-white hover:text-white hover:bg-black/50"
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          selectedVoices.includes(voice.name) ? "opacity-100" : "opacity-0",
+                        )}
+                      />
+                      {voice.name}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+      </div>
+
+      <div className="space-y-2">
+        <Label className="text-white/60 uppercase text-xs">Pitch</Label>
+        <div className="flex items-center space-x-4">
+          <Slider
+            value={[pitch]}
+            onValueChange={([value]) => setPitch(value)}
+            min={-12}
+            max={12}
+            step={1}
+            className="flex-1"
+          />
+          <span className="text-white min-w-[2ch] text-center">{pitch}</span>
+        </div>
+      </div>
+
+      <Button
+        variant="link"
+        className="text-white/60 p-0 h-auto text-xs uppercase hover:text-white"
+        onClick={() => setShowAdvanced(true)}
+      >
+        Advanced Settings
+      </Button>
+
+      <div className="pt-2">
+        <Button className="w-full bg-black hover:bg-black/80 text-white text-sm py-2">Convert</Button>
+      </div>
+
+      <AdvancedSettings open={showAdvanced} onOpenChange={setShowAdvanced} />
+    </div>
+  )
+}
+
