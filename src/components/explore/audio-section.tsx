@@ -30,6 +30,8 @@ export function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitc
   const [open, setOpen] = React.useState(false)
   const [fileName, setFileName] = React.useState<string | null>(null)
   const fileInputRef = React.useRef<HTMLInputElement>(null)
+  const dropRef = React.useRef<HTMLDivElement>(null)
+  const [isDragging, setIsDragging] = React.useState(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -47,15 +49,50 @@ export function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitc
     fileInputRef.current?.click()
   }
 
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "copy";
+    setIsDragging(true); // Set dragging state
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false); // Reset when leaving the drop zone
+  };
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragging(false);
+
+    const file = event.dataTransfer.files?.[0]
+    if (file) {
+      if (file.size <= 10 * 1024 * 1024 && (file.type === "audio/mpeg" || file.type === "audio/wav")) {
+        setFileName(file.name)
+        onFileUpload(file)
+      } else {
+        alert("Please upload an MP3 or WAV file under 10MB.")
+      }
+    }
+  }
+
   return (
     <div className="space-y-4">
       <div className="space-y-1">
         <Label className="text-white/60 uppercase text-xs">Upload Audio</Label>
-        <div className="border border-dashed border-white/10 rounded-lg p-3 text-center">
+        <div
+          ref={dropRef}
+          className={cn(
+            "border border-dashed rounded-lg p-3 text-center transition-colors",
+            isDragging ? "border-white/40" : "border-white/10"
+          )}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={() => handleChooseFile()}
+        >
           <input type="file" ref={fileInputRef} onChange={handleFileChange} accept=".mp3,.wav" className="hidden" />
-          <Button variant="ghost" className="text-white text-xs h-6 hover:bg-transparent hover:text-white" onClick={handleChooseFile}>
+          <Button variant="ghost" className="text-white text-xs h-6 hover:bg-transparent hover:text-white">
             <Upload className="h-3 w-3 mr-1" />
-            {fileName || "Choose File"}
+            {fileName || "Drag & Drop or Choose File"}
           </Button>
           <p className="text-xs text-gray-400 mt-1">Supported formats: MP3, WAV (max 10MB)</p>
         </div>
