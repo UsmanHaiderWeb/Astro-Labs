@@ -2,12 +2,13 @@ import * as React from 'react'
 import { Link } from "react-router-dom"
 import { Twitter, Instagram, Mail } from "lucide-react"
 import { Play } from "lucide-react" // Import Play icon
+import FooterPlayBtn from './FooterPlayBtn'
 
 function Footer() {
     return (
         <>
             {/* Social Links */}
-            <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center space-x-8">
+            <div className="fixed bottom-3 left-1/2 -translate-x-1/2 flex items-center space-x-8 rounded-full py-5 px-10 backdrop-blur-xs bg-transparent">
                 <Link to="https://x.com/astralabs" className="text-white hover:text-gray-300">
                     <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"></path></svg>
                     <span className="sr-only">Twitter</span>
@@ -29,20 +30,7 @@ function Footer() {
             </div>
 
             {/* Music Player */}
-            <div className="fixed bottom-8 right-8">
-                <button className="relative w-12 h-12 rounded-full bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 group">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <img
-                            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image%20(11)-3Ns8vjph0z3m2rYBOGiftW70XtXlla.png"
-                            alt="Music Player"
-                            width={24}
-                            height={24}
-                            className="brightness-200 transition-opacity duration-200 group-hover:opacity-0"
-                        />
-                        <Play className="w-6 h-6 text-white absolute transition-opacity duration-200 opacity-0 group-hover:opacity-100" />
-                    </div>
-                </button>
-            </div>
+            <FooterPlayBtn />
         </>
     )
 }

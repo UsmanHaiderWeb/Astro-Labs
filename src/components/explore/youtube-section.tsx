@@ -10,7 +10,6 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
-import axios from "axios"
 
 const voiceModels = [
   { id: "1", name: "Voice Model 1" },
@@ -27,6 +26,7 @@ interface YouTubeSectionProps {
   setSelectedVoices: (voices: string[]) => void
   pitch: number
   setPitch: (pitch: number) => void
+  duration: number
 }
 
 export function YouTubeSection({
@@ -36,8 +36,10 @@ export function YouTubeSection({
   setSelectedVoices,
   pitch,
   setPitch,
+  duration,
 }: YouTubeSectionProps) {
   const [open, setOpen] = React.useState(false)
+  const [showErrorAboutUrl, setShowErrorAboutUrl] = React.useState<string>(null)
 
   return (
     <div className="space-y-4">
@@ -74,6 +76,11 @@ export function YouTubeSection({
                     <CommandItem
                       key={voice.id}
                       onSelect={() => {
+                        if(!url || !duration) {
+                          setOpen(false)
+                          setShowErrorAboutUrl('Please first enter a valid YouTube link.')
+                          return
+                        }
                         const newSelected = selectedVoices.includes(voice.id)
                           ? selectedVoices.filter((id) => id !== voice.id)
                           : selectedVoices.length < 5
@@ -94,6 +101,9 @@ export function YouTubeSection({
             </Command>
           </PopoverContent>
         </Popover>
+        {(url && duration) ? null :
+          <p className="text-sm text-destructive/70 mt-1">{showErrorAboutUrl}</p>
+        }
       </div>
 
       <div className="space-y-1">

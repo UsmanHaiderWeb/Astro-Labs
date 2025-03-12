@@ -11,7 +11,7 @@ interface Note {
   animationDuration: number
   size: number
   side: "left" | "right"
-  position?: string
+  position?: number
 }
 
 const MusicalNotes: React.FC = () => {
@@ -40,7 +40,7 @@ const MusicalNotes: React.FC = () => {
       // Remove note after animation
       setTimeout(() => {
         setNotes((prevNotes) => prevNotes.filter((n) => n.id !== note.id))
-      }, 1000)
+      }, animationDuration * 1000)
     }
 
     // Create new note every 600ms (slightly slower to reduce density)
@@ -56,7 +56,7 @@ const MusicalNotes: React.FC = () => {
           className={`fixed ${note.side === "left" ? "left-0" : "right-0"} text-white/60`}
           style={{
             top: `${note.top}%`,
-            [note.side]: `${note?.position}rem`,
+            [note.side]: `${note.position}rem`,
             fontSize: `${note.size}px`,
             animation: `float-${note.side} ${note.animationDuration}s ease-in-out`,
             opacity: 0,
@@ -69,4 +69,4 @@ const MusicalNotes: React.FC = () => {
   )
 }
 
-export default React.memo(MusicalNotes);
+export default React.memo(MusicalNotes)

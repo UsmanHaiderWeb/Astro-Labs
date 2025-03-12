@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { GalleryVerticalEnd } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -16,13 +15,13 @@ function Login() {
                             <div className="flex flex-col items-center gap-2">
                                 <div className="flex flex-col items-center gap-2 font-medium">
                                     <div className="flex h-8 w-8 items-center justify-center rounded-md">
-                                        <GalleryVerticalEnd className="size-6" />
+                                        <img src='/logo.png' width={40} height={40} className="size-10" />
                                     </div>
                                     <span className="sr-only"></span>
                                 </div>
-                                <h1 className="text-xl font-bold">Welcome to Astro Labs</h1>
+                                <h1 className="text-xl font-bold">Welcome to Astra Labs</h1>
                                 <div className="text-center text-sm">
-                                    Login to your Astro Labs account to continue
+                                    Login to your Astra Labs account to continue
                                 </div>
                             </div>
                             <div className="flex flex-col gap-3">

@@ -18,12 +18,12 @@ function Header() {
                     <Link to="/about" className="text-[15px] text-white hover:text-gray-300">
                         ABOUT US
                     </Link>
-                    <Link to="/pricing" className="text-[15px] text-white hover:text-gray-300">
+                    {/* <Link to="/pricing" className="text-[15px] text-white hover:text-gray-300">
                         PRICING
                     </Link>
                     <Link to="/faqs" className="text-[15px] text-white hover:text-gray-300">
                         FAQ
-                    </Link>
+                    </Link> */}
                 </div>
 
                 {/* Auth Buttons */}

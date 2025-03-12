@@ -43,7 +43,7 @@ const FAQs = () => {
             <Accordion type="single" collapsible className="w-full space-y-4">
                 {faqs.map((faq, index) => (
                     <AccordionItem key={index} value={`faq-${index}`} className='transition-all duration-300 ease-in-out'>
-                        <AccordionTrigger className="text-lg font-medium text-white transition-all duration-300 ease-in-out">{faq.question}</AccordionTrigger>
+                        <AccordionTrigger className="text-lg font-medium text-white transition-all duration-300 ease-in-out" tabIndex={-1}>{faq.question}</AccordionTrigger>
                         <AccordionContent className="text-white/80 transition-all duration-300 ease-in-out">{faq.answer}</AccordionContent>
                     </AccordionItem>
                 ))}
@@ -53,3 +53,5 @@ const FAQs = () => {
 }
 
 export default React.memo(FAQs)
+
+// https://www.sheryians.com/courses/courses-details/Job%20Ready%20AI%20Powered%20Cohort:%20Web%20+%20DSA%20+%20Aptitude

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Test from './pages/Test'
 const App = React.lazy(() => import('./App'));
 const HomePage = React.lazy(() => import('./pages/HomePage'));
 const Explore = React.lazy(() => import('./pages/Explore'));
@@ -12,6 +13,7 @@ const PurchasePlan = React.lazy(() => import('./pages/PurchasePlan'));
 const FAQs = React.lazy(() => import('./pages/FAQs'));
 const Login = React.lazy(() => import('./pages/Login'));
 const Signup = React.lazy(() => import('./pages/Signup'));
+const NavigateBack = React.lazy(() => import('./components/NavigateBack'));
 
 const queryClient = new QueryClient()
 
@@ -78,7 +80,10 @@ const router = createBrowserRouter([
         path: '/login',
         element: (
             <React.Suspense fallback={<div></div>}>
-                <Login />
+                <div>
+                    <NavigateBack />
+                    <Login />
+                </div>
             </React.Suspense>
         )
     },
@@ -86,7 +91,18 @@ const router = createBrowserRouter([
         path: '/sign-up',
         element: (
             <React.Suspense fallback={<div></div>}>
-                <Signup />
+                <div>
+                    <NavigateBack />
+                    <Signup />
+                </div>
+            </React.Suspense>
+        )
+    },
+    {
+        path: '/test',
+        element: (
+            <React.Suspense fallback={<div></div>}>
+                <Test />
             </React.Suspense>
         )
     },

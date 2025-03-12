@@ -166,7 +166,7 @@
 }
 
 body {
-  background: url("/noise.webp")
+  background: url("/bg.png")
     no-repeat center center fixed;
   background-size: cover;
   color: hsl(var(--foreground));
@@ -176,7 +176,7 @@ body {
   max-width: 600px;
   margin: 0 auto;
   height: auto;
-  min-height: 120px;
+  min-height: 92px;
 }
 
 .typewriter p {
@@ -201,6 +201,40 @@ body {
     opacity: 1;
   }
   50% {
+    opacity: 0;
+  }
+}
+
+
+@keyframes float-left {
+  0% {
+    transform: translateX(-200px);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(200px);
+    opacity: 0;
+  }
+}
+@keyframes float-right {
+  0% {
+    transform: translateX(200px);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(-200px);
     opacity: 0;
   }
 }
