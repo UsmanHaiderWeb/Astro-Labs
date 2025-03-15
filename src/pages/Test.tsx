@@ -3,12 +3,41 @@
 import { Slider } from '@/components/ui/slider';
 import { Pause, Play } from 'lucide-react'
 import * as React from 'react'
+import WaveSurfer from "wavesurfer.js";
 
 const Test = () => {
     const [playMusic, setPlayMusic] = React.useState<boolean>(false);
     const audio = React.useRef<HTMLAudioElement>(null);
     const slider = React.useRef<HTMLInputElement>(null);
     const [audioTrackValue, setAudioTrackValue] = React.useState<{ max: number; value: number }>(null);
+    const waveformRef = React.useRef<HTMLDivElement | null>(null);
+    const wavesurfer = React.useRef<WaveSurfer | null>(null);
+    const [audioUrl, setAudioUrl] = React.useState<string | null>(null);
+
+    React.useEffect(() => {
+        if (waveformRef.current && audioUrl) {
+            wavesurfer.current = WaveSurfer.create({
+                container: waveformRef.current,
+                // waveColor: "white",
+                // progressColor: "purple",
+                // cursorColor: "red",
+                barWidth: 1,
+                height: 100,
+            });
+
+            wavesurfer.current.load(audioUrl);
+        }
+
+        return () => wavesurfer.current?.destroy();
+    }, [audioUrl]);
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            setAudioUrl(url);
+        }
+    };
 
     return (
         <div>
@@ -72,6 +101,10 @@ const Test = () => {
                     }}
                 />
                 {slider.current?.value || 'Not working'}
+            </div>
+            <div>
+                <input type="file" accept="audio/*" onChange={handleFileChange} />
+                <div ref={waveformRef} className='pointer-events-none' />
             </div>
         </div>
     )

@@ -55,52 +55,52 @@ export function YouTubeSection({
 
       <div className="space-y-1">
         <Label className="text-white/60 uppercase text-xs">Voice</Label>
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={open}
-              className="w-full justify-between bg-black/50 border-none text-white hover:bg-black/50 hover:text-white h-8"
-            >
-              {selectedVoices.length === 0 ? "Select Voice Models" : `${selectedVoices.length} selected`}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0 bg-[#1a1a1a] border-white/10">
-            <Command className="bg-transparent">
-              <CommandInput placeholder="Search voice models..." className="text-white" />
-              <CommandList>
-                <CommandEmpty>No voice model found.</CommandEmpty>
-                <CommandGroup>
-                  {voiceModels.map((voice) => (
-                    <CommandItem
-                      key={voice.id}
-                      onSelect={() => {
-                        if(!url || !duration) {
-                          setOpen(false)
-                          setShowErrorAboutUrl('Please first enter a valid YouTube link.')
-                          return
-                        }
-                        const newSelected = selectedVoices.includes(voice.id)
-                          ? selectedVoices.filter((id) => id !== voice.id)
-                          : selectedVoices.length < 5
-                            ? [...selectedVoices, voice.id]
-                            : selectedVoices
-                        setSelectedVoices(newSelected)
-                      }}
-                      className="text-white"
-                    >
-                      <Check
-                        className={cn("mr-2 h-4 w-4", selectedVoices.includes(voice.id) ? "opacity-100" : "opacity-0")}
-                      />
-                      {voice.name}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                className="w-full justify-between bg-black/50 border-none text-white hover:bg-black/50 hover:text-white h-8 cursor-pointer"
+              >
+                {selectedVoices.length === 0 ? "Select Voice Models" : `${selectedVoices.length} selected`}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full p-0 bg-[#1a1a1a] border-white/10">
+              <Command className="bg-transparent w-full text-secondary">
+                <CommandInput placeholder="Search voice models..." className="text-white w-full" />
+                <CommandList>
+                  <CommandEmpty>No voice model found.</CommandEmpty>
+                  <CommandGroup>
+                    {voiceModels.map((voice) => (
+                      <CommandItem
+                        key={voice.id}
+                        onSelect={() => {
+                          if(!url || !duration) {
+                            setOpen(false)
+                            setShowErrorAboutUrl('Please first enter a valid YouTube link.')
+                            return
+                          }
+                          const newSelected = selectedVoices.includes(voice.id)
+                            ? selectedVoices.filter((id) => id !== voice.id)
+                            : selectedVoices.length < 5
+                              ? [...selectedVoices, voice.id]
+                              : selectedVoices
+                          setSelectedVoices(newSelected)
+                        }}
+                        className="text-white cursor-pointer"
+                      >
+                        <Check
+                          className={cn("mr-2 h-4 w-4", selectedVoices.includes(voice.id) ? "opacity-100" : "opacity-0")}
+                        />
+                        {voice.name}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
         {(url && duration) ? null :
           <p className="text-sm text-destructive/70 mt-1">{showErrorAboutUrl}</p>
         }

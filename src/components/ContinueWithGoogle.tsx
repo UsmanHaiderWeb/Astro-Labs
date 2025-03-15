@@ -22,7 +22,7 @@ const ContinueWithGoogle = () => {
             <div className="hidden" ref={googleLoginButtonRef}>
                 <GoogleLogin onSuccess={handleSuccess} onError={handleError} />
             </div>
-            <Button variant="outline" type="button" className="w-full" onClick={() => {
+            <Button variant="outline" type="button" className="w-full cursor-pointer" onClick={() => {
                 const divs: any = googleLoginButtonRef.current?.querySelectorAll("div");;
                 divs?.forEach((div) => {
                     if (div.role == 'button') {

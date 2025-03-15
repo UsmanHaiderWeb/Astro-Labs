@@ -16,11 +16,11 @@ const FooterPlayBtn = () => {
     const [currentAudio, setCurrentAudio] = React.useState<number>(0);
 
     return (
-        <div className="fixed bottom-8 right-8">
+        <div className="fixed bottom-0.5 right-5 z-[101]">
             <TooltipProvider>
                 <Tooltip>
                     <TooltipTrigger>
-                        <div className="relative w-12 h-12 rounded-full bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 group" onClick={() => {
+                        <div className="relative w-11 h-11 rounded-full bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 group cursor-pointer" onClick={() => {
                             if (playMusic) {
                                 audio.current?.pause()
                                 setPlayMusic(false);
@@ -45,11 +45,17 @@ const FooterPlayBtn = () => {
                                     onEnded={() => {
                                         audio.current.src = audiosArray[currentAudio == audiosArray.length - 1 ? 0 : currentAudio + 1];
                                         setCurrentAudio(prev => (prev == audiosArray.length - 1 ? 0 : prev + 1));
-                                        audio.current.play();
+                                        audio.current?.play();
                                     }}
                                     onPlay={() => {
+                                        for (let i = 0; i < 4; i++) {
+                                            const audio = document.getElementById(`resultantAudio${i}`) as HTMLAudioElement;
+                                            audio?.pause();
+                                        }
+                                        const audio = document.getElementById("selectedAudio") as HTMLAudioElement;
+                                        audio?.pause();
+
                                         setPlayMusic(true);
-                                        console.log("currentAudio: ", currentAudio)
                                     }}
                                     onPause={() => {
                                         setPlayMusic(false);

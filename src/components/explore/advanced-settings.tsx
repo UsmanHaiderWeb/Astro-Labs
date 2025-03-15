@@ -24,7 +24,7 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                     <DialogTitle className="text-xl font-bold text-center">ADVANCED SETTINGS</DialogTitle>
                     <DialogDescription className="hidden">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloremque, facilis. Dolor, omnis eveniet debitis earum, amet eum, provident consectetur magnam consequatur praesentium eos commodi repellendus fugit ducimus molestias similique sapiente?</DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="h-[80vh] px-7">
+                <ScrollArea className="h-max px-7">
                     <div className="grid sm:grid-cols-2 gap-x-8 gap-y-4 items-start py-6">
                         <div className="space-y-4">
                             <div className="space-y-1">

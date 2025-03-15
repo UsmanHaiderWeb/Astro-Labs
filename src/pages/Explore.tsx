@@ -3,13 +3,13 @@
 import * as React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { YouTubeSection } from "@/components/explore/youtube-section"
-import { AudioSection } from "@/components/explore/audio-section"
-import { DAWSection } from "@/components/explore/daw-section"
+import AudioSection from "@/components/explore/audio-section"
 import ResultSection from "@/components/explore/result-section"
 import { AdvancedSettingsDefaultData, AdvanceSettingsInterface, VoiceSelection } from '@/lib/interfaces&types'
 import { Button } from '@/components/ui/button'
 import { AdvancedSettings } from '@/components/explore/advanced-settings'
 import axios from 'axios'
+import DawSection from '@/components/explore/daw-section'
 
 const Explore = () => {
     const [audioSelectedVoices, setAudioSelectedVoices] = React.useState<string[]>([])
@@ -17,24 +17,18 @@ const Explore = () => {
     const [tab, setTab] = React.useState<'youtube' | 'audio'>('youtube')
     const [audioPitch, setAudioPitch] = React.useState(0)
     const [youtubePitch, setYoutubePitch] = React.useState(0)
+    const [audioUrl, setAudioUrl] = React.useState("")
     const [youtubeUrl, setYoutubeUrl] = React.useState("")
     const [audioTimeRange, setAudioTimeRange] = React.useState<[number, number]>([0, 0])
     const [youtubeTimeRange, setYoutubeTimeRange] = React.useState<[number, number]>([0, 0])
+    const [audioBuffer, setAudioBuffer] = React.useState<AudioBuffer>(null)
     const [audioFile, setAudioFile] = React.useState<File | null>(null)
     const [voiceSelections, setVoiceSelections] = React.useState<VoiceSelection[]>([])
     const [showAdvanced, setShowAdvanced] = React.useState(false)
     const [advanceSettings, setAdvanceSettings] = React.useState<AdvanceSettingsInterface>(AdvancedSettingsDefaultData)
     const [audioDuration, setAudioDuration] = React.useState(0) // Update 1: Initial duration set to 0
     const [youtubeDuration, setYoutubeDuration] = React.useState(0) // Update 1: Initial duration set to 0
-    const [audioBuffer, setAudioBuffer] = React.useState<AudioBuffer | null>(null)
-
-    const updateAdvanceSetting = (key: keyof AdvanceSettingsInterface, value: any) => {
-        setAdvanceSettings(prev => ({ ...prev, [key]: value }))
-    }
-
-    const handleFileUpload = (file: File) => {
-        setAudioFile(file)
-    }
+    // const [audioUrl, setAudioUrl] = React.useState<string | null>(null)
 
     React.useEffect(() => {
         if (audioFile) {
@@ -49,7 +43,27 @@ const Explore = () => {
             }
             reader.readAsArrayBuffer(audioFile)
         }
-    }, [audioFile, tab])
+    }, [audioFile])
+
+    const updateAdvanceSetting = (key: keyof AdvanceSettingsInterface, value: any) => {
+        setAdvanceSettings(prev => ({ ...prev, [key]: value }))
+    }
+
+    const handleFileUpload = (file: File) => {
+        if (file) {
+            if (file.size <= 10 * 1024 * 1024 && (file.type === "audio/mpeg" || file.type === "audio/wav")) {
+                // setFileName(file.name)
+                setAudioFile(file)
+                const url = URL.createObjectURL(file);
+                setAudioUrl(url);
+            } else {
+                alert("Please upload an MP3 or WAV file under 10MB.")
+            }
+        }
+    }
+
+    // const handleFileUpload = (file: File) => {
+    // }
 
     React.useEffect(() => {
         (async () => {
@@ -70,79 +84,83 @@ const Explore = () => {
     }, [youtubeUrl, tab])
 
     return (
-        <div className="flex-1 container mx-auto px-4 py-6 max-w-[1400px]">
+        <div className="flex-1 container mx-auto px-4 pt-6 pb-36 max-w-[1400px]">
+            <h1 className='text-3xl mb-5 text-center'>AI Cover</h1>
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-full">
                 {/* Left Panel */}
                 <div className="lg:col-span-2 bg-[#1a1a1a] rounded-xl overflow-hidden h-full flex items-start flex-col">
-                    <Tabs defaultValue={tab} onValueChange={(val: 'youtube' | 'audio') => setTab(val)} className="w-full flex-grow">
-                        <div className="px-4 pt-4 flex-shrink-0">
-                            <TabsList className="w-full bg-transparent grid grid-cols-2 gap-2">
-                                <TabsTrigger
-                                    value="youtube"
-                                    className="py-3 data-[state=active]:bg-[#292929] bg-transparent text-white border-0 data-[state=active]:text-white rounded-sm cursor-pointer"
-                                >
-                                    YouTube
-                                </TabsTrigger>
-                                <TabsTrigger
-                                    value="audio"
-                                    className="py-3 data-[state=active]:bg-[#292929] bg-transparent text-white border-0 data-[state=active]:text-white rounded-sm cursor-pointer"
-                                >
-                                    Audio File
-                                </TabsTrigger>
-                            </TabsList>
-                        </div>
-                        <div className="p-4 flex-grow flex items-center flex-col justify-between">
-                            <div className='w-full'>
-                                <TabsContent value="youtube" className="m-0">
-                                    <YouTubeSection
-                                        url={youtubeUrl}
-                                        setUrl={setYoutubeUrl}
-                                        selectedVoices={youtubeSelectedVoices}
-                                        setSelectedVoices={setYoutubeSelectedVoices}
-                                        pitch={youtubePitch}
-                                        setPitch={setYoutubePitch}
-                                        duration={youtubeDuration}
-                                    />
-                                </TabsContent>
-                                <TabsContent value="audio" className="m-0">
-                                    <AudioSection
-                                        selectedVoices={audioSelectedVoices}
-                                        setSelectedVoices={setAudioSelectedVoices}
-                                        pitch={audioPitch}
-                                        setPitch={setAudioPitch}
-                                        onFileUpload={handleFileUpload}
-                                    />
-                                </TabsContent>
+                    <div className='flex flex-grow w-full max-h-[420px]'>
+                        <Tabs defaultValue={tab} onValueChange={(val: 'youtube' | 'audio') => setTab(val)} className="w-full flex-grow">
+                            <div className="px-4 pt-4 flex-shrink-0">
+                                <TabsList className="w-full bg-transparent grid grid-cols-2 gap-2">
+                                    <TabsTrigger
+                                        value="youtube"
+                                        className="py-3 data-[state=active]:bg-[#292929] bg-transparent text-white border-0 data-[state=active]:text-white rounded-sm cursor-pointer"
+                                    >
+                                        YouTube
+                                    </TabsTrigger>
+                                    <TabsTrigger
+                                        value="audio"
+                                        className="py-3 data-[state=active]:bg-[#292929] bg-transparent text-white border-0 data-[state=active]:text-white rounded-sm cursor-pointer"
+                                    >
+                                        Audio File
+                                    </TabsTrigger>
+                                </TabsList>
                             </div>
-                            <div className='mt-3 w-full'>
-                                <Button
-                                    variant="link"
-                                    className="text-white/60 p-0 h-auto text-xs uppercase hover:text-white"
-                                    onClick={() => setShowAdvanced(true)}
-                                >
-                                    Advanced Settings
-                                </Button>
-                                <div className="pt-2">
-                                    <Button className="w-full bg-black hover:bg-black/80 text-white" onClick={() => console.log("advanceSettings: ", advanceSettings)}>Convert</Button>
+                            <div className="p-4 flex-grow flex items-center flex-col justify-between">
+                                <div className='w-full'>
+                                    <TabsContent value="youtube" className="m-0">
+                                        <YouTubeSection
+                                            url={youtubeUrl}
+                                            setUrl={setYoutubeUrl}
+                                            selectedVoices={youtubeSelectedVoices}
+                                            setSelectedVoices={setYoutubeSelectedVoices}
+                                            pitch={youtubePitch}
+                                            setPitch={setYoutubePitch}
+                                            duration={youtubeDuration}
+                                        />
+                                    </TabsContent>
+                                    <TabsContent value="audio" className="m-0">
+                                        <AudioSection
+                                            selectedVoices={audioSelectedVoices}
+                                            setSelectedVoices={setAudioSelectedVoices}
+                                            pitch={audioPitch}
+                                            setPitch={setAudioPitch}
+                                            onFileUpload={handleFileUpload}
+                                        />
+                                    </TabsContent>
+                                </div>
+                                <div className='mt-3 w-full'>
+                                    <Button
+                                        variant="link"
+                                        className="text-white/60 p-0 h-auto text-xs uppercase hover:text-white cursor-pointer"
+                                        onClick={() => setShowAdvanced(true)}
+                                    >
+                                        Advanced Settings
+                                    </Button>
+                                    <div className="pt-2">
+                                        <Button className="w-full bg-black hover:bg-black/80 text-white cursor-pointer" onClick={() => console.log("advanceSettings: ", advanceSettings)}>Convert</Button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </Tabs>
+                        </Tabs>
+                    </div>
                     <AdvancedSettings open={showAdvanced} onOpenChange={setShowAdvanced} advanceSettings={advanceSettings} updateAdvanceSetting={updateAdvanceSetting} />
                 </div>
 
                 {/* Right Panel */}
                 <div className="lg:col-span-3 space-y-4">
-                    <DAWSection
+                    <DawSection
                         selectedVoices={tab == 'youtube' ? youtubeSelectedVoices : audioSelectedVoices}
                         timeRange={tab == 'youtube' ? youtubeTimeRange : audioTimeRange}
-                        audioFile={audioFile}
                         voiceSelections={voiceSelections}
                         setVoiceSelections={setVoiceSelections}
                         duration={tab == 'youtube' ? youtubeDuration : audioDuration}
-                        audioBuffer={audioBuffer}
+                        audioUrl={audioUrl}
                         tab={tab}
                         url={youtubeUrl}
+                        audioBuffer={audioBuffer}
+                        audioFile={audioFile}
                     />
                     <ResultSection />
                 </div>

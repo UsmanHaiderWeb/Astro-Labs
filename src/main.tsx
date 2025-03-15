@@ -8,6 +8,7 @@ const App = React.lazy(() => import('./App'));
 const HomePage = React.lazy(() => import('./pages/HomePage'));
 const Explore = React.lazy(() => import('./pages/Explore'));
 const AboutUs = React.lazy(() => import('./pages/AboutUs'));
+const ContactUs = React.lazy(() => import('./pages/ContactUs'));
 const Pricing = React.lazy(() => import('./pages/Pricing'));
 const PurchasePlan = React.lazy(() => import('./pages/PurchasePlan'));
 const FAQs = React.lazy(() => import('./pages/FAQs'));
@@ -47,6 +48,14 @@ const router = createBrowserRouter([
                 element: (
                     <React.Suspense fallback={<div></div>}>
                         <AboutUs />
+                    </React.Suspense>
+                )
+            },
+            {
+                path: '/contact-us',
+                element: (
+                    <React.Suspense fallback={<div></div>}>
+                        <ContactUs />
                     </React.Suspense>
                 )
             },
