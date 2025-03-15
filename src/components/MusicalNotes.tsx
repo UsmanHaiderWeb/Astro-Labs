@@ -53,7 +53,7 @@ const MusicalNotes: React.FC = () => {
       {notes.map((note) => (
         <div
           key={note.id}
-          className={`fixed ${note.side === "left" ? "left-0" : "right-0"} text-white/60`}
+          className={`fixed ${note.side === "left" ? "group-data-[sidebaropen=false]:left-0 group-data-[sidebaropen=true]:left-[280px]" : "right-0"} text-white/60`}
           style={{
             top: `${note.top}%`,
             [note.side]: `${note.position}rem`,

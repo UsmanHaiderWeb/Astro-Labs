@@ -156,6 +156,12 @@
 	}
 }
 
+@layer {
+	.sideBtn {
+		@apply w-full justify-start bg-transparent hover:bg-hoverBtnSec text-white
+	}
+}
+
 :root {
 	--background: 0 0% 0%;
 	--foreground: 0 0% 100%;
@@ -309,4 +315,8 @@ body {
 		transform: translate(0,0);
 		opacity: 1;
 	}
+}
+
+button, a, svg {
+	cursor: pointer;
 }

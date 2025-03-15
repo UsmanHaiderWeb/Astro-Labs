@@ -14,7 +14,7 @@ import DawSection from '@/components/explore/daw-section'
 const Explore = () => {
     const [audioSelectedVoices, setAudioSelectedVoices] = React.useState<string[]>([])
     const [youtubeSelectedVoices, setYoutubeSelectedVoices] = React.useState<string[]>([])
-    const [tab, setTab] = React.useState<'youtube' | 'audio'>('youtube')
+    const [tab, setTab] = React.useState<'youtube' | 'audio'>('audio')
     const [audioPitch, setAudioPitch] = React.useState(0)
     const [youtubePitch, setYoutubePitch] = React.useState(0)
     const [audioUrl, setAudioUrl] = React.useState("")
@@ -84,26 +84,26 @@ const Explore = () => {
     }, [youtubeUrl, tab])
 
     return (
-        <div className="flex-1 container mx-auto px-4 pt-6 pb-36 max-w-[1400px]">
+        <div className="flex-1 container mx-auto px-4 pt-6 pb-28 max-w-[1400px]">
             <h1 className='text-3xl mb-5 text-center'>AI Cover</h1>
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-full">
+            <div className="grid grid-cols-1 lg:grid-cols-5 group-data-[sidebaropen=true]:lg:grid-cols-6 gap-4">
                 {/* Left Panel */}
-                <div className="lg:col-span-2 bg-[#1a1a1a] rounded-xl overflow-hidden h-full flex items-start flex-col">
-                    <div className='flex flex-grow w-full max-h-[420px]'>
+                <div className="lg:col-span-2 group-data-[sidebaropen=true]:lg:col-span-3 bg-[#1a1a1a] rounded-xl overflow-hidden flex items-start flex-col">
+                    <div className='flex flex-grow justify-between w-full max-h-[420x] h-full'>
                         <Tabs defaultValue={tab} onValueChange={(val: 'youtube' | 'audio') => setTab(val)} className="w-full flex-grow">
                             <div className="px-4 pt-4 flex-shrink-0">
                                 <TabsList className="w-full bg-transparent grid grid-cols-2 gap-2">
-                                    <TabsTrigger
-                                        value="youtube"
-                                        className="py-3 data-[state=active]:bg-[#292929] bg-transparent text-white border-0 data-[state=active]:text-white rounded-sm cursor-pointer"
-                                    >
-                                        YouTube
-                                    </TabsTrigger>
                                     <TabsTrigger
                                         value="audio"
                                         className="py-3 data-[state=active]:bg-[#292929] bg-transparent text-white border-0 data-[state=active]:text-white rounded-sm cursor-pointer"
                                     >
                                         Audio File
+                                    </TabsTrigger>
+                                    <TabsTrigger
+                                        value="youtube"
+                                        className="py-3 data-[state=active]:bg-[#292929] bg-transparent text-white border-0 data-[state=active]:text-white rounded-sm cursor-pointer"
+                                    >
+                                        YouTube
                                     </TabsTrigger>
                                 </TabsList>
                             </div>
@@ -170,3 +170,5 @@ const Explore = () => {
 }
 
 export default React.memo(Explore)
+
+// build a full fledge image editing web application using react, tailwind css, react router dom and shadcn ui

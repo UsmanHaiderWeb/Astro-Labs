@@ -1,17 +1,25 @@
 import { SidebarOpen } from 'lucide-react';
 import * as React from 'react'
 import { Link } from "react-router-dom"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
 function Header({ setOpenSidebar }: { setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>> }) {
     return (
         <header className="w-full py-4 px-6">
             <nav className="max-w-[1920px] mx-auto flex items-center justify-between">
                 <div className='w-48 flex items-center gap-5'>
-                    <SidebarOpen onClick={() => setOpenSidebar(true)} className='group-data-[sidebaropen=true]:hidden group-data-[sidebaropen=false]:inline' />
-                    <div className='flex justify-center items-center'>
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <SidebarOpen onClick={() => setOpenSidebar(true)} className='group-data-[sidebaropen=true]:hidden group-data-[sidebaropen=false]:inline' />
+                            </TooltipTrigger>
+                            <TooltipContent className='bg-black z-[201]'>Open Sidebar</TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                    <Link to="/" className='flex justify-center items-center'>
                         <img src="/logo.png" alt="logo" width={35} height={38} className='h-auto' />
                         <span className="text-white">ASTRA LABS</span>
-                    </div>
+                    </Link>
                     {/* Logo */}
                     {/* <Link to="/" className="bg-white/10 px-4 py-2 rounded-md">
                         <span className="text-lg font-bold text-white">ASTRA LABS</span>

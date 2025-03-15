@@ -24,7 +24,7 @@ const App = () => {
 
     return (
         <main data-sidebaropen={openSidebar ? 'true' : 'false'} className="min-h-screen flex justify-between relative group">
-            <div className='group-data-[sidebaropen=true]:w-[280px] group-data-[sidebaropen=false]:w-0 duration-200 h-screen sticky top-0 left-0 overflow-hidden'>
+            <div className='group-data-[sidebaropen=true]:w-[280px] group-data-[sidebaropen=false]:w-0 duration-200 h-screen sticky z-[200] top-0 left-0 overflow-hidden'>
                 <ScrollArea className="w-full min-w-[280px] h-full overflow-auto bg-red-700">
                     <Sidebar setOpenSidebar={setOpenSidebar} />
                 </ScrollArea>

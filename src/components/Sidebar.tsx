@@ -4,20 +4,21 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip'
 import { X } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const playlists = [
-  "Recently Added",
-  "Recently Played",
-  "Top Songs",
-  "Top Albums",
-  "Top Artists",
-  "Logic Discography",
-  "Bedtime Beats",
-  "Feeling Happy",
-  "I miss Y2K Pop",
-  "Runtober",
-  "Mellow Days",
-  "Eminem Essentials",
+    "Recently Added",
+    "Recently Played",
+    "Top Songs",
+    "Top Albums",
+    "Top Artists",
+    "Logic Discography",
+    "Bedtime Beats",
+    "Feeling Happy",
+    "I miss Y2K Pop",
+    "Runtober",
+    "Mellow Days",
+    "Eminem Essentials",
 ]
 
 interface SideBarProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -26,40 +27,25 @@ interface SideBarProps extends React.HTMLAttributes<HTMLDivElement> {
 
 function Sidebar({ className, setOpenSidebar }: SideBarProps) {
     return (
-        <div className={cn("pb-12 bg-grayBackground", className)}>
-            <div className="space-y-2 pb-4 relative">
-                <div className='flex justify-between items-center pb-4 pt-5 px-4 sticky top-0 left-0 bg-grayBackground'>
-                    <h2 className="text-lg font-semibold tracking-tight">
-                        Atsra Labs
-                    </h2>
+        <div className={cn("bg-grayBackground", className)}>
+            <div className="relative">
+                <div className='flex justify-between items-center pb-2 pt-3.5 px-4 sticky z-[10] top-0 left-0 bg-grayBackground'>
+                    <Link to="/" className='flex justify-center items-center'>
+                        <img src="/logo.png" alt="logo" width={35} height={38} className='h-auto' />
+                        <span className="text-white">ASTRA LABS</span>
+                    </Link>
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger>
-                                <X onClick={() => setOpenSidebar(false)} />
+                                <X onClick={() => setOpenSidebar(false)} className='cursor-pointer' />
                             </TooltipTrigger>
-                            <TooltipContent className='bg-black'>Close Sidebar</TooltipContent>
+                            <TooltipContent className='bg-black z-[201]'>Close Sidebar</TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
                 </div>
-                <div className="pl-2 pr-4 pb-2">
+                <div className="pl-2 pr-4 pb-3">
                     <div className="space-y-1">
-                        <Button variant="secondary" className="w-full justify-start bg-transparent hover:bg-hoverBtnSec text-white">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="mr-2 h-4 w-4"
-                            >
-                                <circle cx="12" cy="12" r="10" />
-                                <polygon points="10 8 16 12 10 16 10 8" />
-                            </svg>
-                            Listen Now
-                        </Button>
-                        <Button variant="secondary" className="w-full justify-start bg-transparent hover:bg-hoverBtnSec text-white">
+                        <Button variant="secondary" className="sideBtn">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -75,9 +61,25 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
                                 <rect width="7" height="7" x="14" y="14" rx="1" />
                                 <rect width="7" height="7" x="3" y="14" rx="1" />
                             </svg>
-                            Browse
+                            Explore
                         </Button>
-                        <Button variant="secondary" className="w-full justify-start bg-transparent hover:bg-hoverBtnSec text-white">
+                        <Button variant="secondary" className="sideBtn">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="mr-2 h-4 w-4"
+                            >
+                                <circle cx="12" cy="12" r="10" />
+                                <polygon points="10 8 16 12 10 16 10 8" />
+                            </svg>
+                            Youtube
+                        </Button>
+                        <Button variant="secondary" className="sideBtn">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -98,12 +100,12 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
                         </Button>
                     </div>
                 </div>
-                <div className="pl-2 pr-4 py-2">
+                <div className="pl-2 pr-4 py-3">
                     <h2 className="mb-2 px-2 text-lg font-semibold tracking-tight">
                         Library
                     </h2>
                     <div className="space-y-1">
-                        <Button variant="secondary" className="w-full justify-start bg-transparent hover:bg-hoverBtnSec text-white">
+                        <Button variant="secondary" className="sideBtn">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -122,7 +124,7 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
                             </svg>
                             Playlists
                         </Button>
-                        <Button variant="secondary" className="w-full justify-start bg-transparent hover:bg-hoverBtnSec text-white">
+                        <Button variant="secondary" className="sideBtn">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -138,7 +140,7 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
                             </svg>
                             Songs
                         </Button>
-                        <Button variant="secondary" className="w-full justify-start bg-transparent hover:bg-hoverBtnSec text-white">
+                        <Button variant="secondary" className="sideBtn">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -154,7 +156,7 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
                             </svg>
                             Made for You
                         </Button>
-                        <Button variant="secondary" className="w-full justify-start bg-transparent hover:bg-hoverBtnSec text-white">
+                        <Button variant="secondary" className="sideBtn">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -170,7 +172,7 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
                             </svg>
                             Artists
                         </Button>
-                        <Button variant="secondary" className="w-full justify-start bg-transparent hover:bg-hoverBtnSec text-white">
+                        <Button variant="secondary" className="sideBtn">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -190,39 +192,37 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
                         </Button>
                     </div>
                 </div>
-                <div className="py-2">
+                <div className="py-3">
                     <h2 className="relative px-4 text-lg font-semibold tracking-tight">
                         Playlists
                     </h2>
-                    <ScrollArea className="h-[300px] pl-2 pr-4">
-                        <div className="space-y-1 py-2">
-                            {playlists?.map((playlist, i) => (
-                                <Button
-                                    key={`${playlist}-${i}`}
-                                    variant="ghost"
-                                    className="w-full justify-start font-normal"
+                    <div className="space-y-1 py-2">
+                        {playlists?.map((playlist, i) => (
+                            <Button
+                                key={`${playlist}-${i}`}
+                                variant="ghost"
+                                className="sideBtn font-normal"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="mr-2 h-4 w-4"
                                 >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="mr-2 h-4 w-4"
-                                    >
-                                        <path d="M21 15V6" />
-                                        <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                        <path d="M12 12H3" />
-                                        <path d="M16 6H3" />
-                                        <path d="M12 18H3" />
-                                    </svg>
-                                    {playlist}
-                                </Button>
-                            ))}
-                        </div>
-                    </ScrollArea>
+                                    <path d="M21 15V6" />
+                                    <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                                    <path d="M12 12H3" />
+                                    <path d="M16 6H3" />
+                                    <path d="M12 18H3" />
+                                </svg>
+                                {playlist}
+                            </Button>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

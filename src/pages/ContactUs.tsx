@@ -52,7 +52,7 @@ function ContactUs() {
                                 <Mail className="h-6 w-6 text-purple" />
                                 <div>
                                     <h3 className="font-heading text-lg">Email Us</h3>
-                                    <p className="text-muted-foreground">info@company.com</p>
+                                    <p className="text-muted-foreground cursor-pointer">info@company.com</p>
                                     <p className="text-muted-foreground text-sm mt-0.5">support@company.com</p>
                                 </div>
                             </CardContent>
@@ -62,7 +62,7 @@ function ContactUs() {
                                 <Phone className="h-6 w-6 text-purple" />
                                 <div>
                                     <h3 className="font-heading text-lg">Call Us</h3>
-                                    <p className="text-muted-foreground">+1 (555) 123-4567</p>
+                                    <p className="text-muted-foreground cursor-pointer">+1 (555) 123-4567</p>
                                     <p className="text-muted-foreground text-sm mt-0.5">Mon-Fri 9am-6pm</p>
                                 </div>
                             </CardContent>
