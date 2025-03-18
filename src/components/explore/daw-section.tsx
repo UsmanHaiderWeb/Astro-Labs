@@ -347,16 +347,16 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
             <h2 className="text-white/60 uppercase text-xs mb-2">DAW</h2>
             <div className="relative overflow-hidden">
                 {tab == 'audio' ?
-                    <div ref={audioWaveformRef} className={`w-full h-40 rounded-lg pointer-events-none top-1/2 -translate-y-1/2 left-0 absolute z-[8] overflow-hidden bg-[#292929] ${tab == 'audio' ? 'block' : 'hidden'}`} />
+                    <div ref={audioWaveformRef} className={`w-full h-36 rounded-lg pointer-events-none top-1/2 -translate-y-1/2 left-0 absolute z-[8] overflow-hidden bg-[#292929] ${tab == 'audio' ? 'block' : 'hidden'}`} />
                     :
-                    <div ref={youtubeWaveformRef} className={`w-full h-40 rounded-lg pointer-events-none top-1/2 -translate-y-1/2 left-0 absolute z-[9] overflow-hidden bg-[#292929] ${tab == 'youtube' ? 'block' : 'hidden'}`} />
+                    <div ref={youtubeWaveformRef} className={`w-full h-36 rounded-lg pointer-events-none top-1/2 -translate-y-1/2 left-0 absolute z-[9] overflow-hidden bg-[#292929] ${tab == 'youtube' ? 'block' : 'hidden'}`} />
                 }
                 {(tab == 'audio' && showWaveForm) &&
-                    <div className='w-full h-40 rounded-lg pointer-events-none top-1/2 -translate-y-1/2 left-0 absolute z-[10] bg-transparent flex justify-center items-center'>
+                    <div className='w-full h-36 rounded-lg pointer-events-none top-1/2 -translate-y-1/2 left-0 absolute z-[10] bg-transparent flex justify-center items-center'>
                         <BeatLoader />
                     </div>
                 }
-                <canvas ref={canvasRef} className="w-full h-40 rounded-lg cursor-pointer relative z-[11]" />
+                <canvas ref={canvasRef} className="w-full h-36 rounded-lg cursor-pointer relative z-[11]" />
                 <div className="absolute bottom-2 left-2 bg-black/80 text-white text-xs px-2 py-1 rounded z-[12]">
                     {(audioBuffer || url) ? `${formatTime(tab == 'youtube' ? youtubeCurrentTime : audio.current?.currentTime)} / ${formatTime(duration)}` : "0:00 / 0:00"}{" "}
                     {/* Update 3: Conditional rendering of time display */}

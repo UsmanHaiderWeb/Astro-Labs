@@ -106,7 +106,7 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                 </div>
             </div>
 
-            <div className="space-y-2 w-full">
+            <div className="space-y-0.5 w-full">
                 <Label className="text-white/60 uppercase text-xs">Voice</Label>
                 <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>
@@ -119,7 +119,7 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                             {selectedVoices.length === 0 ? "Select Voice Models" : `${selectedVoices.length} selected`}
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="max-w-full p-0 bg-[#1a1a1a] border-white/10">
+                    <PopoverContent className="w-[var(--radix-popper-anchor-width)] p-0 bg-[#1a1a1a] border-white/10 z-[202]">
                         <Command className="bg-transparent max-w-full text-secondary">
                             <CommandInput placeholder="Search voice models..." className="text-white w-full" />
                             <CommandList>
@@ -160,7 +160,7 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                 }
             </div>
 
-            <div className="space-y-2">
+            <div>
                 <Label className="text-white/60 uppercase text-xs">Pitch</Label>
                 <div className="flex items-center space-x-4">
                     <Slider

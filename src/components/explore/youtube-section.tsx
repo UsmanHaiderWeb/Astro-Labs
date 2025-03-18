@@ -44,11 +44,10 @@ export function YouTubeSection({
   return (
     <div className="space-y-4">
       <div className="space-y-1">
-        <Label className="text-white/60 uppercase text-xs">Audio</Label>
+        <Label className="text-white/60 uppercase text-xs">Youtube Video Link</Label>
         <Input
           placeholder="Paste YouTube link here"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
+          onChange={(e) => e.target?.value?.includes("https://www.youtube.com/watch?v=") && setUrl(e.target.value)}
           className="bg-black/50 border-0 text-white placeholder:text-white/40 text-sm h-8"
         />
       </div>
@@ -66,7 +65,7 @@ export function YouTubeSection({
                 {selectedVoices.length === 0 ? "Select Voice Models" : `${selectedVoices.length} selected`}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-full p-0 bg-[#1a1a1a] border-white/10">
+            <PopoverContent className="w-[var(--radix-popper-anchor-width)] p-0 bg-[#1a1a1a] border-white/10 z-[203]">
               <Command className="bg-transparent w-full text-secondary">
                 <CommandInput placeholder="Search voice models..." className="text-white w-full" />
                 <CommandList>

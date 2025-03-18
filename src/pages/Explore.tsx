@@ -8,8 +8,10 @@ import ResultSection from "@/components/explore/result-section"
 import { AdvancedSettingsDefaultData, AdvanceSettingsInterface, VoiceSelection } from '@/lib/interfaces&types'
 import { Button } from '@/components/ui/button'
 import { AdvancedSettings } from '@/components/explore/advanced-settings'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import DawSection from '@/components/explore/daw-section'
+import { useMutation } from '@tanstack/react-query'
+import { generateAudioCall } from '@/lib/AxiosCalls'
 
 const Explore = () => {
     const [audioSelectedVoices, setAudioSelectedVoices] = React.useState<string[]>([])
@@ -19,6 +21,7 @@ const Explore = () => {
     const [youtubePitch, setYoutubePitch] = React.useState(0)
     const [audioUrl, setAudioUrl] = React.useState("")
     const [youtubeUrl, setYoutubeUrl] = React.useState("")
+    const [youtubeAudioUrl, setYoutubeAudioUrl] = React.useState("")
     const [audioTimeRange, setAudioTimeRange] = React.useState<[number, number]>([0, 0])
     const [youtubeTimeRange, setYoutubeTimeRange] = React.useState<[number, number]>([0, 0])
     const [audioBuffer, setAudioBuffer] = React.useState<AudioBuffer>(null)
@@ -44,6 +47,15 @@ const Explore = () => {
             reader.readAsArrayBuffer(audioFile)
         }
     }, [audioFile])
+
+    const { mutate, data, isPending } = useMutation({
+        mutationKey: ['generate audios', (tab ? audioFile : youtubeUrl)],
+        mutationFn: generateAudioCall,
+        onError: (error: AxiosError<{ detail: string }>) => {
+            console.log("generateAudio error: ", error);
+        },
+        onSuccess: () => {}
+    });
 
     const updateAdvanceSetting = (key: keyof AdvanceSettingsInterface, value: any) => {
         setAdvanceSettings(prev => ({ ...prev, [key]: value }))
@@ -81,7 +93,7 @@ const Explore = () => {
                 setYoutubeDuration(totalSeconds);
             }
         })();
-    }, [youtubeUrl, tab])
+    }, [youtubeUrl])
 
     return (
         <div className="flex-1 container mx-auto px-4 pt-6 pb-20 max-w-[1200px]">
@@ -158,7 +170,7 @@ const Explore = () => {
                         duration={tab == 'youtube' ? youtubeDuration : audioDuration}
                         audioUrl={audioUrl}
                         tab={tab}
-                        url={youtubeUrl}
+                        url={youtubeAudioUrl}
                         audioBuffer={audioBuffer}
                         audioFile={audioFile}
                     />

@@ -85,3 +85,19 @@ export const FetchStripeUrlCall = async ({token, planId}: {token: string, planId
 
     return data;
 }
+
+// generate audios
+
+export const generateAudioCall = async ({token, planId}: {token: string, planId: 'pro' | 'premium'}) => {
+    const { data } = await api.post(`/payments/create-checkout-session`,
+        {role: planId},
+        {
+            headers: {
+                Authorization: `bearer ${token}`
+            },
+            withCredentials: true
+        },
+    )
+
+    return data;
+}
