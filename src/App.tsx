@@ -8,7 +8,7 @@ import { ScrollArea } from "./components/ui/scroll-area"
 
 const App = () => {
     const { pathname } = useLocation();
-    const [openSidebar, setOpenSidebar] = React.useState(true)
+    const [openSidebar, setOpenSidebar] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         import('./pages/Login')
@@ -20,17 +20,21 @@ const App = () => {
         if (pathname == '/pricing') {
             import('./pages/PurchasePlan')
         }
+
+        if(pathname == '/explore'){
+            setOpenSidebar(true)
+        } else setOpenSidebar(false)
     }, [pathname])
 
     return (
         <main data-sidebaropen={openSidebar ? 'true' : 'false'} className="min-h-screen flex justify-between relative group">
             <div className='group-data-[sidebaropen=true]:w-[280px] group-data-[sidebaropen=false]:w-0 duration-200 h-screen sticky z-[200] top-0 left-0 overflow-hidden'>
-                <ScrollArea className="w-full min-w-[280px] h-full overflow-auto bg-red-700">
+                <ScrollArea className="w-full min-w-[280px] h-full overflow-auto">
                     <Sidebar setOpenSidebar={setOpenSidebar} />
                 </ScrollArea>
             </div>
             <div className="flex-grow min-h-screen flex flex-col">
-                <Header setOpenSidebar={setOpenSidebar} />
+                <Header />
                 <Outlet />
                 <Footer />
             </div>

@@ -1,17 +1,15 @@
-import { SidebarOpen } from 'lucide-react';
 import * as React from 'react'
 import { Link } from "react-router-dom"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
-function Header({ setOpenSidebar }: { setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>> }) {
+function Header() {
     return (
         <header className="w-full py-4 px-6">
             <nav className="max-w-[1920px] mx-auto flex items-center justify-between">
                 <div className='w-48 flex items-center gap-5'>
-                    <TooltipProvider>
+                    {/* <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger>
-                                <SidebarOpen onClick={() => setOpenSidebar(true)} className='group-data-[sidebaropen=true]:hidden group-data-[sidebaropen=false]:inline' />
+                                <Menu onClick={() => setOpenSidebar(true)} className='group-data-[sidebaropen=true]:hidden group-data-[sidebaropen=false]:inline' />
                             </TooltipTrigger>
                             <TooltipContent className='bg-black z-[201]'>Open Sidebar</TooltipContent>
                         </Tooltip>
@@ -19,11 +17,11 @@ function Header({ setOpenSidebar }: { setOpenSidebar: React.Dispatch<React.SetSt
                     <Link to="/" className='flex justify-center items-center'>
                         <img src="/logo.png" alt="logo" width={35} height={38} className='h-auto' />
                         <span className="text-white">ASTRA LABS</span>
-                    </Link>
-                    {/* Logo */}
-                    {/* <Link to="/" className="bg-white/10 px-4 py-2 rounded-md">
-                        <span className="text-lg font-bold text-white">ASTRA LABS</span>
                     </Link> */}
+                    {/* Logo */}
+                    <Link to="/" className="bg-white/10 px-4 py-2 rounded-md">
+                        <span className="text-lg font-bold text-white">ASTRA LABS</span>
+                    </Link>
                 </div>
 
                 {/* Navigation Links */}
@@ -37,10 +35,10 @@ function Header({ setOpenSidebar }: { setOpenSidebar: React.Dispatch<React.SetSt
                     <Link to="/contact-us" className="text-[15px] text-white hover:text-gray-300">
                         CONTACT
                     </Link>
-                    {/* <Link to="/pricing" className="text-[15px] text-white hover:text-gray-300">
+                    <Link to="/pricing" className="text-[15px] text-white hover:text-gray-300">
                         PRICING
                     </Link>
-                    <Link to="/faqs" className="text-[15px] text-white hover:text-gray-300">
+                    {/* <Link to="/faqs" className="text-[15px] text-white hover:text-gray-300">
                         FAQ
                     </Link> */}
                 </div>

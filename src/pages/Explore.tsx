@@ -84,7 +84,7 @@ const Explore = () => {
     }, [youtubeUrl, tab])
 
     return (
-        <div className="flex-1 container mx-auto px-4 pt-6 pb-28 max-w-[1400px]">
+        <div className="flex-1 container mx-auto px-4 pt-6 pb-20 max-w-[1200px]">
             <h1 className='text-3xl mb-5 text-center'>AI Cover</h1>
             <div className="grid grid-cols-1 lg:grid-cols-5 group-data-[sidebaropen=true]:lg:grid-cols-6 gap-4">
                 {/* Left Panel */}

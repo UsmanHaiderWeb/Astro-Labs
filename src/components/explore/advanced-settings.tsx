@@ -19,7 +19,7 @@ interface AdvancedSettingsProps {
 export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAdvanceSetting }: AdvancedSettingsProps) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="bg-[#1A1A1A] border-white/10 text-white sm:max-w-4xl px-0 border-none outline-none">
+            <DialogContent className="bg-[#1A1A1A] border-white/10 text-white sm:max-w-4xl px-0 border-none outline-none z-[300]">
                 <DialogHeader>
                     <DialogTitle className="text-xl font-bold text-center">ADVANCED SETTINGS</DialogTitle>
                     <DialogDescription className="hidden">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloremque, facilis. Dolor, omnis eveniet debitis earum, amet eum, provident consectetur magnam consequatur praesentium eos commodi repellendus fugit ducimus molestias similique sapiente?</DialogDescription>
@@ -179,7 +179,7 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                                 <div className="flex items-center space-x-2">
                                     <Slider
                                         value={[advanceSettings?.protectRate]}
-                                        onValueChange={([value]) => updateAdvanceSetting('ProtectRate', value)}
+                                        onValueChange={([value]) => updateAdvanceSetting('protectRate', value)}
                                         min={0}
                                         max={1}
                                         step={0.01}

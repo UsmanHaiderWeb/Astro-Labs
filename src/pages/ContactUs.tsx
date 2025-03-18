@@ -11,7 +11,7 @@ function ContactUs() {
     return (
         <div className="max-w-[1000px] md:w-full sm:w-[80%] mx-auto px-4 pt-5 pb-24">
             <div className="flex justify-center md:flex-row flex-col gap-8">
-                <div className="bg-grayBackground p-8 rounded-lg shadow-lg md:order-2 order-1 md:w-[53%]">
+                {/* <div className="bg-grayBackground p-8 rounded-lg shadow-lg md:order-2 order-1 md:w-[53%]">
                     <h2 className="text-3xl font-heading mb-4">Get in Touch</h2>
                     <p className="text-muted-foreground mb-4">
                         Fill out the form below and we&apos;ll get back to you as soon as possible.
@@ -38,16 +38,16 @@ function ContactUs() {
                             <Send className="ml-2 h-4 w-4" />
                         </Button>
                     </div>
-                </div>
-                <div className="space-y-5 md:order-1 order-2 md:w-[47%]">
+                </div> */}
+                <div className="space-y-5 md:order-1 order-2 md:w[47%] w-full">
                     <div>
                         <h2 className="text-3xl leading-8 font-heading mt-8">Contact Information</h2>
                         <p className="text-muted-foreground w-[80%] min-w-[300px] mt-3">
                             We&apos;re here to help and answer any questions you might have.
                         </p>
                     </div>
-                    <div className="space-y-4">
-                        <Card className='bg-grayBackground border-none outline-none text-foreground'>
+                    <div className="flex flex-wrap gap-4">
+                        <Card className='bg-grayBackground border-none outline-none text-foreground flex-grow'>
                             <CardContent className="flex items-center space-x-4">
                                 <Mail className="h-6 w-6 text-purple" />
                                 <div>
@@ -57,7 +57,7 @@ function ContactUs() {
                                 </div>
                             </CardContent>
                         </Card>
-                        <Card className='bg-grayBackground border-none outline-none text-foreground'>
+                        <Card className='bg-grayBackground border-none outline-none text-foreground flex-grow'>
                             <CardContent className="flex items-center space-x-4">
                                 <Phone className="h-6 w-6 text-purple" />
                                 <div>
@@ -67,7 +67,7 @@ function ContactUs() {
                                 </div>
                             </CardContent>
                         </Card>
-                        <Card className='bg-grayBackground border-none outline-none text-foreground'>
+                        <Card className='bg-grayBackground border-none outline-none text-foreground flex-grow'>
                             <CardContent className="flex items-center space-x-4">
                                 <MapPin className="h-6 w-6 text-purple" />
                                 <div>

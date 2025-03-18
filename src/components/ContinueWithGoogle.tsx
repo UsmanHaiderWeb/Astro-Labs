@@ -1,34 +1,40 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
 import { Button } from "./ui/button";
+import { useMutation } from "@tanstack/react-query";
+import { ContinueWithGoogleCall } from "@/lib/AxiosCalls";
+import { AxiosError } from "axios";
+import { RefreshCcw } from "lucide-react";
 
 const ContinueWithGoogle = () => {
-    const googleLoginButtonRef = React.useRef<HTMLDivElement>(null)
-    const handleSuccess = (credentialResponse) => {
-        console.log("Credential Response:", credentialResponse);
-        const token = credentialResponse?.credential;
-        const userInfo = jwtDecode(token);
-        console.log("User Info:", userInfo);
-    };
+    const { mutate, isPending } = useMutation({
+        mutationKey: ['Google Login'],
+        mutationFn: ContinueWithGoogleCall,
+        onError: (error: AxiosError<{ detail: string }>) => {
+            console.log("signup error: ", error);
+        },
+        onSuccess: (data: { oauth_url: string }) => {
+            console.log("oauth_url: ", data?.oauth_url)
+            window.location.href = data.oauth_url;
+            // localStorage.setItem("astraToken", data.oauth_url)
+            // navigate('/', { replace: true });
+        }
+    })
 
-    const handleError = () => {
-        console.log("Login Failed");
-    };
-
-    return (
-        <GoogleOAuthProvider clientId="766196043344-i0mbl5i8tgfae3il2qfp3p1ehsgk8q9n.apps.googleusercontent.com">
-            <div className="hidden" ref={googleLoginButtonRef}>
-                <GoogleLogin onSuccess={handleSuccess} onError={handleError} />
-            </div>
+    return (<>
+        {isPending ?
+            <Button variant="outline" disabled type="button" className="w-full text-white cursor-not-allowed">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path
+                        d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
+                        fill="currentColor"
+                    />
+                </svg>
+                Google <RefreshCcw className='animate-spin duration-150' />
+            </Button>
+            :
             <Button variant="outline" type="button" className="w-full cursor-pointer" onClick={() => {
-                const divs: any = googleLoginButtonRef.current?.querySelectorAll("div");;
-                divs?.forEach((div) => {
-                    if (div.role == 'button') {
-                        div.click();
-                    }
-                })
+                mutate();
             }}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path
@@ -38,8 +44,8 @@ const ContinueWithGoogle = () => {
                 </svg>
                 Login with Google
             </Button>
-        </GoogleOAuthProvider>
-    );
+        }
+    </>);
 };
 
 export default React.memo(ContinueWithGoogle);

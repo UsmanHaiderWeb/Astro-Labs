@@ -4,10 +4,10 @@ import { Card, CardContent } from '@/components/ui/card'
 
 const AboutUs = () => {
     return (
-        <div className="flex-1 flex items-center justify-center px-4 pb-16 relative">
+        <div className="flex-1 flex items-center justify-center px-4 pb-6 relative">
             <MusicalNotes />
-            <div className="max-w-3xl rounded-xl p-8 grid gap-8">
-                <Card className='bg-grayBackground text-foreground border-none outline-none'>
+            <div className="max-w-5xl rounded-xl px-8 grid gap-8">
+                <Card className='bg-transparent text-foreground border-none outline-none'>
                     <CardContent>
                         <div className='pb-6 grid gap-5'>
                             <h1 className="text-4xl font-bold text-white">About Us</h1>

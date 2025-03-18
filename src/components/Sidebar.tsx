@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip'
 import { X } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -27,17 +26,17 @@ interface SideBarProps extends React.HTMLAttributes<HTMLDivElement> {
 
 function Sidebar({ className, setOpenSidebar }: SideBarProps) {
     return (
-        <div className={cn("bg-grayBackground", className)}>
+        <div className={cn("bg-grayBackground h-full min-h-screen", className)}>
             <div className="relative">
-                <div className='flex justify-between items-center pb-2 pt-3.5 px-4 sticky z-[10] top-0 left-0 bg-grayBackground'>
+                <div className='flex justify-between items-center pb-2 pt-6 px-4 sticky z-[10] top-0 left-0 bg-grayBackground'>
                     <Link to="/" className='flex justify-center items-center'>
-                        <img src="/logo.png" alt="logo" width={35} height={38} className='h-auto' />
+                        {/* <img src="/logo.png" alt="logo" width={35} height={38} className='h-auto' /> */}
                         <span className="text-white">ASTRA LABS</span>
                     </Link>
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger>
-                                <X onClick={() => setOpenSidebar(false)} className='cursor-pointer' />
+                                <X onClick={() => setOpenSidebar(false)} className='cursor-pointer md:hidden' />
                             </TooltipTrigger>
                             <TooltipContent className='bg-black z-[201]'>Close Sidebar</TooltipContent>
                         </Tooltip>
@@ -63,7 +62,7 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
                             </svg>
                             Explore
                         </Button>
-                        <Button variant="secondary" className="sideBtn">
+                        {/* <Button variant="secondary" className="sideBtn">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -97,15 +96,13 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
                                 <path d="M19.1 4.9C23 8.8 23 15.1 19.1 19" />
                             </svg>
                             Radio
-                        </Button>
+                        </Button> */}
                     </div>
                 </div>
                 <div className="pl-2 pr-4 py-3">
-                    <h2 className="mb-2 px-2 text-lg font-semibold tracking-tight">
-                        Library
-                    </h2>
+                    <h2 className="mb-2 px-2 text-lg font-semibold tracking-tight">Tools</h2>
                     <div className="space-y-1">
-                        <Button variant="secondary" className="sideBtn">
+                        {/* <Button variant="secondary" className="sideBtn">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -155,7 +152,7 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
                                 <circle cx="12" cy="7" r="4" />
                             </svg>
                             Made for You
-                        </Button>
+                        </Button> */}
                         <Button variant="secondary" className="sideBtn">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -170,9 +167,9 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
                                 <path d="m12 8-9.04 9.06a2.82 2.82 0 1 0 3.98 3.98L16 12" />
                                 <circle cx="17" cy="7" r="5" />
                             </svg>
-                            Artists
+                            AI Cover
                         </Button>
-                        <Button variant="secondary" className="sideBtn">
+                        {/* <Button variant="secondary" className="sideBtn">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -189,10 +186,10 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
                                 <path d="M4 4v16" />
                             </svg>
                             Albums
-                        </Button>
+                        </Button> */}
                     </div>
                 </div>
-                <div className="py-3">
+                {/* <div className="py-3">
                     <h2 className="relative px-4 text-lg font-semibold tracking-tight">
                         Playlists
                     </h2>
@@ -223,7 +220,7 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
                             </Button>
                         ))}
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     )

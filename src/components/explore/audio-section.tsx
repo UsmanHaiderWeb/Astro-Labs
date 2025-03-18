@@ -119,9 +119,9 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                             {selectedVoices.length === 0 ? "Select Voice Models" : `${selectedVoices.length} selected`}
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-full p-0 bg-[#1a1a1a] border-white/10">
-                        <Command className="bg-transparent w-full text-secondary">
-                            <CommandInput placeholder="Search voice models..." className="text-white" />
+                    <PopoverContent className="max-w-full p-0 bg-[#1a1a1a] border-white/10">
+                        <Command className="bg-transparent max-w-full text-secondary">
+                            <CommandInput placeholder="Search voice models..." className="text-white w-full" />
                             <CommandList>
                                 <CommandEmpty>No voice model found.</CommandEmpty>
                                 <CommandGroup>

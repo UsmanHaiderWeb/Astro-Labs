@@ -1,17 +1,54 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import ContinueWithDiscord from '@/components/ContinueWithDiscord'
 import ContinueWithGoogle from '@/components/ContinueWithGoogle'
+import { Controller, useForm } from 'react-hook-form'
+import { SignupSchema } from '@/lib/ZodSchemas'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
+import { SignupCall } from '@/lib/AxiosCalls'
+import { AxiosError } from 'axios'
+import FormFieldError from '@/components/FormFieldError'
+import { RefreshCcw } from 'lucide-react'
 
 function Signup() {
+    const navigate = useNavigate();
+
+    const { control, formState: { errors }, handleSubmit } = useForm({
+        defaultValues: {
+            username: '',
+            email: "",
+            password: ""
+        },
+        resolver: zodResolver(SignupSchema),
+    })
+
+    const { mutate, isPending } = useMutation({
+        mutationKey: ['Signup'],
+        mutationFn: SignupCall,
+        onError: (error: AxiosError) => {
+            console.log("signup error: ", error)
+        },
+        onSuccess: () => {
+            navigate('/login', { replace: true });
+        }
+    })
+
+    const createAccount = (data: { username: string, email: string, password: string }) => {
+        if (!isPending) {
+            mutate(data);
+        }
+    }
+
     return (
         <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
             <div className="w-full max-w-[420px]">
                 <div className="flex flex-col gap-2">
-                    <form>
+                    <form onSubmit={handleSubmit(createAccount)}>
                         <div className="flex flex-col gap-6">
                             <div className="flex flex-col items-center gap-2">
                                 <div className="flex flex-col items-center gap-2 font-medium">
@@ -22,7 +59,7 @@ function Signup() {
                                 </div>
                                 <h1 className="text-xl font-bold">Welcome to Astra Labs</h1>
                                 <div className="text-center text-sm max-w-[80%]">
-                                    Signup to Astra Labs account to enjoy our services
+                                    Create an Account
                                 </div>
                             </div>
                             <div className="flex flex-col gap-3">
@@ -31,36 +68,73 @@ function Signup() {
                                 </div> */}
                                 <div className="grid gap-2">
                                     <Label htmlFor="username">User Name</Label>
-                                    <Input
-                                        id="username"
-                                        type="text"
-                                        placeholder="Enter User Name"
-                                        required
+                                    <Controller
+                                        control={control}
+                                        name='username'
+                                        render={({ field }) => (
+                                            <Input
+                                                id="username"
+                                                type="text"
+                                                placeholder="Enter User Name"
+                                                required
+                                                disabled={isPending}
+                                                value={field.value}
+                                                onChange={(e: any) => field.onChange(typeof e == 'string' ? e : e.target.value)}
+                                            />
+                                        )}
                                     />
+                                    <FormFieldError message={errors?.username?.message} />
                                 </div>
                                 <div className='grid grid-cols-2 gap-x-2 mb-2'>
                                     <div className="grid gap-2">
                                         <Label htmlFor="email">Email</Label>
-                                        <Input
-                                            id="email"
-                                            type="email"
-                                            placeholder="m@example.com"
-                                            required
+                                        <Controller
+                                            control={control}
+                                            name='email'
+                                            render={({ field }) => (
+                                                <Input
+                                                    id="email"
+                                                    type="email"
+                                                    placeholder="m@example.com"
+                                                    required
+                                                    disabled={isPending}
+                                                    value={field.value}
+                                                    onChange={(e: any) => field.onChange(typeof e == 'string' ? e : e.target.value)}
+                                                />
+                                            )}
                                         />
+                                        <FormFieldError message={errors?.email?.message} />
                                     </div>
                                     <div className="grid gap-2">
                                         <Label htmlFor="password">Password</Label>
-                                        <Input
-                                            id="password"
-                                            type="password"
-                                            placeholder="Enter password"
-                                            required
+                                        <Controller
+                                            control={control}
+                                            name='password'
+                                            render={({ field }) => (
+                                                <Input
+                                                    id="password"
+                                                    type="password"
+                                                    placeholder="Enter password"
+                                                    required
+                                                    disabled={isPending}
+                                                    value={field.value}
+                                                    onChange={(e: any) => field.onChange(typeof e == 'string' ? e : e.target.value)}
+                                                />
+                                            )}
                                         />
+                                        <FormFieldError message={errors?.password?.message} className='pl-1.5' />
                                     </div>
                                 </div>
-                                <Button type="submit" variant='secondary' className="w-full cursor-pointer">
-                                    Create Account
-                                </Button>
+                                <FormFieldError message={errors?.root?.message} className='leading-2' />
+                                {isPending ?
+                                    <Button type="button" variant='secondary' disabled className="w-full cursor-pointer">
+                                        Creating <RefreshCcw className='animate-spin duration-150' />
+                                    </Button>
+                                    :
+                                    <Button type="submit" variant='secondary' className="w-full cursor-pointer">
+                                        Create Account
+                                    </Button>
+                                }
                             </div>
                             <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
                                 <span className="relative z-10 px-2 text-muted-foreground bg-[#272322]">

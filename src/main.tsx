@@ -14,7 +14,11 @@ const PurchasePlan = React.lazy(() => import('./pages/PurchasePlan'));
 const FAQs = React.lazy(() => import('./pages/FAQs'));
 const Login = React.lazy(() => import('./pages/Login'));
 const Signup = React.lazy(() => import('./pages/Signup'));
+const PaymentSuccessPage = React.lazy(() => import('./pages/PaymentSuccessPage'));
+const PaymentErrorPage = React.lazy(() => import('./pages/PaymentErrorPage'));
 const NavigateBack = React.lazy(() => import('./components/NavigateBack'));
+const GoogleRedirect = React.lazy(() => import('./components/GoogleRedirect'));
+const DiscordRedirect = React.lazy(() => import('./components/DiscordRedirect'));
 
 const queryClient = new QueryClient()
 
@@ -104,6 +108,38 @@ const router = createBrowserRouter([
                     <NavigateBack />
                     <Signup />
                 </div>
+            </React.Suspense>
+        )
+    },
+    {
+        path: '/auth/google/callback',
+        element: (
+            <React.Suspense fallback={<div></div>}>
+                <GoogleRedirect />
+            </React.Suspense>
+        )
+    },
+    {
+        path: '/auth/discord/callback',
+        element: (
+            <React.Suspense fallback={<div></div>}>
+                <DiscordRedirect />
+            </React.Suspense>
+        )
+    },
+    {
+        path: '/payment-success',
+        element: (
+            <React.Suspense fallback={<div></div>}>
+                <PaymentSuccessPage />
+            </React.Suspense>
+        )
+    },
+    {
+        path: '/payment-cancel',
+        element: (
+            <React.Suspense fallback={<div></div>}>
+                <PaymentErrorPage />
             </React.Suspense>
         )
     },
