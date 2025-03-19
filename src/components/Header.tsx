@@ -13,15 +13,15 @@ function Header() {
                             </TooltipTrigger>
                             <TooltipContent className='bg-black z-[201]'>Open Sidebar</TooltipContent>
                         </Tooltip>
-                    </TooltipProvider>
-                    <Link to="/" className='flex justify-center items-center'>
-                        <img src="/logo.png" alt="logo" width={35} height={38} className='h-auto' />
-                        <span className="text-white">ASTRA LABS</span>
-                    </Link> */}
-                    {/* Logo */}
-                    <Link to="/" className="bg-white/10 px-4 py-2 rounded-md">
-                        <span className="text-lg font-bold text-white">ASTRA LABS</span>
+                    </TooltipProvider> */}
+                    <Link to="/" className='group-data-[sidebaropen=true]:hidden flex justify-center items-center'>
+                        {/* <img src="/logo.png" alt="logo" width={35} height={38} className='h-auto' /> */}
+                        <span className="text-white text-[20px]">ASTRA LABS</span>
                     </Link>
+                    {/* Logo */}
+                    {/* <Link to="/" className="bg-white/10 px-4 py-2 rounded-md">
+                        <span className="text-lg font-bold text-white">ASTRA LABS</span>
+                    </Link> */}
                 </div>
 
                 {/* Navigation Links */}
@@ -45,13 +45,15 @@ function Header() {
 
                 {/* Auth Buttons */}
                 <div className="flex items-center space-x-2 w-48 justify-end">
-                    <Link to="/login" className="px-4 inline-block text-[15px] text-white hover:text-gray-300">
+                    <img src="/dummy.jpg" alt="user image" height={35} width={35} className='rounded-full' />
+
+                    {/* <Link to="/login" className="px-4 inline-block text-[15px] text-white hover:text-gray-300">
                         LOG IN
                     </Link>
 
                     <Link to="/sign-up" className="px-4 inline-block text-[15px] text-white hover:text-gray-300">
                         SIGN UP
-                    </Link>
+                    </Link> */}
                 </div>
             </nav>
         </header>

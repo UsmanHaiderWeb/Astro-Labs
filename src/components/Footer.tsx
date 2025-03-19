@@ -7,7 +7,7 @@ function Footer() {
     return (
         <>
             {/* Social Links */}
-            <div className="group-data-[sidebaropen=true]:w-[calc(100%-280px)] group-data-[sidebaropen=false]:w-full fixed bottom-0 z-[100] flex items-center justify-center space-x-8 py-5 px-10 bg-[url('/smallBg.PNG')] bg-repeat">
+            <div className="grou-data-[sidebaropen=true]:w-[calc(100%-280px)] group-dat-[sidebaropen=false]:w-full flex items-center justify-center space-x-8 h-[60px] px-10">
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger>

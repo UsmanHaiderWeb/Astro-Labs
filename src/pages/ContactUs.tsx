@@ -1,15 +1,10 @@
 import * as React from 'react'
-import { Send, MapPin, Phone, Mail } from "lucide-react";
-
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { MapPin, Phone, Mail } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 function ContactUs() {
     return (
-        <div className="max-w-[1000px] md:w-full sm:w-[80%] mx-auto px-4 pt-5 pb-24">
+        <div className="max-w-[1200px] md:w-full sm:w-[80%] mx-auto px-4 pt-5 pb-24">
             <div className="flex justify-center md:flex-row flex-col gap-8">
                 {/* <div className="bg-grayBackground p-8 rounded-lg shadow-lg md:order-2 order-1 md:w-[53%]">
                     <h2 className="text-3xl font-heading mb-4">Get in Touch</h2>
@@ -39,41 +34,43 @@ function ContactUs() {
                         </Button>
                     </div>
                 </div> */}
-                <div className="space-y-5 md:order-1 order-2 md:w[47%] w-full">
+                <div className="space-y-7 md:order-1 order-2 md:w[47%] w-full">
                     <div>
-                        <h2 className="text-3xl leading-8 font-heading mt-8">Contact Information</h2>
-                        <p className="text-muted-foreground w-[80%] min-w-[300px] mt-3">
+                        <h2 className="text-3xl leading-8 font-heading mt-8 text-center">Contact Information</h2>
+                        <p className="text-muted-foreground w-[80%] mx-auto min-w-[300px] mt-3 text-center">
                             We&apos;re here to help and answer any questions you might have.
                         </p>
                     </div>
-                    <div className="flex flex-wrap gap-4">
+                    <div className="grid lg:grid-cols-3 gap-4">
                         <Card className='bg-grayBackground border-none outline-none text-foreground flex-grow'>
                             <CardContent className="flex items-center space-x-4">
-                                <Mail className="h-6 w-6 text-purple" />
+                                <Mail className="h-6 w-6" />
                                 <div>
                                     <h3 className="font-heading text-lg">Email Us</h3>
-                                    <p className="text-muted-foreground cursor-pointer">info@company.com</p>
-                                    <p className="text-muted-foreground text-sm mt-0.5">support@company.com</p>
+                                    <a href='info@astralabs.ai' className="text-muted-foreground cursor-pointer">info@astralabs.ai</a>
+                                    <p className="text-muted-foreground text-sm mt-0.5">
+                                        For any inquiries
+                                    </p>
                                 </div>
                             </CardContent>
                         </Card>
                         <Card className='bg-grayBackground border-none outline-none text-foreground flex-grow'>
                             <CardContent className="flex items-center space-x-4">
-                                <Phone className="h-6 w-6 text-purple" />
+                                <Phone className="h-6 w-6" />
                                 <div>
                                     <h3 className="font-heading text-lg">Call Us</h3>
-                                    <p className="text-muted-foreground cursor-pointer">+1 (555) 123-4567</p>
-                                    <p className="text-muted-foreground text-sm mt-0.5">Mon-Fri 9am-6pm</p>
+                                    <p className="text-muted-foreground cursor-pointer">+1 (302) 405-6369</p>
+                                    <p className="text-muted-foreground text-sm mt-0.5">Mon-Fri 10am-3pm</p>
                                 </div>
                             </CardContent>
                         </Card>
                         <Card className='bg-grayBackground border-none outline-none text-foreground flex-grow'>
                             <CardContent className="flex items-center space-x-4">
-                                <MapPin className="h-6 w-6 text-purple" />
+                                <MapPin className="h-6 w-6" />
                                 <div>
-                                    <h3 className="font-heading text-lg">Visit Us</h3>
-                                    <p className="text-muted-foreground">123 Business Street</p>
-                                    <p className="text-muted-foreground text-sm mt-0.5">New York, NY 10001</p>
+                                    <h3 className="font-heading text-lg">Location</h3>
+                                    <p className="text-muted-foreground">131 Continental Dr, Suite 305</p>
+                                    <p className="text-muted-foreground text-sm mt-0.5">Newark, DE 19713</p>
                                 </div>
                             </CardContent>
                         </Card>

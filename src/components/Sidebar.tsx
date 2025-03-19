@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip'
 import { X } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Separator } from './ui/separator'
 
 const playlists = [
     "Recently Added",
@@ -28,10 +29,10 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
     return (
         <div className={cn("bg-grayBackground h-full min-h-screen", className)}>
             <div className="relative">
-                <div className='flex justify-between items-center pb-2 pt-6 px-4 sticky z-[10] top-0 left-0 bg-grayBackground'>
-                    <Link to="/" className='flex justify-center items-center'>
-                        {/* <img src="/logo.png" alt="logo" width={35} height={38} className='h-auto' /> */}
-                        <span className="text-white">ASTRA LABS</span>
+                <div className='flex justify-center items-center pt-5 pb-4 px-4 sticky z-[10] top-0 left-0 bg-grayBackground'>
+                    <Link to="/" className='w-full flex items-center'>
+                        {/* <img src="/logo.png" alt="logo" width={32} height={35} className='h-auto' /> */}
+                        <span className="text-white text-[18px] text-center w-full">ASTRA LABS</span>
                     </Link>
                     <TooltipProvider>
                         <Tooltip>
@@ -42,65 +43,11 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
                         </Tooltip>
                     </TooltipProvider>
                 </div>
-                <div className="pl-2 pr-4 pb-3">
-                    <div className="space-y-1">
-                        <Button variant="secondary" className="sideBtn">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="mr-2 h-4 w-4"
-                            >
-                                <rect width="7" height="7" x="3" y="3" rx="1" />
-                                <rect width="7" height="7" x="14" y="3" rx="1" />
-                                <rect width="7" height="7" x="14" y="14" rx="1" />
-                                <rect width="7" height="7" x="3" y="14" rx="1" />
-                            </svg>
-                            Explore
-                        </Button>
-                        {/* <Button variant="secondary" className="sideBtn">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="mr-2 h-4 w-4"
-                            >
-                                <circle cx="12" cy="12" r="10" />
-                                <polygon points="10 8 16 12 10 16 10 8" />
-                            </svg>
-                            Youtube
-                        </Button>
-                        <Button variant="secondary" className="sideBtn">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="mr-2 h-4 w-4"
-                            >
-                                <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9" />
-                                <path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5" />
-                                <circle cx="12" cy="12" r="2" />
-                                <path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5" />
-                                <path d="M19.1 4.9C23 8.8 23 15.1 19.1 19" />
-                            </svg>
-                            Radio
-                        </Button> */}
-                    </div>
+                <div className='w-[98%] mx-auto opacity-35'>
+                    <Separator />
                 </div>
-                <div className="pl-2 pr-4 py-3">
-                    <h2 className="mb-2 px-2 text-lg font-semibold tracking-tight">Tools</h2>
+                <div className="pl-2.5 pr-2.5 py-3">
+                    <h2 className="text-lg font-semibold tracking-tight">Tools</h2>
                     <div className="space-y-1">
                         {/* <Button variant="secondary" className="sideBtn">
                             <svg

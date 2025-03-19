@@ -102,7 +102,7 @@ const Explore = () => {
                 {/* Left Panel */}
                 <div className="lg:col-span-2 group-data-[sidebaropen=true]:lg:col-span-3 bg-[#1a1a1a] rounded-xl overflow-hidden flex items-start flex-col">
                     <div className='flex flex-grow justify-between w-full max-h-[420x] h-full'>
-                        <Tabs defaultValue={tab} onValueChange={(val: 'youtube' | 'audio') => setTab(val)} className="w-full flex-grow">
+                        <Tabs defaultValue={tab} onValueChange={(val: 'youtube' | 'audio') => setTab(val)} className="w-full flex-grow group">
                             <div className="px-4 pt-4 flex-shrink-0">
                                 <TabsList className="w-full bg-transparent grid grid-cols-2 gap-2">
                                     <TabsTrigger
@@ -121,7 +121,7 @@ const Explore = () => {
                             </div>
                             <div className="p-4 flex-grow flex items-center flex-col justify-between">
                                 <div className='w-full'>
-                                    <TabsContent value="youtube" className="m-0">
+                                    <div data-selectedtabaicover={tab} className="data-[selectedtabaicover=youtube]:block data-[selectedtabaicover=audio]:hidden m-0">
                                         <YouTubeSection
                                             url={youtubeUrl}
                                             setUrl={setYoutubeUrl}
@@ -131,8 +131,8 @@ const Explore = () => {
                                             setPitch={setYoutubePitch}
                                             duration={youtubeDuration}
                                         />
-                                    </TabsContent>
-                                    <TabsContent value="audio" className="m-0">
+                                    </div>
+                                    <div data-selectedtabaicover={tab} className="data-[selectedtabaicover=audio]:block data-[selectedtabaicover=youtube]:hidden m-0">
                                         <AudioSection
                                             selectedVoices={audioSelectedVoices}
                                             setSelectedVoices={setAudioSelectedVoices}
@@ -140,7 +140,7 @@ const Explore = () => {
                                             setPitch={setAudioPitch}
                                             onFileUpload={handleFileUpload}
                                         />
-                                    </TabsContent>
+                                    </div>
                                 </div>
                                 <div className='mt-3 w-full'>
                                     <Button

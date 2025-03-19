@@ -27,15 +27,19 @@ const App = () => {
     }, [pathname])
 
     return (
-        <main data-sidebaropen={openSidebar ? 'true' : 'false'} className="min-h-screen flex justify-between relative group">
-            <div className='group-data-[sidebaropen=true]:w-[280px] group-data-[sidebaropen=false]:w-0 duration-200 h-screen sticky z-[200] top-0 left-0 overflow-hidden'>
-                <ScrollArea className="w-full min-w-[280px] h-full overflow-auto">
+        <main data-sidebaropen={openSidebar ? 'true' : 'false'} className="h-screen flex justify-between relative group overflow-hidden">
+            <div className='group-data-[sidebaropen=true]:w-[230px] group-data-[sidebaropen=false]:w-0 duration-200 h-screen sticky z-[200] top-0 left-0 overflow-hidden'>
+                <ScrollArea className="w-full min-w-[230px] h-full overflow-auto">
                     <Sidebar setOpenSidebar={setOpenSidebar} />
                 </ScrollArea>
             </div>
-            <div className="flex-grow min-h-screen flex flex-col">
-                <Header />
-                <Outlet />
+            <div className="flex-grow h-screen flex flex-col overflow-hidden">
+                <div className="w-full flex-grow overflow-auto flex flex-col" autoFocus>
+                    <Header />
+                    <div className="flex justify-center items-center flex-grow">
+                        <Outlet />
+                    </div>
+                </div>
                 <Footer />
             </div>
         </main>

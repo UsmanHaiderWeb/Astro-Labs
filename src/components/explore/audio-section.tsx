@@ -128,17 +128,24 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                                     {voiceModels.map((voice) => (
                                         <CommandItem
                                             key={voice.id}
-                                            onSelect={() => {
+                                            onSelect={(value: string) => {
                                                 if (!fileName) {
                                                     setOpen(false)
                                                     setShowErrorAboutAudio('Please first choose a valid Audio file.')
                                                     return
                                                 }
-                                                const newSelected = selectedVoices.includes(voice.name)
-                                                    ? selectedVoices.filter((name) => name !== voice.name)
-                                                    : [...selectedVoices, voice.name]
-                                                setSelectedVoices(newSelected)
-                                            }}
+                                                if(selectedVoices.length == 2 && !selectedVoices.includes(value)) {
+                                                    setOpen(false)
+                                                    setShowErrorAboutAudio('You can only choose two models.')
+                                                    return
+                                                } else {
+                                                    const newSelected = selectedVoices.includes(voice.name)
+                                                        ? selectedVoices.filter((name) => name !== voice.name)
+                                                        : [...selectedVoices, voice.name]
+                                                        setSelectedVoices(newSelected)
+                                                        setShowErrorAboutAudio('')
+                                                    }
+                                                }}
                                             className="text-white cursor-pointer"
                                         >
                                             <Check
@@ -155,7 +162,7 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                         </Command>
                     </PopoverContent>
                 </Popover>
-                {(fileName) ? null :
+                {showErrorAboutAudio &&
                     <p className="text-sm text-destructive/70 mt-1">{showErrorAboutAudio}</p>
                 }
             </div>

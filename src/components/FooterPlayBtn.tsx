@@ -17,7 +17,7 @@ const FooterPlayBtn = () => {
     const [currentAudio, setCurrentAudio] = React.useState<number>(0);
 
     return (
-        <div className="fixed bottom-0.5 right-5 z-[101]">
+        <div className="fixed bottom-0 right-5 z-[101]">
             <TooltipProvider>
                 <Tooltip>
                     <TooltipTrigger>

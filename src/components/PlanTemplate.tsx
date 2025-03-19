@@ -33,13 +33,13 @@ const PlanTemplate = ({ plan }: { plan: PlanInterface }) => {
         <div key={plan?.name} className="bg-[#1a1a1a] rounded-xl overflow-hidden relative flex flex-col">
             {plan?.name === "Basic" && <Badge className="absolute top-0 right-0 bg-white/90 text-black hover:bg-white/80">Most Popular</Badge>}
             {plan?.name === "Pro" && <Badge className="absolute top-0 right-0 bg-white/90 text-black hover:bg-white/80">Best Value</Badge>}
-            <div className="relative p-6 flex flex-col items-center text-center border-b border-white/10">
+            <div className="relative px-6 py-5 flex flex-col items-center text-center border-b border-white/10">
                 {(plan?.name === "Basic" || plan?.name === "Pro") &&
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 opacity-20" />
                 }
-                <h2 className="text-2xl font-bold text-white mb-2">{plan?.name}</h2>
+                <h2 className="text-[19px] font-bold text-white mb-2">{plan?.name}</h2>
                 <div className="flex items-baseline">
-                    <span className="text-4xl font-bold text-white">${plan.price}</span>
+                    <span className="text-3xl font-bold text-white">${plan.price}</span>
                     <span className="text-sm text-white/60 ml-1">/month</span>
                 </div>
             </div>
@@ -48,7 +48,7 @@ const PlanTemplate = ({ plan }: { plan: PlanInterface }) => {
                     {plan?.features?.map(feature => (
                         <li key={feature} className="flex items-start gap-2">
                             <Check className="w-5 h-5 text-white mt-0.5" />
-                            <span className="text-white">{feature}</span>
+                            <span className="text-white text-sm">{feature}</span>
                         </li>
                     ))}
                 </ul>
@@ -60,8 +60,8 @@ const PlanTemplate = ({ plan }: { plan: PlanInterface }) => {
                     </Link>
                     : <>
                         {isPending ?
-                            <div className='w-full'>
-                                <Button size="lg" className="w-full text-white" style={{ background: "linear-gradient(to right, #4F46E5, #7C3AED, #DB2777)" }}>
+                            <div className='w-full cursor-not-allowed'>
+                                <Button size="lg" disabled className="w-full text-white cursor-not-allowed" style={{ background: "linear-gradient(to right, #4F46E5, #7C3AED, #DB2777)" }}>
                                     <RefreshCcw className='animate-spin duration-150' />
                                 </Button>
                             </div>

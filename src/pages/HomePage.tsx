@@ -22,7 +22,7 @@ const HomePage = () => {
 
     return (
         <div className="flex-1 flex items-center justify-center space-y-4 px-4">
-            <div className="flex flex-col items-center justify-center -mt-20">
+            <div className="flex flex-col items-center justify-center">
                 {/* Center Logo */}
                 <div className="h-[100px] flex items-center justify-center">
                     <img
@@ -43,7 +43,7 @@ const HomePage = () => {
                 </div>
 
                 <Link to='/sign-up'>
-                    <Button variant="secondary" size="sm" className="rounded-full px-7 h-11">Get Started for Free</Button>
+                    <Button variant="secondary" size="sm" className="rounded-full px-7 h-11">Explore AI Cover</Button>
                 </Link>
             </div>
         </div>
@@ -51,3 +51,4 @@ const HomePage = () => {
 }
 
 export default React.memo(HomePage)
+// Get Started for Free
