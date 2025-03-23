@@ -29,13 +29,13 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                         <div className="space-y-4">
                             <div className="space-y-1">
                                 <Label className="text-white text-sm">Pitch Method:</Label>
-                                <Select defaultValue="rmvpe" value={advanceSettings?.pitchMethod} onValueChange={val => updateAdvanceSetting('pitchMethod', val)}>
-                                    <SelectTrigger className="bg-black border-white/10 h-8 text-sm">
+                                <Select defaultValue={advanceSettings?.pitchMethod} onValueChange={val => updateAdvanceSetting('pitchMethod', val)}>
+                                    <SelectTrigger className="bg-black border-white/10 h-8 text-sm text-white w-[160px]">
                                         <SelectValue placeholder="rmvpe" />
                                     </SelectTrigger>
-                                    <SelectContent className="bg-black border-white/10">
-                                        <SelectItem value="rmvpe" className="text-white">rmvpe (default)</SelectItem>
-                                        <SelectItem value="mangio-crepe" className="text-white">mangio-crepe</SelectItem>
+                                    <SelectContent className="bg-black border-white/10 text-white z-[301]">
+                                        <SelectItem value="rmvpe" className="text-white text-sm">rmvpe (default)</SelectItem>
+                                        <SelectItem value="mangio-crepe" className="text-white text-sm">mangio-crepe</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 <p className="text-xs text-gray-400">
@@ -113,12 +113,12 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                             <div className="space-y-1">
                                 <Label className="text-white text-sm">Apply AI on Background Vocals:</Label>
                                 <Select value={advanceSettings?.applyAIOnBackground} onValueChange={val => updateAdvanceSetting('applyAIOnBackground', val)}>
-                                    <SelectTrigger className="bg-black border-white/10 h-8 text-sm">
+                                    <SelectTrigger className="bg-black border-white/10 h-8 text-sm text-white w-[150px]">
                                         <SelectValue placeholder="false" />
                                     </SelectTrigger>
-                                    <SelectContent className="bg-black border-white/10">
-                                        <SelectItem value="false" className="text-white">False (default)</SelectItem>
-                                        <SelectItem value="true" className="text-white">True</SelectItem>
+                                    <SelectContent className="bg-black border-white/10 text-white z-[301]">
+                                        <SelectItem value="false" className="text-white text-sm">False (default)</SelectItem>
+                                        <SelectItem value="true" className="text-white text-sm">True</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 <p className="text-xs text-gray-400">

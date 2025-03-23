@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DiscordVerificationCallBackCall } from '@/lib/AxiosCalls';
 import useSearchParamsObject from '@/lib/GetSearchParams'
+import { setToken } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +12,7 @@ const DiscordRedirect = () => {
 	const searchParams: {code?: string} = useSearchParamsObject();
 	console.log("searchParams: ", searchParams)
 
-	const { data }: any = useQuery({
+	const { data, isError }: any = useQuery({
 		queryKey: ['send discord code to backend', searchParams?.code],
 		queryFn: () => DiscordVerificationCallBackCall({code: searchParams?.code}),
 		enabled: !!searchParams?.code,
@@ -21,10 +22,12 @@ const DiscordRedirect = () => {
 	React.useEffect(() => {
 		console.log('data: ', data);
 		if(data?.access_token){
-            localStorage.setItem("astraToken", data?.access_token)
+            setToken(data?.access_token)
             navigate('/', { replace: true });
+		} else if(isError){
+            navigate('/login?error=true', { replace: true });
 		}
-	}, [data])
+	}, [data, isError])
 
 	return (
 		<div></div>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap'); */
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
@@ -168,6 +168,11 @@
 	--primary: 0 0% 100%;
 }
 
+@font-face {
+	font-family: 'Rubik';
+	src: url('/Rubik-Bold.ttf');
+}
+
 * {
 	font-family: "Rubik", sans-serif;
 	font-optical-sizing: auto;
@@ -176,11 +181,16 @@
 }
 
 body {
-	background-image: url("https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-15%20114438-xdW5gpCafK8rv3vuw5cRtaToOAtctr.png");
+	background-image: url("/bg.png");
 	background-repeat: repeat;
 	background-position: top;
 	/* background-size: contain; */
 	color: hsl(var(--foreground));
+}
+
+*::-webkit-scrollbar {
+	background-color: transparent;
+	display: none;
 }
 
 .typewriter {
@@ -300,23 +310,47 @@ body {
 
 @keyframes hoveringBtnIcon {
 	0% {
-		transform: translate(0,0);
+		transform: translate(0, 0);
 		opacity: 1;
 	}
+
 	50% {
-		transform: translate(10,10);
+		transform: translate(10, 10);
 		opacity: 0;
 	}
+
 	51% {
-		transform: translate(-10,-10);
+		transform: translate(-10, -10);
 		opacity: 0;
 	}
+
 	100% {
-		transform: translate(0,0);
+		transform: translate(0, 0);
 		opacity: 1;
 	}
 }
 
-button, a, svg {
+@keyframes wave {
+	25% {
+		transform: skewY(25deg);
+	}
+
+	50% {
+		height: 100%;
+		margin-top: 0;
+	}
+
+	75% {
+		transform: skewY(-25deg);
+	}
+}
+
+button,
+a,
+svg {
 	cursor: pointer;
+}
+
+.sans {
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }

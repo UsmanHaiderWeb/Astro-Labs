@@ -152,6 +152,7 @@ const router = createBrowserRouter([
         )
     },
 ])
+// ], { basename: '/api' })
 
 createRoot(document.getElementById('root')!).render(
     <React.StrictMode>

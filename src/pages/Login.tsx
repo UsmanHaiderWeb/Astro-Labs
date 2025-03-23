@@ -14,6 +14,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { AxiosError } from 'axios'
 import FormFieldError from '@/components/FormFieldError'
 import { RefreshCcw } from 'lucide-react'
+import { setToken } from '@/lib/utils'
 
 function Login() {
     const navigate = useNavigate();
@@ -34,7 +35,7 @@ function Login() {
             console.log("signup error: ", error);
         },
         onSuccess: (data: { access_token: string }) => {
-            localStorage.setItem("astraToken", data.access_token)
+            setToken(data.access_token)
             navigate('/', { replace: true });
         }
     })

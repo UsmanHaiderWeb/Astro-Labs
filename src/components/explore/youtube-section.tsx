@@ -10,14 +10,12 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
+import voicesData from "@/lib/voices.json"
 
-const voiceModels = [
-    { id: "1", name: "Voice Model 1" },
-    { id: "2", name: "Voice Model 2" },
-    { id: "3", name: "Voice Model 3" },
-    { id: "4", name: "Voice Model 4" },
-    { id: "5", name: "Voice Model 5" },
-]
+const voiceModels = voicesData.voices.map((voice, index) => ({
+    id: (index + 1).toString(),
+    name: voice.name
+}))
 
 interface YouTubeSectionProps {
     url: string
@@ -74,31 +72,35 @@ export function YouTubeSection({
                                     {voiceModels.map((voice) => (
                                         <CommandItem
                                             key={voice.id}
+                                            value={voice.name}
                                             onSelect={(value: string) => {
                                                 if (!url || !duration) {
                                                     setOpen(false)
                                                     setShowErrorAboutUrl('Please first enter a valid YouTube link.')
                                                     return
                                                 }
+                                                console.log("selectedVoices: ", selectedVoices)
                                                 if(selectedVoices.length == 2 && !selectedVoices.includes(value)) {
                                                     setOpen(false)
                                                     setShowErrorAboutUrl('You can only choose two models.')
                                                     return
                                                 } else {
-                                                    const newSelected = selectedVoices.includes(voice.id)
-                                                        ? selectedVoices.filter((id) => id !== voice.id)
+                                                    const newSelected = selectedVoices.includes(voice?.name)
+                                                        ? selectedVoices.filter((id) => id !== voice?.name)
                                                         : selectedVoices.length < 5
-                                                            ? [...selectedVoices, voice.id]
+                                                            ? [...selectedVoices, voice?.name]
                                                             : selectedVoices
                                                     setSelectedVoices(newSelected)
                                                 }
                                             }}
-                                            className="text-white cursor-pointer"
+                                            className="w-full text-white cursor-pointer flex"
                                         >
                                             <Check
-                                                className={cn("mr-2 h-4 w-4", selectedVoices.includes(voice.id) ? "opacity-100" : "opacity-0")}
+                                                className={cn("mr-2 h-4 w-4", selectedVoices.includes(voice?.name) ? "opacity-100" : "opacity-0")}
                                             />
-                                            {voice.name}
+                                            <span className="text-ellipsis whitespace-nowrap overflow-hidden">
+                                                {voice.name}
+                                            </span>
                                         </CommandItem>
                                     ))}
                                 </CommandGroup>

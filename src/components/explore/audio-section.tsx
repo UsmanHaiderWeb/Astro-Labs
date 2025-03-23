@@ -10,14 +10,12 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
+import voicesData from "@/lib/voices.json"
 
-const voiceModels = [
-    { id: "1", name: "Cover" },
-    { id: "2", name: "Main Vocals" },
-    { id: "3", name: "Background Vocals" },
-    { id: "4", name: "Instrumentals" },
-    { id: "5", name: "Harmony" },
-]
+const voiceModels = voicesData.voices.map((voice, index) => ({
+    id: (index + 1).toString(),
+    name: voice.name
+}))
 
 interface AudioSectionProps {
     selectedVoices: string[]
@@ -25,15 +23,18 @@ interface AudioSectionProps {
     pitch: number
     setPitch: (pitch: number) => void
     onFileUpload: (file: File) => void
+    isPending: boolean
 }
 
-function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFileUpload }: AudioSectionProps) {
+function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFileUpload, isPending }: AudioSectionProps) {
     const [open, setOpen] = useState(false)
     const [fileName, setFileName] = useState<string | null>(null)
     const fileInputRef = useRef<HTMLInputElement>(null)
     const dropRef = React.useRef<HTMLDivElement>(null)
     const [isDragging, setIsDragging] = React.useState(false);
     const [showErrorAboutAudio, setShowErrorAboutAudio] = React.useState<string>(null)
+
+    const isGenerating = localStorage.getItem('isGenerating');
 
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,8 +89,9 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                 <Label className="text-white/60 uppercase text-xs">Upload Audio</Label>
                 <div
                     ref={dropRef}
+                    data-disabled={isGenerating?.toLocaleLowerCase() == 'pending' || isPending}
                     className={cn(
-                        "border border-dashed rounded-lg p-3 text-center transition-colors cursor-pointer",
+                        "border border-dashed rounded-lg p-3 text-center transition-colors cursor-pointer data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
                         isDragging ? "border-white/40" : "border-white/10"
                     )}
                     onDragOver={handleDragOver}
@@ -115,6 +117,7 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                             role="combobox"
                             aria-expanded={open}
                             className="w-full justify-between bg-black/50 border-none text-white hover:bg-black/50 hover:text-white h-8 cursor-pointer"
+                            disabled={isGenerating?.toLocaleLowerCase() == 'pending' || isPending}
                         >
                             {selectedVoices.length === 0 ? "Select Voice Models" : `${selectedVoices.length} selected`}
                         </Button>
@@ -146,7 +149,7 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                                                         setShowErrorAboutAudio('')
                                                     }
                                                 }}
-                                            className="text-white cursor-pointer"
+                                            className="text-white cursor-pointer flex"
                                         >
                                             <Check
                                                 className={cn(
@@ -154,7 +157,9 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                                                     selectedVoices.includes(voice.name) ? "opacity-100" : "opacity-0",
                                                 )}
                                             />
-                                            {voice.name}
+                                            <span className="text-ellipsis whitespace-nowrap overflow-hidden">
+                                                {voice.name}
+                                            </span>
                                         </CommandItem>
                                     ))}
                                 </CommandGroup>
@@ -169,7 +174,9 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
 
             <div>
                 <Label className="text-white/60 uppercase text-xs">Pitch</Label>
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-4 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50"
+                    data-disabled={isGenerating?.toLocaleLowerCase() == 'pending' || isPending}
+                >
                     <Slider
                         value={[pitch]}
                         onValueChange={([value]) => setPitch(value)}

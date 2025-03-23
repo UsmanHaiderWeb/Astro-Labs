@@ -13,9 +13,9 @@ const ResultantAudio = ({ id, name, src }: { id: number, name: string, src: stri
 
     return (
         <div className="bg-black/50 rounded-lg p-3">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                    <Button size="icon" variant="ghost" className="text-white h-8 w-8" onClick={() => {
+            <div className="w-full flex items-center justify-between overflow-hidden">
+                <div className="w-full flex-shrink flex items-center space-x-3">
+                    <Button size="icon" variant="ghost" className="flex-shrink-0 text-white h-8 w-8" onClick={() => {
                         if(audio.current?.readyState < 2) return;
                         if (playAudio) {
                             audio.current?.pause()
@@ -30,12 +30,17 @@ const ResultantAudio = ({ id, name, src }: { id: number, name: string, src: stri
                             <Play className="h-4 w-4" />
                         }
                     </Button>
-                    <div>
-                        <h3 className="text-white text-sm">{name}</h3>
-                        <p className="text-white/60 text-xs">{audio.current?.currentTime && formatTime(audio.current?.currentTime)} / {audio.current?.duration && formatTime(audio.current?.duration)}</p>
+                    <div className='flex-grow'>
+                        <h3 className="text-white text-sm line-clamp-1">{name.replace('Download Link', '')}</h3>
+                        <p className="text-white/60 text-xs">{audio.current?.currentTime ? formatTime(audio.current?.currentTime) : '0.00'} / {audio.current?.duration ? formatTime(audio.current?.duration) : '0.00'}</p>
                     </div>
                 </div>
-                <Button size="icon" variant="ghost" className="text-white h-8 w-8">
+                <Button size="icon" variant="ghost" className="flex-grow text-white h-8 w-8" onClick={() => {
+                    const link = document.createElement('a');
+                    link.href = src;
+                    link.download = name;
+                    link.click();
+                }}>
                     <Download className="h-4 w-4" />
                 </Button>
             </div>

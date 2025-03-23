@@ -6,38 +6,38 @@ import { X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Separator } from './ui/separator'
 
-const playlists = [
-    "Recently Added",
-    "Recently Played",
-    "Top Songs",
-    "Top Albums",
-    "Top Artists",
-    "Logic Discography",
-    "Bedtime Beats",
-    "Feeling Happy",
-    "I miss Y2K Pop",
-    "Runtober",
-    "Mellow Days",
-    "Eminem Essentials",
-]
+// const playlists = [
+//     "Recently Added",
+//     "Recently Played",
+//     "Top Songs",
+//     "Top Albums",
+//     "Top Artists",
+//     "Logic Discography",
+//     "Bedtime Beats",
+//     "Feeling Happy",
+//     "I miss Y2K Pop",
+//     "Runtober",
+//     "Mellow Days",
+//     "Eminem Essentials",
+// ]
 
-interface SideBarProps extends React.HTMLAttributes<HTMLDivElement> {
-    setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>
-}
+// interface SideBarProps extends React.HTMLAttributes<HTMLDivElement> {
+//     setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>
+// }
 
-function Sidebar({ className, setOpenSidebar }: SideBarProps) {
+function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
     return (
         <div className={cn("bg-grayBackground h-full min-h-screen", className)}>
             <div className="relative">
-                <div className='flex justify-center items-center pt-5 pb-4 px-4 sticky z-[10] top-0 left-0 bg-grayBackground'>
-                    <Link to="/" className='w-full flex items-center'>
-                        {/* <img src="/logo.png" alt="logo" width={32} height={35} className='h-auto' /> */}
-                        <span className="text-white text-[18px] text-center w-full">ASTRA LABS</span>
+                <div className='flex justify-center items-center pt-[21px] pb-4 px-4 sticky z-[10] top-0 left-0 bg-grayBackground'>
+                    <Link to="/" className='flex justify-center items-center'>
+                        {/* <img src="/logo.png" alt="logo" width={35} height={38} className='h-auto' /> */}
+                        <span className="text-white text-[16px]">ASTRA LABS</span>
                     </Link>
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger>
-                                <X onClick={() => setOpenSidebar(false)} className='cursor-pointer md:hidden' />
+                                <X className='cursor-pointer md:hidden' />
                             </TooltipTrigger>
                             <TooltipContent className='bg-black z-[201]'>Close Sidebar</TooltipContent>
                         </Tooltip>
@@ -47,7 +47,7 @@ function Sidebar({ className, setOpenSidebar }: SideBarProps) {
                     <Separator />
                 </div>
                 <div className="pl-2.5 pr-2.5 py-3">
-                    <h2 className="text-lg font-semibold tracking-tight">Tools</h2>
+                    <h2 className="text-[17px] font-semibold tracking-tight">Tools</h2>
                     <div className="space-y-1">
                         {/* <Button variant="secondary" className="sideBtn">
                             <svg

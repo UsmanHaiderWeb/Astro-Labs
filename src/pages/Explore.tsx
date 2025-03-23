@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { YouTubeSection } from "@/components/explore/youtube-section"
 import AudioSection from "@/components/explore/audio-section"
 import ResultSection from "@/components/explore/result-section"
@@ -10,8 +10,11 @@ import { Button } from '@/components/ui/button'
 import { AdvancedSettings } from '@/components/explore/advanced-settings'
 import axios, { AxiosError } from 'axios'
 import DawSection from '@/components/explore/daw-section'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { generateAudioCall } from '@/lib/AxiosCalls'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { toast } from 'sonner'
+import { showToast } from '@/lib/ShowToast'
 
 const Explore = () => {
     const [audioSelectedVoices, setAudioSelectedVoices] = React.useState<string[]>([])
@@ -28,10 +31,19 @@ const Explore = () => {
     const [audioFile, setAudioFile] = React.useState<File | null>(null)
     const [voiceSelections, setVoiceSelections] = React.useState<VoiceSelection[]>([])
     const [showAdvanced, setShowAdvanced] = React.useState(false)
+    const [isAdvanceSettingsUpdate, setIsAdvanceSettingsUpdate] = React.useState<boolean>(false)
     const [advanceSettings, setAdvanceSettings] = React.useState<AdvanceSettingsInterface>(AdvancedSettingsDefaultData)
     const [audioDuration, setAudioDuration] = React.useState(0) // Update 1: Initial duration set to 0
     const [youtubeDuration, setYoutubeDuration] = React.useState(0) // Update 1: Initial duration set to 0
     // const [audioUrl, setAudioUrl] = React.useState<string | null>(null)
+
+    const queryClient = useQueryClient();
+    const [isGenerating, setIsGenerating] = React.useState<'pending' | 'failed' | 'done'>(null); // Update 1: Initial duration set to 0
+    const isGeneratingLocal = localStorage.getItem('isGenerating') as 'pending' | 'failed' | 'done';
+
+    React.useEffect(() => {
+        if (isGeneratingLocal) setIsGenerating(isGeneratingLocal);
+    }, [])
 
     React.useEffect(() => {
         if (audioFile) {
@@ -48,16 +60,34 @@ const Explore = () => {
         }
     }, [audioFile])
 
-    const { mutate, data, isPending } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationKey: ['generate audios', (tab ? audioFile : youtubeUrl)],
         mutationFn: generateAudioCall,
         onError: (error: AxiosError<{ detail: string }>) => {
             console.log("generateAudio error: ", error);
+            localStorage.setItem('isGenerating', 'failed');
+            if(error.status == 401) return toast.error("Please login to generate audio.");
+            showToast("Something went wrong. Please try again.");
+            setIsGenerating('failed');
         },
-        onSuccess: () => {}
+        onSuccess: (data: { job_id: string, status: 'queued' | 'failed' }) => {
+            console.log("generateAudio success: ", data);
+            localStorage.setItem('job_id', data.job_id);
+            if (data.status == 'queued') {
+                localStorage.setItem('isGenerating', 'pending');
+                setIsGenerating('pending');
+            }
+
+            const queueSize = queryClient.getQueryData<{ queue_size: number }>(['queue-size']);
+            if (queueSize?.queue_size > 0) {
+                showToast("Please wait for the generation to complete until queue size becomes zero.")
+            }
+        }
     });
 
+
     const updateAdvanceSetting = (key: keyof AdvanceSettingsInterface, value: any) => {
+        setIsAdvanceSettingsUpdate(true);
         setAdvanceSettings(prev => ({ ...prev, [key]: value }))
     }
 
@@ -95,12 +125,65 @@ const Explore = () => {
         })();
     }, [youtubeUrl])
 
+    function handleGeneration(): any {
+        const token = localStorage.getItem('astraToken');
+        if (!token) return toast.error("Please login to generate audio.");
+
+        if ((tab === 'audio' ? !audioFile : !youtubeUrl) || isGenerating?.toLocaleLowerCase() == 'pending') return;
+
+        const task_type: 'regular' | 'file' | 'advanced' | 'advanced-file' | 'multiple' = (
+            tab == 'audio' ?
+                (isAdvanceSettingsUpdate ?
+                    'advanced-file' :
+                    (audioSelectedVoices?.length == 0 ? 'file' : 'multiple'))
+                : (isAdvanceSettingsUpdate ? 'advanced' : 'regular')
+        )
+
+        const voices: string | string[] = (
+            tab == 'audio' ? audioSelectedVoices?.length == 0 ? "Morgan Freeman RVC v2" : audioSelectedVoices
+                : youtubeSelectedVoices?.length == 0 ? "Morgan Freeman RVC v2" : youtubeSelectedVoices
+        )
+
+        localStorage.removeItem('job_id');
+        localStorage.removeItem('audioLinks');
+        localStorage.setItem('isGenerating', 'pending');
+        setIsGenerating('pending');
+
+        const formData: any = new FormData();
+        formData.append('task_type', task_type);
+        formData.append('voice', voices.toString());
+        formData.append('pitch', tab == 'youtube' ? youtubePitch.toString() : audioPitch.toString());
+
+        if (tab == 'youtube') formData.append('video_url', youtubeUrl);
+        if (tab == 'audio') formData.append('file', audioFile);
+        if (isAdvanceSettingsUpdate) formData.append('advance_settings', advanceSettings.toString());
+
+        if (voiceSelections.length > 0) {
+            formData.append('voice_one', voiceSelections[0].voice);
+            formData.append('pitch_one', tab == 'youtube' ? youtubePitch.toString() : audioPitch.toString());
+            formData.append('singer1_start', voiceSelections[0].range[0].toString());
+            formData.append('singer1_end', voiceSelections[0].range[1].toString());
+
+            if(voiceSelections.length == 1) return;
+
+            formData.append('voice_two', voiceSelections[1].voice);
+            formData.append('pitch_two', tab == 'youtube' ? youtubePitch.toString() : audioPitch.toString());
+            formData.append('singer2_start', voiceSelections[1].range[0].toString());
+            formData.append('singer2_end', voiceSelections[1].range[1].toString());
+        }
+
+        mutate({
+            token: localStorage.getItem('astraToken'),
+            formData
+        });
+    }
+
     return (
         <div className="flex-1 container mx-auto px-4 pt-6 pb-20 max-w-[1200px]">
             <h1 className='text-3xl mb-5 text-center'>AI Cover</h1>
-            <div className="grid grid-cols-1 lg:grid-cols-5 group-data-[sidebaropen=true]:lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-6 group-data-[sidebaropen=true]:lg:grid-cols-6 gap-4">
                 {/* Left Panel */}
-                <div className="lg:col-span-2 group-data-[sidebaropen=true]:lg:col-span-3 bg-[#1a1a1a] rounded-xl overflow-hidden flex items-start flex-col">
+                <div className="lg:col-span-3 group-data-[sidebaropen=true]:lg:col-span-3 bg-[#1a1a1a] rounded-xl overflow-hidden flex items-start flex-col">
                     <div className='flex flex-grow justify-between w-full max-h-[420x] h-full'>
                         <Tabs defaultValue={tab} onValueChange={(val: 'youtube' | 'audio') => setTab(val)} className="w-full flex-grow group">
                             <div className="px-4 pt-4 flex-shrink-0">
@@ -112,10 +195,11 @@ const Explore = () => {
                                         Audio File
                                     </TabsTrigger>
                                     <TabsTrigger
+                                        disabled
                                         value="youtube"
                                         className="py-3 data-[state=active]:bg-[#292929] bg-transparent text-white border-0 data-[state=active]:text-white rounded-sm cursor-pointer"
                                     >
-                                        YouTube
+                                        YouTube <sup className='sans tracking-wider'>Coming Soon</sup>
                                     </TabsTrigger>
                                 </TabsList>
                             </div>
@@ -130,6 +214,7 @@ const Explore = () => {
                                             pitch={youtubePitch}
                                             setPitch={setYoutubePitch}
                                             duration={youtubeDuration}
+                                        // isPending={isPending}
                                         />
                                     </div>
                                     <div data-selectedtabaicover={tab} className="data-[selectedtabaicover=audio]:block data-[selectedtabaicover=youtube]:hidden m-0">
@@ -139,6 +224,7 @@ const Explore = () => {
                                             pitch={audioPitch}
                                             setPitch={setAudioPitch}
                                             onFileUpload={handleFileUpload}
+                                            isPending={isPending}
                                         />
                                     </div>
                                 </div>
@@ -147,11 +233,44 @@ const Explore = () => {
                                         variant="link"
                                         className="text-white/60 p-0 h-auto text-xs uppercase hover:text-white cursor-pointer"
                                         onClick={() => setShowAdvanced(true)}
+                                        disabled={isGenerating?.toLocaleLowerCase() == 'pending' || isPending}
                                     >
                                         Advanced Settings
                                     </Button>
                                     <div className="pt-2">
-                                        <Button className="w-full bg-black hover:bg-black/80 text-white cursor-pointer" onClick={() => console.log("advanceSettings: ", advanceSettings)}>Convert</Button>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    className="w-full bg-black hover:bg-black/80 text-white cursor-pointer disabled:pointer-events-auto disabled:opacity-30"
+                                                    disabled={(tab === 'audio' ? !audioFile : !youtubeUrl) || isGenerating?.toLocaleLowerCase() == 'pending' || isPending}
+                                                    onClick={() => handleGeneration()}
+                                                >
+                                                    {(isPending || isGenerating?.toLocaleLowerCase() == 'pending') ? 'Generating' : 'Generate'}
+                                                </Button>
+                                            </TooltipTrigger>
+                                            {(() => {
+                                                if (isGenerating?.toLowerCase() === 'pending') {
+                                                    return (
+                                                        <TooltipContent className='bg-black text-white'>
+                                                            Please wait for the previous generation to complete
+                                                        </TooltipContent>
+                                                    );
+                                                }
+
+                                                if (!((tab === 'audio' ? audioFile : youtubeUrl))) {
+                                                    return (
+                                                        <TooltipContent className='bg-black text-white'>
+                                                            {tab === 'audio'
+                                                                ? "Please select an audio file"
+                                                                : "Please enter a YouTube URL"
+                                                            }
+                                                        </TooltipContent>
+                                                    );
+                                                }
+
+                                                return null;
+                                            })()}
+                                        </Tooltip>
                                     </div>
                                 </div>
                             </div>
@@ -174,7 +293,7 @@ const Explore = () => {
                         audioBuffer={audioBuffer}
                         audioFile={audioFile}
                     />
-                    <ResultSection />
+                    <ResultSection isPending={isPending} setIsGenerating={setIsGenerating} />
                 </div>
             </div>
         </div>

@@ -1,0 +1,20 @@
+{
+    "voices": [
+        {
+            "name": "Morgan Freeman RVC v2",
+            "model_url": "https://huggingface.co/CxronaBxndit/Morgan-Freeman/resolve/main/Morgan-Freeman.zip"
+        },
+        {
+            "name": "Squidward Tentacles, 1500 Epochs, RVC v2, rmvpe (Spongebob)",
+            "model_url": "https://huggingface.co/lepifort/squidwardRVC/resolve/main/squidward.zip"
+        },
+        {
+            "name": "Bella Poarch (RVC V2 300 Epochs MangioCrepe)",
+            "model_url": "https://huggingface.co/datasets/sleepyboyeyes/Bella/resolve/main/Bella.zip"
+        },
+        {
+            "name": "Boyfriend (Friday Night Funkin' Week 3)",
+            "model_url": "https://huggingface.co/DarkWeBareBears69/My-RVC-Voice-Models/resolve/main/boyfriendWeek3.zip?download=true"
+        }
+    ]
+}

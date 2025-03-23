@@ -17,11 +17,11 @@ const FooterPlayBtn = () => {
     const [currentAudio, setCurrentAudio] = React.useState<number>(0);
 
     return (
-        <div className="fixed bottom-0 right-5 z-[101]">
+        <div className="fixed bottom-1 right-5 z-[101] group-data-[authenticated=notauthorized]:hidden flex">
             <TooltipProvider>
                 <Tooltip>
                     <TooltipTrigger>
-                        <div data-footerplay={hovering ? 'true' : 'false'} className="relative w-12 h-12 rounded-full bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 group"
+                        <div data-footerplay={hovering ? 'true' : 'false'} className="relative w-11 h-11 rounded-full bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 group"
                             onMouseEnter={() => setHovering(true)}
                             onMouseLeave={() => setHovering(false)}
                             onClick={() => {

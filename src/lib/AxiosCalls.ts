@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: 'https://c4fd-116-90-118-31.ngrok-free.app'
+    baseURL: 'https://494b-39-49-21-74.ngrok-free.app'
 })
 
 export const SignupCall = async ({username, email, password}: {username: string, email: string, password: string}) => {
@@ -26,6 +26,20 @@ export const LoginCall = async ({email, password}: {email: string, password: str
     return data;
 }
 
+// user details
+
+export const fetchUserDetails = async (token: string) => {
+    const { data } = await api.get('/user/user-details',
+        {
+            headers: {
+                Authorization: `bearer ${token}`
+            },
+            withCredentials: true
+        }
+    )
+
+    return data;
+}
 // google
 
 export const ContinueWithGoogleCall = async () => {
@@ -88,9 +102,35 @@ export const FetchStripeUrlCall = async ({token, planId}: {token: string, planId
 
 // generate audios
 
-export const generateAudioCall = async ({token, planId}: {token: string, planId: 'pro' | 'premium'}) => {
-    const { data } = await api.post(`/payments/create-checkout-session`,
-        {role: planId},
+export const generateAudioCall = async ({token, formData}: {token: string, formData: FormData}) => {
+    const { data } = await api.post(`/gpu/cover`,
+        formData,
+        {
+            headers: {
+                Authorization: `bearer ${token}`,
+            },
+            withCredentials: true
+        },
+    )
+
+    return data;
+}
+
+export const getAudioLinksCall = async ({token, job_id}: {token: string, job_id: string}) => {
+    const { data } = await api.get(`/gpu/status/${job_id}`,
+        {
+            headers: {
+                Authorization: `bearer ${token}`
+            },
+            withCredentials: true
+        },
+    )
+
+    return data;
+}
+
+export const getQueueSizeCall = async ({token}: {token: string}) => {
+    const { data } = await api.get(`/gpu/queue-size`,
         {
             headers: {
                 Authorization: `bearer ${token}`
