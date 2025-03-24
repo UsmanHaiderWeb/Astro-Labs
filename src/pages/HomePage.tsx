@@ -44,7 +44,7 @@ const HomePage = () => {
                 </div>
                 <div className="group-data-[authenticated=notauthorized]:opacity-0 group-data-[authenticated=notauthorized]:pointer-events-none w-full flex justify-center">
                     <Link to='/explore' className='group-data-[authenticated=false]:hidden'>
-                        <Button variant="secondary" size="sm" className="rounded-full px-7 h-11">Explore AI Cover</Button>
+                        <Button variant="secondary" size="sm" className="rounded-full px-7 h-11">Get Started For Free</Button>
                     </Link>
                     <Link to='/sign-up' className='group-data-[authenticated=true]:hidden group-data-[authenticated=notauthorized]:opacity-0 group-data-[authenticated=notauthorized]:pointer-events-none group-data-[authenticated=notauthorized]:flex'>
                         <Button variant="secondary" size="sm" className="rounded-full px-7 h-11">Get Started For Free</Button>

@@ -67,8 +67,10 @@ const App = () => {
     React.useEffect(() => {
         if (!token) {
             setIsAuthenticated(false);
+            setIsLoaded(true);
         } else if (token && isAuthenticated != true && userData) {
-            setIsAuthenticated(true)
+            setIsAuthenticated(true);
+            setIsLoaded(true);
         };
     }, [userData, token])
 
@@ -83,11 +85,11 @@ const App = () => {
     }, [isError])
 
     return (<>
-        <div className={(isAuthenticated == 'notauthorized' || !isLoaded) ? 'w-full h-screen flex justify-center items-center relative z-[1000] bg-black/20' : 'hidden'}>
+        <div className={(isAuthenticated == 'notauthorized' || !isLoaded) ? 'w-full h-screen flex justify-center items-center relative z-[1000] bg-[#252322]' : 'hidden'}>
             <HomeLoader />
         </div>
         <main
-            data-sidebaropen={(openSidebar && isAuthenticated) ? 'true' : 'false'}
+            data-sidebaropen={(openSidebar && isAuthenticated == true) ? 'true' : 'false'}
             data-authenticated={`${isAuthenticated}`}
             data-loaded={isLoaded}
             className="group h-screen flex justify-between relative overflow-hidden opacity-0 transition-opacity duration-300 data-[loaded=true]:opacity-100"
