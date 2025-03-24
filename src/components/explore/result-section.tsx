@@ -13,31 +13,36 @@ import { RefreshCcw } from 'lucide-react';
 //     { id: 4, name: "Instrumentals", src: '/Bones.mp4' },
 // ]
 
-function ResultSection({isPending, setIsGenerating}: {isPending: boolean, setIsGenerating: React.Dispatch<React.SetStateAction<'pending' | 'failed' | 'done'>>}) {
+function ResultSection({ isPending, setIsGenerating, isGenerating }: { isPending: boolean, setIsGenerating: React.Dispatch<React.SetStateAction<'pending' | 'failed' | 'done'>>, isGenerating: 'pending' | 'failed' | 'done' }) {
     const job_id = localStorage.getItem('job_id');
     const audioLinksLocal = JSON.parse(localStorage.getItem('audioLinks') || '[]');
     const [audioLinks, setAudioLinks] = React.useState<string>(null);
-    const isGenerating = localStorage.getItem('isGenerating');
     const token = localStorage.getItem('astraToken');
 
     React.useEffect(() => {
-        if(audioLinksLocal) setAudioLinks(audioLinksLocal);
+        if (audioLinksLocal) setAudioLinks(audioLinksLocal);
     }, []);
+
+    console.log("isGenerating == 'pending': ", isGenerating == 'pending')
+    console.log("Object.values(audioLinksLocal)?.length == 0: ", Object.values(audioLinksLocal)?.length == 0)
+    console.log("!!job_id: ", !!job_id)
+    console.log("!!job_id && Object.values(audioLinksLocal)?.length == 0 && isGenerating == 'pending': ", !!job_id && Object.values(audioLinksLocal)?.length == 0 && isGenerating == 'pending')
 
     const { data: generatedAudiosData } = useQuery({
         queryKey: ['generatedAudiosData'],
         queryFn: () => getAudioLinksCall({ token, job_id }),
         refetchInterval: 30000,
-        enabled: !!job_id && !!token && Object.values(audioLinksLocal)?.length == 0 && localStorage.getItem('isGenerating')?.toLocaleLowerCase() == 'pending'
+        enabled: !!job_id && Object.values(audioLinksLocal)?.length == 0 && isGenerating == 'pending'
     });
 
     React.useEffect(() => {
-        if(generatedAudiosData?.status == 'failed') {
+        if (generatedAudiosData?.error || generatedAudiosData?.status == 'failed' || generatedAudiosData?.result?.error) {
             localStorage.setItem('isGenerating', 'failed');
             setIsGenerating('failed');
+            return;
         }
 
-        if(generatedAudiosData?.status == 'done') {
+        if (generatedAudiosData?.status == 'done') {
             localStorage.setItem('isGenerating', 'done');
             setIsGenerating('done');
         }
@@ -49,7 +54,7 @@ function ResultSection({isPending, setIsGenerating}: {isPending: boolean, setIsG
 
         if (generatedAudiosData?.result && Object.keys(generatedAudiosData?.result).length > 0) {
             localStorage.setItem('audioLinks', JSON.stringify(generatedAudiosData?.result));
-            setAudioLinks(JSON.stringify(generatedAudiosData?.result));
+            setAudioLinks(generatedAudiosData?.result);
         }
     }, [generatedAudiosData])
 
@@ -58,13 +63,13 @@ function ResultSection({isPending, setIsGenerating}: {isPending: boolean, setIsG
             <h2 className="text-white/60 uppercase text-xs mb-2">Result</h2>
             {(audioLinks && Object.values(audioLinks)?.length > 0 && isGenerating?.toLocaleLowerCase() == 'done') ? (
                 <div className="grid grid-cols-2 gap-3">
-                    {Object.values(audioLinks)?.slice(0, 4)?.map((result: string, idx) => (
-                        <ResultantAudio key={idx.toString()} id={idx} name={Object.keys(audioLinks)?.[idx]} src={result} />
-                    ))}
+                    {Object.values(audioLinks)?.slice(0, 4)?.map((result: string, idx) => {
+                        return <ResultantAudio key={idx.toString()} id={idx} name={Object.keys(audioLinks)?.[idx]} src={result} />
+                    })}
                 </div>
             ) : (
                 <div className='w-full h-24 flex justify-center items-center'>
-                    <h3 className="text-white/60 uppercase text-xs mb-2">{(isPending || isGenerating?.toLocaleLowerCase() == 'pending') ? <span className='flex items-center gap-2'>Generating <RefreshCcw size={18} className='animate-spin duration-150' /></span> : 'Nothing to Show. Please try generating something.'}</h3>
+                    <h3 className="text-white/60 uppercase text-xs mb-2 text-center">{(isPending || isGenerating?.toLocaleLowerCase() == 'pending') ? <span className='flex items-center gap-2'>Generating <RefreshCcw size={18} className='animate-spin duration-150' /></span> : 'Nothing to Show. Please try generating something.'}</h3>
                 </div>
             )}
             <QueueSize />

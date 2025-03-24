@@ -104,7 +104,7 @@ const App = () => {
             )}
             <div className="flex-grow h-screen flex flex-col overflow-hidden">
                 <div className="w-full flex-grow overflow-auto flex flex-col" autoFocus>
-                    <Header />
+                    <Header userDetails={userData} />
                     <div className="flex justify-center items-center flex-grow">
                         <Outlet />
                     </div>

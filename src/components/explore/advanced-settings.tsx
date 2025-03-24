@@ -29,7 +29,7 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                         <div className="space-y-4">
                             <div className="space-y-1">
                                 <Label className="text-white text-sm">Pitch Method:</Label>
-                                <Select defaultValue={advanceSettings?.pitchMethod} onValueChange={val => updateAdvanceSetting('pitchMethod', val)}>
+                                <Select defaultValue={advanceSettings?.f0_method} onValueChange={val => updateAdvanceSetting('f0_method', val)}>
                                     <SelectTrigger className="bg-black border-white/10 h-8 text-sm text-white w-[160px]">
                                         <SelectValue placeholder="rmvpe" />
                                     </SelectTrigger>
@@ -48,14 +48,14 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                                 <Label className="text-white text-sm">Pitch for Background & Instrumental:</Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
-                                        value={[advanceSettings?.pitchBackgroundInstrumental]}
-                                        onValueChange={([value]) => updateAdvanceSetting('pitchBackgroundInstrumental', value)}
+                                        value={[advanceSettings?.overall_pitch]}
+                                        onValueChange={([value]) => updateAdvanceSetting('overall_pitch', value)}
                                         min={-12}
                                         max={12}
                                         step={1}
                                         className="flex-1"
                                     />
-                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.pitchBackgroundInstrumental}</span>
+                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.overall_pitch}</span>
                                 </div>
                                 <p className="text-xs text-gray-400">Changing pitch can lead to alteration in quality.</p>
                             </div>
@@ -64,14 +64,14 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                                 <Label className="text-white text-sm">Main Vocals Volume:</Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
-                                        value={[advanceSettings?.mainVocalsVolume]}
-                                        onValueChange={([value]) => updateAdvanceSetting('mainVocalsVolume', value)}
+                                        value={[advanceSettings?.main_vocals_volume]}
+                                        onValueChange={([value]) => updateAdvanceSetting('main_vocals_volume', value)}
                                         min={0}
                                         max={10}
-                                        step={0.1}
+                                        step={1}
                                         className="flex-1"
                                     />
-                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.mainVocalsVolume.toFixed(1)}</span>
+                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.main_vocals_volume.toFixed(1)}</span>
                                 </div>
                                 <p className="text-xs text-gray-400">Control volume of the Main Vocals.</p>
                             </div>
@@ -80,14 +80,14 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                                 <Label className="text-white text-sm">Background Vocals Volume:</Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
-                                        value={[advanceSettings?.backgroundVocalsVolume]}
-                                        onValueChange={([value]) => updateAdvanceSetting('backgroundVocalsVolume', value)}
+                                        value={[advanceSettings?.backup_vocals_volume]}
+                                        onValueChange={([value]) => updateAdvanceSetting('backup_vocals_volume', value)}
                                         min={0}
                                         max={10}
-                                        step={0.1}
+                                        step={1}
                                         className="flex-1"
                                     />
-                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.backgroundVocalsVolume.toFixed(1)}</span>
+                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.backup_vocals_volume.toFixed(1)}</span>
                                 </div>
                                 <p className="text-xs text-gray-400">Control volume of the Background Vocals.</p>
                             </div>
@@ -96,14 +96,14 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                                 <Label className="text-white text-sm">Instrumentals Volume:</Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
-                                        value={[advanceSettings?.instrumentalsVolume]}
-                                        onValueChange={([value]) => updateAdvanceSetting('instrumentalsVolume', value)}
+                                        value={[advanceSettings?.inst_volume]}
+                                        onValueChange={([value]) => updateAdvanceSetting('inst_volume', value)}
                                         min={0}
                                         max={10}
-                                        step={0.1}
+                                        step={1}
                                         className="flex-1"
                                     />
-                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.instrumentalsVolume.toFixed(1)}</span>
+                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.inst_volume.toFixed(1)}</span>
                                 </div>
                                 <p className="text-xs text-gray-400">Control volume of the Instrumentals.</p>
                             </div>
@@ -112,7 +112,7 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                         <div className="space-y-4">
                             <div className="space-y-1">
                                 <Label className="text-white text-sm">Apply AI on Background Vocals:</Label>
-                                <Select value={advanceSettings?.applyAIOnBackground} onValueChange={val => updateAdvanceSetting('applyAIOnBackground', val)}>
+                                <Select value={advanceSettings?.cover_background_vocals} onValueChange={val => updateAdvanceSetting('cover_background_vocals', val)}>
                                     <SelectTrigger className="bg-black border-white/10 h-8 text-sm text-white w-[150px]">
                                         <SelectValue placeholder="false" />
                                     </SelectTrigger>
@@ -130,14 +130,14 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                                 <Label className="text-white text-sm">Index Rate:</Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
-                                        value={[advanceSettings?.indexRate]}
-                                        onValueChange={([value]) => updateAdvanceSetting('indexRate', value)}
+                                        value={[advanceSettings?.index_rate]}
+                                        onValueChange={([value]) => updateAdvanceSetting('index_rate', value)}
                                         min={0}
                                         max={1}
                                         step={0.01}
                                         className="flex-1"
                                     />
-                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.indexRate.toFixed(2)}</span>
+                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.index_rate.toFixed(2)}</span>
                                 </div>
                                 <p className="text-xs text-gray-400">Control how much of AI voice's accent to keep in vocals.</p>
                             </div>
@@ -146,14 +146,14 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                                 <Label className="text-white text-sm">Filter Radius:</Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
-                                        value={[advanceSettings?.filterRadius]}
-                                        onValueChange={([value]) => updateAdvanceSetting('filterRadius', value)}
+                                        value={[advanceSettings?.filter_radius]}
+                                        onValueChange={([value]) => updateAdvanceSetting('filter_radius', value)}
                                         min={1}
                                         max={5}
-                                        step={0.1}
+                                        step={1}
                                         className="flex-1"
                                     />
-                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.filterRadius.toFixed(1)}</span>
+                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.filter_radius.toFixed(1)}</span>
                                 </div>
                                 <p className="text-xs text-gray-400">Reduce Breathiness</p>
                             </div>
@@ -162,14 +162,14 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                                 <Label className="text-white text-sm">RMS Mix Rate:</Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
-                                        value={[advanceSettings?.rmsMixRate]}
-                                        onValueChange={([value]) => updateAdvanceSetting('rmsMixRate', value)}
+                                        value={[advanceSettings?.rms_mix_rate]}
+                                        onValueChange={([value]) => updateAdvanceSetting('rms_mix_rate', value)}
                                         min={0}
                                         max={1}
                                         step={0.01}
                                         className="flex-1"
                                     />
-                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.rmsMixRate.toFixed(2)}</span>
+                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.rms_mix_rate.toFixed(2)}</span>
                                 </div>
                                 <p className="text-xs text-gray-400">Control how much to mimic original vocal's loudness.</p>
                             </div>
@@ -178,14 +178,14 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                                 <Label className="text-white text-sm">Protect Rate:</Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
-                                        value={[advanceSettings?.protectRate]}
-                                        onValueChange={([value]) => updateAdvanceSetting('protectRate', value)}
+                                        value={[advanceSettings?.protect_rate]}
+                                        onValueChange={([value]) => updateAdvanceSetting('protect_rate', value)}
                                         min={0}
                                         max={1}
                                         step={0.01}
                                         className="flex-1"
                                     />
-                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.protectRate.toFixed(2)}</span>
+                                    <span className="text-sm min-w-[2ch]">{advanceSettings?.protect_rate.toFixed(2)}</span>
                                 </div>
                                 <p className="text-xs text-gray-400">
                                     Protect voiceless consonants and breath sounds. Set to 0.5 to disable it.

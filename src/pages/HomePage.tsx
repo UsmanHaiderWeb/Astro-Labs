@@ -36,7 +36,7 @@ const HomePage = () => {
                 </div>
 
                 {/* Animated Text */}
-                <div className="typewriter">
+                <div className="typewriter w-[600px] max-w-[90vw]">
                     <p className="text-sm font-normal text-white leading-relaxed">
                         {text}
                         <span className="cursor"></span>

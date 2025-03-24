@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Test from './pages/Test'
+import NotFound from './pages/NotFound'
 const App = React.lazy(() => import('./App'));
 const HomePage = React.lazy(() => import('./pages/HomePage'));
 const Explore = React.lazy(() => import('./pages/Explore'));
@@ -144,10 +144,10 @@ const router = createBrowserRouter([
         )
     },
     {
-        path: '/test',
+        path: '/*',
         element: (
             <React.Suspense fallback={<div></div>}>
-                <Test />
+                <NotFound />
             </React.Suspense>
         )
     },

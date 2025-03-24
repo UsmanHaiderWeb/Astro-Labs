@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: 'https://494b-39-49-21-74.ngrok-free.app'
+    baseURL: 'https://astralabs.ai'
+    // baseURL: 'https://494b-39-49-21-74.ngrok-free.app'
 })
 
 export const SignupCall = async ({username, email, password}: {username: string, email: string, password: string}) => {

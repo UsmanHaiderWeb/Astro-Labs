@@ -13,7 +13,6 @@ import DawSection from '@/components/explore/daw-section'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { generateAudioCall } from '@/lib/AxiosCalls'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { toast } from 'sonner'
 import { showToast } from '@/lib/ShowToast'
 
 const Explore = () => {
@@ -66,7 +65,7 @@ const Explore = () => {
         onError: (error: AxiosError<{ detail: string }>) => {
             console.log("generateAudio error: ", error);
             localStorage.setItem('isGenerating', 'failed');
-            if(error.status == 401) return toast.error("Please login to generate audio.");
+            if (error.status == 401) return showToast("Please login to generate audio.");
             showToast("Something went wrong. Please try again.");
             setIsGenerating('failed');
         },
@@ -127,21 +126,16 @@ const Explore = () => {
 
     function handleGeneration(): any {
         const token = localStorage.getItem('astraToken');
-        if (!token) return toast.error("Please login to generate audio.");
+        if (!token) return showToast("Please login to generate audio.");
 
         if ((tab === 'audio' ? !audioFile : !youtubeUrl) || isGenerating?.toLocaleLowerCase() == 'pending') return;
 
         const task_type: 'regular' | 'file' | 'advanced' | 'advanced-file' | 'multiple' = (
             tab == 'audio' ?
                 (isAdvanceSettingsUpdate ?
-                    'advanced-file' :
+                    (audioSelectedVoices?.length == 0 ? 'advanced-file' : 'multiple') :
                     (audioSelectedVoices?.length == 0 ? 'file' : 'multiple'))
                 : (isAdvanceSettingsUpdate ? 'advanced' : 'regular')
-        )
-
-        const voices: string | string[] = (
-            tab == 'audio' ? audioSelectedVoices?.length == 0 ? "Morgan Freeman RVC v2" : audioSelectedVoices
-                : youtubeSelectedVoices?.length == 0 ? "Morgan Freeman RVC v2" : youtubeSelectedVoices
         )
 
         localStorage.removeItem('job_id');
@@ -151,25 +145,35 @@ const Explore = () => {
 
         const formData: any = new FormData();
         formData.append('task_type', task_type);
-        formData.append('voice', voices.toString());
-        formData.append('pitch', tab == 'youtube' ? youtubePitch.toString() : audioPitch.toString());
 
         if (tab == 'youtube') formData.append('video_url', youtubeUrl);
         if (tab == 'audio') formData.append('file', audioFile);
-        if (isAdvanceSettingsUpdate) formData.append('advance_settings', advanceSettings.toString());
+        if (isAdvanceSettingsUpdate) {
+            Object.keys(advanceSettings)?.forEach((key, idx) => {
+                formData.append(key, Object.values(advanceSettings)?.[idx]);
+            })
+        };
 
         if (voiceSelections.length > 0) {
             formData.append('voice_one', voiceSelections[0].voice);
             formData.append('pitch_one', tab == 'youtube' ? youtubePitch.toString() : audioPitch.toString());
-            formData.append('singer1_start', voiceSelections[0].range[0].toString());
-            formData.append('singer1_end', voiceSelections[0].range[1].toString());
-
-            if(voiceSelections.length == 1) return;
-
+            formData.append('singer1_start', new Date(voiceSelections[0].range[0] * 1000).toISOString().substring(11, 19));
+            formData.append('singer1_end', new Date(voiceSelections[0].range[1] * 1000).toISOString().substring(11, 19));
+            
+            if (voiceSelections.length == 1) return;
+            
             formData.append('voice_two', voiceSelections[1].voice);
             formData.append('pitch_two', tab == 'youtube' ? youtubePitch.toString() : audioPitch.toString());
-            formData.append('singer2_start', voiceSelections[1].range[0].toString());
-            formData.append('singer2_end', voiceSelections[1].range[1].toString());
+            formData.append('singer2_start', new Date(voiceSelections[1].range[0] * 1000).toISOString().substring(11, 19));
+            formData.append('singer2_end', new Date(voiceSelections[1].range[1] * 1000).toISOString().substring(11, 19));
+        } else {
+            const voices: string | string[] = (
+                tab == 'audio' ? audioSelectedVoices?.length == 0 ? "Morgan Freeman RVC v2" : audioSelectedVoices
+                    : youtubeSelectedVoices?.length == 0 ? "Morgan Freeman RVC v2" : youtubeSelectedVoices
+            )
+
+            formData.append('voice', voices.toString());
+            formData.append('pitch', tab == 'youtube' ? youtubePitch.toString() : audioPitch.toString());
         }
 
         mutate({
@@ -293,7 +297,7 @@ const Explore = () => {
                         audioBuffer={audioBuffer}
                         audioFile={audioFile}
                     />
-                    <ResultSection isPending={isPending} setIsGenerating={setIsGenerating} />
+                    <ResultSection isPending={isPending} setIsGenerating={setIsGenerating} isGenerating={isGenerating} />
                 </div>
             </div>
         </div>
