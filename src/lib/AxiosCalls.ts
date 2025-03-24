@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: 'https://astralabs.ai'
+    baseURL: 'https://astralabs.ai/api'
     // baseURL: 'https://494b-39-49-21-74.ngrok-free.app'
 })
 

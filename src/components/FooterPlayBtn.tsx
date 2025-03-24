@@ -69,7 +69,7 @@ const FooterPlayBtn = () => {
                             </div>
                         </div>
                     </TooltipTrigger>
-                    <TooltipContent className='bg-black font-normal tracking-wide'>
+                    <TooltipContent className='bg-black font-normal tracking-wide pointer-events-none'>
                         <p>{playMusic ? 'Pause the music' : 'Play music'}</p>
                     </TooltipContent>
                 </Tooltip>

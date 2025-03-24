@@ -69,7 +69,7 @@ function ResultSection({ isPending, setIsGenerating, isGenerating }: { isPending
                 </div>
             ) : (
                 <div className='w-full h-24 flex justify-center items-center'>
-                    <h3 className="text-white/60 uppercase text-xs mb-2 text-center">{(isPending || isGenerating?.toLocaleLowerCase() == 'pending') ? <span className='flex items-center gap-2'>Generating <RefreshCcw size={18} className='animate-spin duration-150' /></span> : 'Nothing to Show. Please try generating something.'}</h3>
+                    <h3 className="text-white/60 uppercase text-xs mb-2 text-center">{(isPending || isGenerating?.toLocaleLowerCase() == 'pending') ? <span className='flex items-center gap-2'>Converting <RefreshCcw size={18} className='animate-spin duration-150' /></span> : 'Nothing to Show. Please try converting something.'}</h3>
                 </div>
             )}
             <QueueSize />

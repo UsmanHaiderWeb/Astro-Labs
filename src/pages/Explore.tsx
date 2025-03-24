@@ -203,7 +203,7 @@ const Explore = () => {
                                         value="youtube"
                                         className="py-3 data-[state=active]:bg-[#292929] bg-transparent text-white border-0 data-[state=active]:text-white rounded-sm cursor-pointer"
                                     >
-                                        YouTube <sup className='sans tracking-wider'>Coming Soon</sup>
+                                        YouTube (Coming Soon)
                                     </TabsTrigger>
                                 </TabsList>
                             </div>
@@ -249,14 +249,14 @@ const Explore = () => {
                                                     disabled={(tab === 'audio' ? !audioFile : !youtubeUrl) || isGenerating?.toLocaleLowerCase() == 'pending' || isPending}
                                                     onClick={() => handleGeneration()}
                                                 >
-                                                    {(isPending || isGenerating?.toLocaleLowerCase() == 'pending') ? 'Generating' : 'Generate'}
+                                                    {(isPending || isGenerating?.toLocaleLowerCase() == 'pending') ? 'Converting' : 'Convert'}
                                                 </Button>
                                             </TooltipTrigger>
                                             {(() => {
                                                 if (isGenerating?.toLowerCase() === 'pending') {
                                                     return (
                                                         <TooltipContent className='bg-black text-white'>
-                                                            Please wait for the previous generation to complete
+                                                            Please wait for the previous convertion to complete
                                                         </TooltipContent>
                                                     );
                                                 }

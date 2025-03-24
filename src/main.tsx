@@ -3,8 +3,8 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import NotFound from './pages/NotFound'
 const App = React.lazy(() => import('./App'));
+const NotFound = React.lazy(() => import('./pages/NotFound'));
 const HomePage = React.lazy(() => import('./pages/HomePage'));
 const Explore = React.lazy(() => import('./pages/Explore'));
 const AboutUs = React.lazy(() => import('./pages/AboutUs'));
