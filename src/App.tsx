@@ -92,7 +92,7 @@ const App = () => {
             data-sidebaropen={(openSidebar && isAuthenticated == true) ? 'true' : 'false'}
             data-authenticated={`${isAuthenticated}`}
             data-loaded={isLoaded}
-            className="group h-screen flex justify-between relative overflow-hidden opacity-0 transition-opacity duration-300 data-[loaded=true]:opacity-100"
+            className={`group h-screen flex justify-between relative overflow-hidden opacity-0 ${(isLoaded == true && isAuthenticated != 'notauthorized') ? 'opacity-100' : 'opacity-0'}`}
         >
             <Toaster
                 theme="dark"

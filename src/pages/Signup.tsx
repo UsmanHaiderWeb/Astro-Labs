@@ -45,7 +45,7 @@ function Signup() {
     }
 
     return (
-        <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
+        <main className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
             <div className="w-full max-w-[420px]">
                 <div className="flex flex-col gap-2">
                     <form onSubmit={handleSubmit(createAccount)}>
@@ -159,7 +159,7 @@ function Signup() {
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     )
 }
 

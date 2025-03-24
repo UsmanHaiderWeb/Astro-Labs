@@ -181,6 +181,10 @@
 }
 
 body {
+	background-color: #252322;
+}
+
+main {
 	background-image: url("/bg.png");
 	background-repeat: repeat;
 	background-position: top;

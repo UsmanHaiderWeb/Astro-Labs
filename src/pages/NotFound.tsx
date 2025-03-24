@@ -5,7 +5,7 @@ import '@/App'
 
 const NotFound = () => {
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center">
+        <main className="min-h-screen flex flex-col items-center justify-center">
             <div className="text-center">
                 <h1 className="text-8xl font-bold text-white/30">404</h1>
                 <h2 className="text-4xl font-semibold text-white/80 mt-4">Page Not Found</h2>
@@ -20,7 +20,7 @@ const NotFound = () => {
                     </Button>
                 </Link>
             </div>
-        </div>
+        </main>
     );
 };
 

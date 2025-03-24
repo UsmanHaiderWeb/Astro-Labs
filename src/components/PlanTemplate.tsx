@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button } from './ui/button'
 import { Check, RefreshCcw } from 'lucide-react'
 import { Badge } from './ui/badge'
@@ -10,6 +10,7 @@ import { FetchStripeUrlCall } from '@/lib/AxiosCalls'
 
 const PlanTemplate = ({ plan }: { plan: PlanInterface }) => {
     const token = localStorage.getItem("astraToken");
+    const navigate = useNavigate();
 
     const { mutate, isPending } = useMutation({
         mutationKey: ['fetch stripe url'],
@@ -25,6 +26,9 @@ const PlanTemplate = ({ plan }: { plan: PlanInterface }) => {
     const purchasePlanFunc = (planId) => {
         if (!isPending && token) {
             mutate({ token, planId });
+        } else if (!token) {
+            navigate('/login');
+            // showToast('Please login to continue');
         }
     }
 
