@@ -32,6 +32,7 @@ function ResultSection({ isPending, setIsGenerating, isGenerating }: { isPending
         queryKey: ['generatedAudiosData'],
         queryFn: () => getAudioLinksCall({ token, job_id }),
         refetchInterval: 30000,
+        refetchOnWindowFocus: false,
         enabled: !!job_id && Object.values(audioLinksLocal)?.length == 0 && isGenerating == 'pending'
     });
 

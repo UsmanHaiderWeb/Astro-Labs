@@ -16,7 +16,8 @@ const DiscordRedirect = () => {
 		queryKey: ['send discord code to backend', searchParams?.code],
 		queryFn: () => DiscordVerificationCallBackCall({code: searchParams?.code}),
 		enabled: !!searchParams?.code,
-		retry: 0
+		retry: 0,
+        refetchOnWindowFocus: false
 	});
 
 	React.useEffect(() => {

@@ -9,6 +9,7 @@ const QueueSize = () => {
         queryKey: ['queue-size'],
         queryFn: () => getQueueSizeCall({ token }),
         refetchInterval: 30000,
+        refetchOnWindowFocus: false
     })
 
     return (

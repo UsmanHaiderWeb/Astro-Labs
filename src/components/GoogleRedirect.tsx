@@ -16,7 +16,8 @@ const GoogleRedirect = () => {
 		queryKey: ['send google code to backend', searchParams?.code],
 		queryFn: () => GoogleVerificationCallBackCall({code: searchParams?.code}),
 		enabled: !!searchParams?.code,
-		retry: 0
+		retry: 0,
+        refetchOnWindowFocus: false
 	});
 
 	React.useEffect(() => {

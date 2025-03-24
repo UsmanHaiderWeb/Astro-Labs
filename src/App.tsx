@@ -59,6 +59,7 @@ const App = () => {
         queryKey: ['userData'],
         queryFn: async () => fetchUserDetails(token),
         enabled: !!token,
+        refetchOnWindowFocus: false
     })
 
     console.log("isAuthenticated: ", isAuthenticated);
@@ -82,14 +83,14 @@ const App = () => {
     }, [isError])
 
     return (<>
-        <div className={isAuthenticated == 'notauthorized' ? 'w-full h-screen flex justify-center items-center relative z-[1000]' : 'hidden'}>
+        <div className={(isAuthenticated == 'notauthorized' || !isLoaded) ? 'w-full h-screen flex justify-center items-center relative z-[1000] bg-black/20' : 'hidden'}>
             <HomeLoader />
         </div>
         <main
             data-sidebaropen={(openSidebar && isAuthenticated) ? 'true' : 'false'}
             data-authenticated={`${isAuthenticated}`}
             data-loaded={isLoaded}
-            className="group h-screen flex justify-between relative overflow-hidden opacity-0 transition-opacity duration-300 data-[loaded=true]:opacity-100 data-[authenticated=true]:opacity-100"
+            className="group h-screen flex justify-between relative overflow-hidden opacity-0 transition-opacity duration-300 data-[loaded=true]:opacity-100"
         >
             <Toaster
                 theme="dark"
