@@ -66,7 +66,7 @@ const PlanTemplate = ({ plan }: { plan: PlanInterface }) => {
                         {isPending ?
                             <div className='w-full cursor-not-allowed'>
                                 <Button size="lg" disabled className="w-full text-white cursor-not-allowed" style={{ background: "linear-gradient(to right, #4F46E5, #7C3AED, #DB2777)" }}>
-                                    <RefreshCcw className='animate-spin duration-150' />
+                                    <RefreshCcw className='animate-spin duration-300' />
                                 </Button>
                             </div>
                             :

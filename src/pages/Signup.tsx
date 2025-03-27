@@ -133,7 +133,7 @@ function Signup() {
                                 <FormFieldError message={errors?.root?.message} className='leading-2' />
                                 {isPending ?
                                     <Button type="button" variant='secondary' disabled className="w-full cursor-pointer">
-                                        Creating <RefreshCcw className='animate-spin duration-150' />
+                                        Creating <RefreshCcw className='animate-spin duration-300' />
                                     </Button>
                                     :
                                     <Button type="submit" variant='secondary' className="w-full cursor-pointer">

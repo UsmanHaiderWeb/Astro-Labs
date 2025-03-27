@@ -62,8 +62,6 @@ const App = () => {
         refetchOnWindowFocus: false
     })
 
-    console.log("isAuthenticated: ", isAuthenticated);
-
     React.useEffect(() => {
         if (!token) {
             setIsAuthenticated(false);
@@ -106,7 +104,7 @@ const App = () => {
                 <div className="w-full flex-grow overflow-auto flex flex-col" autoFocus>
                     <Header userDetails={userData} />
                     <div className="flex justify-center items-center flex-grow">
-                        <Outlet context={{okToGo: isAuthenticated && isLoaded}} />
+                        <Outlet context={{okToGo: isAuthenticated != 'notauthorized' && isLoaded}} />
                     </div>
                 </div>
                 <Footer />

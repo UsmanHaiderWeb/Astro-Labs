@@ -24,11 +24,6 @@ function ResultSection({ isPending, setIsGenerating, isGenerating }: { isPending
         if (audioLinksLocal) setAudioLinks(audioLinksLocal);
     }, []);
 
-    console.log("isGenerating == 'pending': ", isGenerating == 'pending')
-    console.log("Object.values(audioLinksLocal)?.length == 0: ", Object.values(audioLinksLocal)?.length == 0)
-    console.log("!!job_id: ", !!job_id)
-    console.log("!!job_id && Object.values(audioLinksLocal)?.length == 0 && isGenerating == 'pending': ", !!job_id && Object.values(audioLinksLocal)?.length == 0 && isGenerating == 'pending')
-
     const { data: generatedAudiosData } = useQuery({
         queryKey: ['generatedAudiosData'],
         queryFn: () => getAudioLinksCall({ token, job_id }),
@@ -74,7 +69,7 @@ function ResultSection({ isPending, setIsGenerating, isGenerating }: { isPending
                     </ScrollArea>
                 ) : (
                     <div className='w-full h-full flex justify-center items-center'>
-                        <h3 className="text-white/60 uppercase text-xs mb-2 text-center">{(isPending || isGenerating?.toLocaleLowerCase() == 'pending') ? <span className='flex items-center gap-2'>Converting <RefreshCcw size={18} className='animate-spin duration-150' /></span> : <>Nothing to Show.<br />Please try converting something.</>}</h3>
+                        <h3 className="text-white/60 uppercase text-xs mb-2 text-center">{(isPending || isGenerating?.toLocaleLowerCase() == 'pending') ? <span className='flex items-center gap-2'>Converting <RefreshCcw size={18} className='animate-spin duration-300' /></span> : <>Nothing to Show.<br />Please try converting something.</>}</h3>
                     </div>
                 )}
             </div>

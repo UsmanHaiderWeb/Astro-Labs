@@ -30,7 +30,7 @@ const ContinueWithGoogle = () => {
                         fill="currentColor"
                     />
                 </svg>
-                Google <RefreshCcw className='animate-spin duration-200' />
+                Google <RefreshCcw className='animate-spin duration-300' />
             </Button>
             :
             <Button variant="outline" type="button" className="w-full cursor-pointer" onClick={() => {

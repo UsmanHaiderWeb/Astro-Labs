@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
 import * as React from 'react'
@@ -37,6 +38,21 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
     const [showErrorAboutAudio, setShowErrorAboutAudio] = React.useState<string>(null)
 
     const isGenerating = localStorage.getItem('isGenerating');
+
+    // React.useEffect(() => {
+    //     const storedFilename = localStorage.getItem('fileName');
+    //     if(storedFilename) setFileName(storedFilename);
+    //     const storedAudioFile = localStorage.getItem('audioFile');
+    //     // if(storedAudioFile) onFileUpload(JSON.parse(storedAudioFile));
+    //     console.log("storedAudioFile: ", storedAudioFile)
+    // }, [])
+
+    // React.useEffect(() => {
+    //     if (fileName) localStorage.setItem('fileName', fileName);
+    //     if (audioFile) {
+    //         localStorage.setItem('audioFile', `${audioFile}`);
+    //     };
+    // }, [fileName, audioFile])
 
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
