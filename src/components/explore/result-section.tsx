@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getAudioLinksCall } from '@/lib/AxiosCalls';
 import QueueSize from '../QueueSize';
 import { RefreshCcw } from 'lucide-react';
+import { ScrollArea } from '../ui/scroll-area';
 
 // const results = [
 //     { id: 1, name: "Cover", src: '/Bones.mp4' },
@@ -60,20 +61,26 @@ function ResultSection({ isPending, setIsGenerating, isGenerating }: { isPending
     }, [generatedAudiosData])
 
     return (
-        <div className="bg-[#1a1a1a] rounded-xl p-4">
-            <h2 className="text-white/60 uppercase text-xs mb-2">Result</h2>
-            {(audioLinks && Object.values(audioLinks)?.length > 0 && isGenerating?.toLocaleLowerCase() == 'done') ? (
-                <div className="grid grid-cols-2 gap-3">
-                    {Object.values(audioLinks)?.slice(0, 4)?.map((result: string, idx) => {
-                        return <ResultantAudio key={idx.toString()} id={idx} name={Object.keys(audioLinks)?.[idx]} src={result} />
-                    })}
-                </div>
-            ) : (
-                <div className='w-full h-24 flex justify-center items-center'>
-                    <h3 className="text-white/60 uppercase text-xs mb-2 text-center">{(isPending || isGenerating?.toLocaleLowerCase() == 'pending') ? <span className='flex items-center gap-2'>Converting <RefreshCcw size={18} className='animate-spin duration-150' /></span> : 'Nothing to Show. Please try converting something.'}</h3>
-                </div>
-            )}
-            <QueueSize />
+        <div className="bg-[#1a1a1a] rounded-xl py-4">
+            <h2 className="text-white/60 uppercase text-xs mb-2 px-4">Result</h2>
+            <div className='h-32'>
+                {(audioLinks && Object.values(audioLinks)?.length > 0 && isGenerating?.toLocaleLowerCase() == 'done') ? (
+                    <ScrollArea className='scrollbarAudioResultSection px-5 h-full'>
+                        <div className="grid grid-cols-2 gap-3">
+                            {Object.values(audioLinks)?.slice(0, 4)?.map((result: string, idx) => {
+                                return <ResultantAudio key={idx.toString()} id={idx} name={Object.keys(audioLinks)?.[idx]} src={result} />
+                            })}
+                        </div>
+                    </ScrollArea>
+                ) : (
+                    <div className='w-full h-full flex justify-center items-center'>
+                        <h3 className="text-white/60 uppercase text-xs mb-2 text-center">{(isPending || isGenerating?.toLocaleLowerCase() == 'pending') ? <span className='flex items-center gap-2'>Converting <RefreshCcw size={18} className='animate-spin duration-150' /></span> : <>Nothing to Show.<br />Please try converting something.</>}</h3>
+                    </div>
+                )}
+            </div>
+            <div className='w-full relative px-4'>
+                <QueueSize />
+            </div>
         </div>
     )
 }

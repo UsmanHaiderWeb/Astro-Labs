@@ -94,10 +94,7 @@ const App = () => {
             data-loaded={isLoaded}
             className={`group h-screen flex justify-between relative overflow-hidden opacity-0 ${(isLoaded == true && isAuthenticated != 'notauthorized') ? 'opacity-100' : 'opacity-0'}`}
         >
-            <Toaster
-                theme="dark"
-                className="bg-purple"
-            />
+            <Toaster />
             {isAuthenticated && (
                 <div className='group-data-[sidebaropen=true]:w-[230px] group-data-[sidebaropen=false]:w-0 duration-200 h-screen sticky z-[200] top-0 left-0 overflow-hidden'>
                     <ScrollArea className="w-full min-w-[230px] h-full overflow-auto">
@@ -109,7 +106,7 @@ const App = () => {
                 <div className="w-full flex-grow overflow-auto flex flex-col" autoFocus>
                     <Header userDetails={userData} />
                     <div className="flex justify-center items-center flex-grow">
-                        <Outlet />
+                        <Outlet context={{okToGo: isAuthenticated && isLoaded}} />
                     </div>
                 </div>
                 <Footer />

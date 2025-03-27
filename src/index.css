@@ -160,6 +160,18 @@
 	.sideBtn {
 		@apply w-full justify-start bg-transparent hover:bg-hoverBtnSec text-white
 	}
+	.scrollbarAudioResultSection .scrollThumb {
+		@apply bg-black/50
+	}
+	.resultAudioSlider .sliderThumb {
+		@apply h-4 w-4
+	}
+	.resultAudioSlider .sliderTrack {
+		@apply h-1.5
+	}
+	.resultAudioSlider .sliderRange {
+		@apply h-1.5
+	}
 }
 
 :root {
@@ -330,21 +342,6 @@ main {
 	100% {
 		transform: translate(0, 0);
 		opacity: 1;
-	}
-}
-
-@keyframes wave {
-	25% {
-		transform: skewY(25deg);
-	}
-
-	50% {
-		height: 100%;
-		margin-top: 0;
-	}
-
-	75% {
-		transform: skewY(-25deg);
 	}
 }
 

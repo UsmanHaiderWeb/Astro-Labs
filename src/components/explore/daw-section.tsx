@@ -3,13 +3,11 @@
 "use client"
 
 import * as React from 'react';
-import { useRef, useEffect, useState, useCallback } from "react"
-import { Slider } from "@/components/ui/slider"
 import { BeatLoader } from 'react-spinners'
 import { formatTime } from "@/lib/formatTime"
 import { VoiceSelection } from '@/lib/interfaces&types';
 import WaveSurfer from 'wavesurfer.js';
-import { Pause, Play, RotateCcw } from 'lucide-react';
+import { Pause, Play } from 'lucide-react';
 
 interface DAWSectionProps {
     selectedVoices: string[]
@@ -34,35 +32,30 @@ const VOICE_COLORS = [
     "#9B59B6", // Purple
 ]
 
-function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url, voiceSelections, setVoiceSelections, audioUrl }: DAWSectionProps) {
-    const canvasRef = useRef<HTMLCanvasElement>(null)
-    const youtubeWaveformRef = useRef<HTMLDivElement>(null)
-    const audioWaveformRef = useRef<HTMLDivElement>(null)
-    const wavesurfer = useRef<WaveSurfer>(null)
-    const [isDragging, setIsDragging] = useState<{ voice: string; handle: "start" | "end" } | null>(null)
-    const [audioCurrentTime, setAudioCurrentTime] = useState(0)
-    const [youtubeCurrentTime, setYoutubeCurrentTime] = useState(0)
-    const [showWaveForm, setShowWaveForm] = useState<boolean>(false)
-    // const [dragTime, setDragTime] = useState<number | null>(null)
-    // const [dragPosition, setDragPosition] = useState<{ x: number; y: number } | null>(null)
-    const [dragInfo, setDragInfo] = useState<{ time: number; x: number; handle: "start" | "end" } | null>(null)
+function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url, voiceSelections, setVoiceSelections, audioUrl, audioFile }: DAWSectionProps) {
+    const canvasRef = React.useRef<HTMLCanvasElement>(null)
+    const youtubeWaveformRef = React.useRef<HTMLDivElement>(null)
+    const audioWaveformRef = React.useRef<HTMLDivElement>(null)
+    const wavesurfer = React.useRef<WaveSurfer>(null)
+    const [isDragging, setIsDragging] = React.useState<{ voice: string; handle: "start" | "end" } | null>(null)
+    const [showWaveForm, setShowWaveForm] = React.useState<boolean>(false)
+    const [dragInfo, setDragInfo] = React.useState<{ time: number; x: number; handle: "start" | "end" } | null>(null)
 
     const [playMusic, setPlayMusic] = React.useState<boolean>(false);
     const [audioTrackValue, setAudioTrackValue] = React.useState<{ max: number; value: number }>(null);
     const audio = React.useRef<HTMLAudioElement>(null);
-    const slider = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
         audio.current?.pause();
         setPlayMusic(false);
-        if(audio.current) {
+        if (audio.current) {
             audio.current.currentTime = 0;
-            setAudioTrackValue(prev => ({...prev, value: 0}))
+            setAudioTrackValue(prev => ({ ...prev, value: 0 }))
         }
     }, [audioUrl, tab])
 
     // Initialize or update voice selections when selectedVoices changes
-    useEffect(() => {
+    React.useEffect(() => {
         setVoiceSelections((prev) => {
             const newSelections = selectedVoices.map((voice, index) => {
                 const existingSelection = prev.find((s) => s.voice === voice)
@@ -76,8 +69,7 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
         })
     }, [selectedVoices, timeRange])
 
-    const drawWaveform = useCallback(() => {
-        if (!audioBuffer && !url) return
+    const drawWaveform = React.useCallback(() => {
         const canvas = canvasRef.current
         if (!canvas) return
 
@@ -91,6 +83,12 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
         canvas.height = rect.height * dpr
         ctx.scale(dpr, dpr)
 
+        // Clear the canvas
+        ctx.clearRect(0, 0, rect.width, rect.height)
+
+        // If no audio file, just return after clearing
+        if (!audioFile) return
+
         if (audioBuffer) {
             // Update 2: Conditional rendering of time markers and waveform
             // Draw time markers
@@ -101,10 +99,6 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
                 const x = (time / duration) * rect.width
                 ctx.fillText(formatTime(time), x, 10)
             })
-
-            // Draw waveform
-            // ctx.fillStyle = `white`
-            // ctx.fillRect(0, 0, rect.width, rect.height)
 
             // Draw selections for each voice
             voiceSelections.forEach((selection, index) => {
@@ -201,7 +195,7 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
         ctx.moveTo(playheadX, 0)
         ctx.lineTo(playheadX, rect.height)
         ctx.stroke()
-    }, [url, tab, duration, voiceSelections, isDragging, dragInfo, audio.current?.currentTime])
+    }, [url, tab, duration, voiceSelections, isDragging, dragInfo, audio.current?.currentTime, audioFile])
 
     const drawHandle = (ctx: CanvasRenderingContext2D, x: number, color: string, type: "start" | "end") => {
         const handleHeight = 15
@@ -231,7 +225,7 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
         ctx.stroke()
     }
 
-    const handleMouseMove = useCallback(
+    const handleMouseMove = React.useCallback(
         (e: MouseEvent) => {
             if (!isDragging) return
 
@@ -264,12 +258,12 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
         [isDragging, duration, drawWaveform],
     )
 
-    const handleMouseUp = useCallback(() => {
+    const handleMouseUp = React.useCallback(() => {
         setIsDragging(null)
         setDragInfo(null)
     }, [])
 
-    useEffect(() => {
+    React.useEffect(() => {
         const canvas = canvasRef.current
         if (!canvas) return
 
@@ -278,6 +272,8 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
             const x = e.clientX - rect.left
             const time = (x / rect.width) * duration
 
+            // Check if clicking on handles first
+            let clickedOnHandle = false
             voiceSelections.forEach((selection) => {
                 const startX = (selection.range[0] / duration) * rect.width
                 const endX = (selection.range[1] / duration) * rect.width
@@ -285,11 +281,18 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
                 if (Math.abs(x - startX) < 10) {
                     setIsDragging({ voice: selection.voice, handle: "start" })
                     setDragInfo({ time, x, handle: "start" })
+                    clickedOnHandle = true
                 } else if (Math.abs(x - endX) < 10) {
                     setIsDragging({ voice: selection.voice, handle: "end" })
                     setDragInfo({ time, x, handle: "end" })
+                    clickedOnHandle = true
                 }
             })
+
+            // If not clicking on handles, set audio position
+            if (!clickedOnHandle && audio.current) {
+                audio.current.currentTime = time
+            }
         }
 
         canvas.addEventListener("mousedown", handleMouseDown)
@@ -303,7 +306,7 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
         }
     }, [duration, voiceSelections, handleMouseMove, handleMouseUp])
 
-    useEffect(() => {
+    React.useEffect(() => {
         const canvas = canvasRef.current
         if (!canvas) return
 
@@ -316,7 +319,7 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
     }, [drawWaveform])
 
     React.useEffect(() => {
-        if (audioWaveformRef.current && audioUrl && tab == 'audio') {
+        if (audioWaveformRef.current && audioUrl && tab == 'audio' && audioFile) {
             setShowWaveForm(true)
             wavesurfer.current = WaveSurfer.create({
                 container: audioWaveformRef.current,
@@ -338,119 +341,130 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
         }
 
         return () => wavesurfer.current?.destroy();
-    }, [audioUrl, tab]);
+    }, [audioUrl, tab, audioFile]);
 
     drawWaveform()
 
     return (
         <div className="bg-[#1a1a1a] rounded-xl p-4">
             <h2 className="text-white/60 uppercase text-xs mb-2">DAW</h2>
-            <div className="relative overflow-hidden">
-                {tab == 'audio' ?
-                    <div ref={audioWaveformRef} className={`w-full h-36 rounded-lg pointer-events-none top-1/2 -translate-y-1/2 left-0 absolute z-[8] overflow-hidden bg-[#292929] ${tab == 'audio' ? 'block' : 'hidden'}`} />
-                    :
-                    <div ref={youtubeWaveformRef} className={`w-full h-36 rounded-lg pointer-events-none top-1/2 -translate-y-1/2 left-0 absolute z-[9] overflow-hidden bg-[#292929] ${tab == 'youtube' ? 'block' : 'hidden'}`} />
-                }
-                {(tab == 'audio' && showWaveForm) &&
-                    <div className='w-full h-36 rounded-lg pointer-events-none top-1/2 -translate-y-1/2 left-0 absolute z-[10] bg-transparent flex justify-center items-center'>
-                        <BeatLoader />
+            <div className='h-36'>
+                <div className="daw relative overflow-hidden bg-[#292929] rounded-lg">
+
+                    {tab == 'audio' ?
+                        <div ref={audioWaveformRef} className={`w-full h-20 rounded-lg pointer-events-none top-2/5 -translate-y-2/5 left-0 absolute z-[8] overflow-hidden bg-[#292929] ${tab == 'audio' ? 'block' : 'hidden'}`} />
+                        :
+                        <div ref={youtubeWaveformRef} className={`w-full h-20 rounded-lg pointer-events-none top-2/5 -translate-y-2/5 left-0 absolute z-[9] overflow-hidden bg-[#292929] ${tab == 'youtube' ? 'block' : 'hidden'}`} />
+                    }
+
+                    {(tab == 'audio' && showWaveForm) &&
+                        <div className='w-full h-36 rounded-lg pointer-events-none top-1/2 -translate-y-1/2 left-0 absolute z-[10] bg-transparent flex justify-center items-center'>
+                            <BeatLoader />
+                        </div>
+                    }
+                    <canvas ref={canvasRef} className="w-full h-36 rounded-lg cursor-pointer relative z-[11]" />
+
+                    <div className="flex w-full justify-between items-end absolute bottom-2 px-2 z-[12] pointer-events-none">
+                        <div className='flex justify-center items-center gap-5 translate-y-0.5 pointer-events-auto'>
+                            {((audioBuffer && tab == 'audio') || (tab == 'youtube' && url)) && (<>
+                                <audio ref={audio} src={audioUrl} id='selectedAudio' controls
+                                    className='hidden'
+                                    onPlay={() => {
+                                        for (let i = 0; i < 4; i++) {
+                                            const audio = document.getElementById(`resultantAudio${i}`) as HTMLAudioElement;
+                                            audio?.pause();
+                                        }
+                                        const audio = document.getElementById("footerAudioPlayer") as HTMLAudioElement;
+                                        audio?.pause();
+
+                                        setPlayMusic(true);
+                                    }}
+                                    onPause={() => {
+                                        console.log('hello')
+                                        setPlayMusic(false);
+                                    }}
+                                    onVolumeChange={() => {
+                                        console.log('volume')
+                                    }}
+                                    onLoadedMetadata={(e: any) => {
+                                        console.log("e.target?.duration: ", e.target?.duration)
+                                        setAudioTrackValue(prev => ({ ...prev, max: Math.floor(e.target?.duration) }))
+                                    }}
+                                    onTimeUpdate={(e: React.ChangeEvent<HTMLAudioElement>) => {
+                                        setAudioTrackValue(prev => ({ ...prev, value: Math.floor(e.target?.currentTime) }))
+                                    }}
+                                ></audio>
+                                {/* <div className='relative cursor-pointer'
+                                    onClick={() => {
+                                        audio.current.currentTime -= 10;
+                                    }}
+                                >
+                                    <RotateCcw />
+                                    <span style={{
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        transform: 'translate(-50%, -50%)',
+                                        fontSize: '0.35em',
+                                    }}>
+                                        10
+                                    </span>
+                                </div> */}
+                                <div className="w-9 h-9 rounded-full bg-grayBackground border border-white/20 transition-all duration-200 flex justify-center items-center"
+                                    onClick={() => {
+                                        if (playMusic) {
+                                            audio.current?.pause();
+                                        } else {
+                                            audio.current?.play();
+                                        }
+                                    }}
+                                >
+                                    {playMusic ?
+                                        <Pause size={16} />
+                                        :
+                                        <Play size={16} />
+                                    }
+                                </div>
+                                {/* <div className='relative cursor-pointer'
+                                    onClick={() => {
+                                        audio.current.currentTime += 10;
+                                    }}
+                                >
+                                    <RotateCcw className='rotate-y-180' />
+                                    <span style={{
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        transform: 'translate(-50%, -50%)',
+                                        fontSize: '0.35em',
+                                    }}>
+                                        10
+                                    </span>
+                                </div> */}
+                            </>)}
+                        </div>
+                        <div className='bg-black/80 text-white text-xs px-2 py-1 rounded'>
+                            {(audioBuffer || url) ? `${formatTime(tab == 'youtube' ? 0 : audio.current?.currentTime)} / ${formatTime(duration)}` : "0:00 / 0:00"}{" "}
+                        </div>
                     </div>
-                }
-                <canvas ref={canvasRef} className="w-full h-36 rounded-lg cursor-pointer relative z-[11]" />
-                <div className="absolute bottom-2 left-2 bg-black/80 text-white text-xs px-2 py-1 rounded z-[12]">
-                    {(audioBuffer || url) ? `${formatTime(tab == 'youtube' ? youtubeCurrentTime : audio.current?.currentTime)} / ${formatTime(duration)}` : "0:00 / 0:00"}{" "}
-                    {/* Update 3: Conditional rendering of time display */}
                 </div>
             </div>
-            <div>
-                {/* Update 3: Conditional rendering of slider */}
-                {((audioBuffer && tab == 'audio') || (tab == 'youtube' && url))  && (<>
+
+            {/* <div>
+                {((audioBuffer && tab == 'audio') || (tab == 'youtube' && url)) && (<>
                     <Slider
                         ref={slider}
-                        value={[tab == 'audio' ? audioTrackValue?.value || 0 : youtubeCurrentTime || 0]}
+                        value={[tab == 'audio' ? audioTrackValue?.value || 0 : 0]}
                         min={0}
                         max={duration}
                         step={0.1}
                         onValueChange={([value]) => {
                             if(audio.current) audio.current.currentTime = value;
-                            if(tab == 'youtube') {
-                                setYoutubeCurrentTime(value)
-                            } else {
-                                setAudioCurrentTime(value)
-                            }
                         }}
                         className="my-4"
                     />
-                    <div className='flex justify-center items-center gap-5'>
-                        <audio ref={audio} src={audioUrl} id='selectedAudio' controls
-                            className='hidden'
-                            onPlay={() => {
-                                for (let i = 0; i < 4; i++) {
-                                    const audio = document.getElementById(`resultantAudio${i}`) as HTMLAudioElement;
-                                    audio?.pause();
-                                }
-                                const audio = document.getElementById("footerAudioPlayer") as HTMLAudioElement;
-                                audio?.pause();
-                                
-                                setPlayMusic(true);
-                            }}
-                            onPause={() => {
-                                console.log('hello')
-                                setPlayMusic(false);
-                            }}
-                            onVolumeChange={() => {
-                                console.log('volume')
-                            }}
-                            onLoadedMetadata={(e: any) => {
-                                console.log("e.target?.duration: ", e.target?.duration)
-                                setAudioTrackValue(prev => ({ ...prev, max: Math.floor(e.target?.duration) }))
-                            }}
-                            onTimeUpdate={(e: React.ChangeEvent<HTMLAudioElement>) => {
-                                setAudioTrackValue(prev => ({ ...prev, value: Math.floor(e.target?.currentTime) }))
-                            }}
-                        ></audio>
-                        <div className='relative cursor-pointer'
-                            onClick={() => {
-                                audio.current.currentTime -= 10;
-                            }}
-                        >
-                            <RotateCcw />
-                            <span style={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                fontSize: '0.35em',
-                            }}>
-                                10
-                            </span>
-                        </div>
-                        <div>
-                            {playMusic ?
-                                <Pause size={28} onClick={() => audio.current?.pause()} />
-                                :
-                                <Play size={28} onClick={() => audio.current?.play()} />
-                            }
-                        </div>
-                        <div className='relative cursor-pointer'
-                            onClick={() => {
-                                audio.current.currentTime += 10;
-                            }}
-                        >
-                            <RotateCcw className='rotate-y-180' />
-                            <span style={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                fontSize: '0.35em',
-                            }}>
-                                10
-                            </span>
-                        </div>
-                    </div>
                 </>)}
-            </div>
+            </div> */}
         </div>
     )
 }

@@ -1,13 +1,16 @@
 import { Button } from "@/components/ui/button"
 import * as React from "react"
-import { Link } from "react-router-dom"
+import { Link, useOutletContext } from "react-router-dom"
 
 const HomePage = () => {
     const [text, setText] = React.useState("")
     const fullText = "Where AI Meets Musical Imagination. Compose songs, write lyrics, create covers, clone voices, and transform audio with Astra Labs—your complete AI music studio. From inspiration to creation, turn every musical dream into reality."
-    const token = localStorage.getItem('astraToken');
+
+    const { okToGo } = useOutletContext<{okToGo: boolean}>();
 
     React.useEffect(() => {
+        if(!okToGo) return;
+        
         let currentIndex = 0
         const intervalId = setInterval(() => {
             if (currentIndex <= fullText.length) {
@@ -19,7 +22,7 @@ const HomePage = () => {
         }, 50)
 
         return () => clearInterval(intervalId)
-    }, [])
+    }, [okToGo])
 
     return (
         <div className="flex-1 flex items-center justify-center space-y-4 px-4">

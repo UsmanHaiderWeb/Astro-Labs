@@ -8,7 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 function Header({userDetails}: {userDetails: {email: string}}) {
     return (
         <header className="w-full py-2 px-6">
-            <nav className="max-w-[1920px] min-h-[40px] mx-auto flex items-center justify-between">
+            <nav className="max-w-[1920px] min-h-[40px] mx-auto flex items-center justify-between h-[35px]">
                 <div className='w-48 flex items-center gap-5'>
                     {/* <TooltipProvider>
                         <Tooltip>
@@ -48,7 +48,7 @@ function Header({userDetails}: {userDetails: {email: string}}) {
                 </div>
 
                 {/* Auth Buttons */}
-                <div className="group-data-[authenticated=notauthorized]:opacity-0 group-data-[authenticated=notauthorized]:pointer-events-none w-48 flex justify-end h-[35px]">
+                <div className="group-data-[authenticated=notauthorized]:opacity-0 group-data-[authenticated=notauthorized]:pointer-events-none w-48 flex items-center justify-end">
                     <div className='hidden group-data-[authenticated=true]:block'>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>

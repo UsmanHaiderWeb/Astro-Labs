@@ -11,7 +11,7 @@ import { AdvancedSettings } from '@/components/explore/advanced-settings'
 import axios, { AxiosError } from 'axios'
 import DawSection from '@/components/explore/daw-section'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { generateAudioCall } from '@/lib/AxiosCalls'
+import { generateAudioCall, uploadAudioCall } from '@/lib/AxiosCalls'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { showToast } from '@/lib/ShowToast'
 
@@ -46,6 +46,9 @@ const Explore = () => {
 
     React.useEffect(() => {
         if (audioFile) {
+            setAudioSelectedVoices([]);
+            setVoiceSelections([]);
+
             const reader = new FileReader()
             reader.onload = async (e) => {
                 const arrayBuffer = e.target?.result as ArrayBuffer
@@ -84,6 +87,61 @@ const Explore = () => {
         }
     });
 
+    const handleFileStoringOnCloud = useMutation({
+        mutationKey: ['handleFileStoringOnCloud', audioUrl],
+        mutationFn: uploadAudioCall,
+        onError: (error: AxiosError<{ detail: string }>) => {
+            console.log("handleFileStoringOnCloud error: ", error);
+            localStorage.setItem('isGenerating', 'failed');
+            if (error.status == 401) return showToast("Please login to generate audio.");
+            showToast("Something went wrong. Please try again.");
+            setIsGenerating('failed');        },
+        onSuccess: (data: { audio_url: string }) => {
+            const task_type: 'regular' | 'file' | 'advanced' | 'advanced-file' | 'multiple' = (
+                tab == 'audio' ?
+                    (isAdvanceSettingsUpdate ?
+                        (audioSelectedVoices?.length == 0 ? 'advanced-file' : 'multiple') :
+                        (audioSelectedVoices?.length == 0 ? 'file' : 'multiple'))
+                    : (isAdvanceSettingsUpdate ? 'advanced' : 'regular')
+            )
+
+            const formData: any = new FormData();
+            formData.append('task_type', task_type);
+            formData.append('audio_url', data?.audio_url);
+
+            if (isAdvanceSettingsUpdate) {
+                Object.keys(advanceSettings)?.forEach((key, idx) => {
+                    formData.append(key, Object.values(advanceSettings)?.[idx]);
+                })
+            };
+
+            if (voiceSelections.length > 0) {
+                formData.append('voice_one', voiceSelections[0].voice);
+                formData.append('pitch_one', audioPitch.toString());
+                formData.append('singer1_start', new Date(voiceSelections[0].range[0] * 1000).toISOString().substring(11, 19));
+                formData.append('singer1_end', new Date(voiceSelections[0].range[1] * 1000).toISOString().substring(11, 19));
+
+                if (voiceSelections.length == 1) return;
+
+                formData.append('voice_two', voiceSelections[1].voice);
+                formData.append('pitch_two', audioPitch.toString());
+                formData.append('singer2_start', new Date(voiceSelections[1].range[0] * 1000).toISOString().substring(11, 19));
+                formData.append('singer2_end', new Date(voiceSelections[1].range[1] * 1000).toISOString().substring(11, 19));
+            } else {
+                const voices: string | string[] = (
+                    audioSelectedVoices?.length == 0 ? "Morgan Freeman RVC v2" : audioSelectedVoices
+                )
+
+                formData.append('voice', voices.toString());
+                formData.append('pitch', audioPitch.toString());
+            }
+
+            mutate({
+                token: localStorage.getItem('astraToken'),
+                formData
+            });
+        }
+    });
 
     const updateAdvanceSetting = (key: keyof AdvanceSettingsInterface, value: any) => {
         setIsAdvanceSettingsUpdate(true);
@@ -92,19 +150,16 @@ const Explore = () => {
 
     const handleFileUpload = (file: File) => {
         if (file) {
-            if (file.size <= 10 * 1024 * 1024 && (file.type === "audio/mpeg" || file.type === "audio/wav")) {
+            if (file.size <= 15 * 1024 * 1024 && (file.type === "audio/mpeg" || file.type === "audio/wav")) {
                 // setFileName(file.name)
                 setAudioFile(file)
                 const url = URL.createObjectURL(file);
                 setAudioUrl(url);
             } else {
-                alert("Please upload an MP3 or WAV file under 10MB.")
+                alert("Please upload an MP3 or WAV file under 15MB.")
             }
         }
     }
-
-    // const handleFileUpload = (file: File) => {
-    // }
 
     React.useEffect(() => {
         (async () => {
@@ -130,61 +185,21 @@ const Explore = () => {
 
         if ((tab === 'audio' ? !audioFile : !youtubeUrl) || isGenerating?.toLocaleLowerCase() == 'pending') return;
 
-        const task_type: 'regular' | 'file' | 'advanced' | 'advanced-file' | 'multiple' = (
-            tab == 'audio' ?
-                (isAdvanceSettingsUpdate ?
-                    (audioSelectedVoices?.length == 0 ? 'advanced-file' : 'multiple') :
-                    (audioSelectedVoices?.length == 0 ? 'file' : 'multiple'))
-                : (isAdvanceSettingsUpdate ? 'advanced' : 'regular')
-        )
-
         localStorage.removeItem('job_id');
         localStorage.removeItem('audioLinks');
         localStorage.setItem('isGenerating', 'pending');
         setIsGenerating('pending');
 
-        const formData: any = new FormData();
-        formData.append('task_type', task_type);
-
-        if (tab == 'youtube') formData.append('video_url', youtubeUrl);
-        if (tab == 'audio') formData.append('file', audioFile);
-        if (isAdvanceSettingsUpdate) {
-            Object.keys(advanceSettings)?.forEach((key, idx) => {
-                formData.append(key, Object.values(advanceSettings)?.[idx]);
-            })
-        };
-
-        if (voiceSelections.length > 0) {
-            formData.append('voice_one', voiceSelections[0].voice);
-            formData.append('pitch_one', tab == 'youtube' ? youtubePitch.toString() : audioPitch.toString());
-            formData.append('singer1_start', new Date(voiceSelections[0].range[0] * 1000).toISOString().substring(11, 19));
-            formData.append('singer1_end', new Date(voiceSelections[0].range[1] * 1000).toISOString().substring(11, 19));
-            
-            if (voiceSelections.length == 1) return;
-            
-            formData.append('voice_two', voiceSelections[1].voice);
-            formData.append('pitch_two', tab == 'youtube' ? youtubePitch.toString() : audioPitch.toString());
-            formData.append('singer2_start', new Date(voiceSelections[1].range[0] * 1000).toISOString().substring(11, 19));
-            formData.append('singer2_end', new Date(voiceSelections[1].range[1] * 1000).toISOString().substring(11, 19));
-        } else {
-            const voices: string | string[] = (
-                tab == 'audio' ? audioSelectedVoices?.length == 0 ? "Morgan Freeman RVC v2" : audioSelectedVoices
-                    : youtubeSelectedVoices?.length == 0 ? "Morgan Freeman RVC v2" : youtubeSelectedVoices
-            )
-
-            formData.append('voice', voices.toString());
-            formData.append('pitch', tab == 'youtube' ? youtubePitch.toString() : audioPitch.toString());
+        if (tab == 'audio' && audioFile) {
+            const formData: any = new FormData();
+            formData.append('file', audioFile);
+            handleFileStoringOnCloud.mutate({ token, formData })
         }
-
-        mutate({
-            token: localStorage.getItem('astraToken'),
-            formData
-        });
     }
 
     return (
-        <div className="flex-1 container mx-auto px-4 pt-6 pb-20 max-w-[1200px]">
-            <h1 className='text-3xl mb-5 text-center'>AI Cover</h1>
+        <div className="flex-1 container mx-auto px-4 pt-4 pb-1.5 max-w-[1200px]">
+            <h1 className='text-3xl mb-3.5 text-center'>AI Cover</h1>
             <div className="grid grid-cols-1 lg:grid-cols-6 group-data-[sidebaropen=true]:lg:grid-cols-6 gap-4">
                 {/* Left Panel */}
                 <div className="lg:col-span-3 group-data-[sidebaropen=true]:lg:col-span-3 bg-[#1a1a1a] rounded-xl overflow-hidden flex items-start flex-col">
@@ -229,6 +244,22 @@ const Explore = () => {
                                             setPitch={setAudioPitch}
                                             onFileUpload={handleFileUpload}
                                             isPending={isPending}
+                                            audioFile={audioFile}
+                                            handleClearAudio={() => {
+                                                setAudioFile(null);
+                                                setAudioSelectedVoices([]);
+                                                setAudioPitch(0);
+                                                setAudioBuffer(null);
+                                                const existingAudio = document.getElementById('selectedAudio') as HTMLAudioElement;
+                                                existingAudio?.pause();
+                                                for (let i = 0; i < 4; i++) {
+                                                    const audio = document.getElementById(`resultantAudio${i}`) as HTMLAudioElement;
+                                                    audio?.pause();
+                                                }
+                                                setAdvanceSettings(AdvancedSettingsDefaultData);
+                                                setIsAdvanceSettingsUpdate(false);
+                                                setIsGenerating(null);
+                                            }}
                                         />
                                     </div>
                                 </div>

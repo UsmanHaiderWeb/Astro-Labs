@@ -19,6 +19,11 @@ import { setToken } from '@/lib/utils'
 function Login() {
     const navigate = useNavigate();
 
+    React.useEffect(() => {
+        import('../App');
+        import('./HomePage');
+    }, [])
+
     const { control, formState: { errors }, handleSubmit, setError } = useForm({
         defaultValues: {
             email: "",

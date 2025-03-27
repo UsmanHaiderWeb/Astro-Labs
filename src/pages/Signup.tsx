@@ -18,6 +18,11 @@ import { RefreshCcw } from 'lucide-react'
 function Signup() {
     const navigate = useNavigate();
 
+    React.useEffect(() => {
+        import('../App');
+        import('./HomePage');
+    }, [])
+
     const { control, formState: { errors }, handleSubmit } = useForm({
         defaultValues: {
             username: '',

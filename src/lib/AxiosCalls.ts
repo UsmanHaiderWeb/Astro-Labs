@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
     baseURL: 'https://astralabs.ai/api'
-    // baseURL: 'https://494b-39-49-21-74.ngrok-free.app'
+    // baseURL: 'https://0d92-119-155-205-237.ngrok-free.app'
 })
 
 export const SignupCall = async ({username, email, password}: {username: string, email: string, password: string}) => {
@@ -102,6 +102,20 @@ export const FetchStripeUrlCall = async ({token, planId}: {token: string, planId
 }
 
 // generate audios
+
+export const uploadAudioCall = async ({token, formData}: {token: string, formData: FormData}) => {
+    const { data } = await api.post(`/gpu/upload-audio`,
+        formData,
+        {
+            headers: {
+                Authorization: `bearer ${token}`,
+            },
+            withCredentials: true
+        },
+    )
+
+    return data;
+}
 
 export const generateAudioCall = async ({token, formData}: {token: string, formData: FormData}) => {
     const { data } = await api.post(`/gpu/cover`,

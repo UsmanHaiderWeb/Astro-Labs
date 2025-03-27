@@ -47,7 +47,7 @@ function ContactUs() {
                                 <Mail className="h-6 w-6" />
                                 <div>
                                     <h3 className="font-heading text-lg">Email Us</h3>
-                                    <a href='info@astralabs.ai' className="text-muted-foreground cursor-pointer">info@astralabs.ai</a>
+                                    <a href='mailto:info@astralabs.ai' className="text-muted-foreground cursor-pointer">info@astralabs.ai</a>
                                     <p className="text-muted-foreground text-sm mt-0.5">
                                         For any inquiries
                                     </p>

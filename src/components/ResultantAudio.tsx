@@ -9,7 +9,7 @@ const ResultantAudio = ({ id, name, src }: { id: number, name: string, src: stri
     const [playAudio, setPlayAudio] = React.useState<boolean>(false);
     const [audioTrackValue, setAudioTrackValue] = React.useState<{ max: number; value: number }>(null);
     const audio = React.useRef<HTMLAudioElement>(null);
-    const slider = React.useRef<HTMLInputElement>(null);
+    const slider = React.useRef<HTMLDivElement>(null);
 
     return (
         <div className="bg-black/50 rounded-lg p-3">
@@ -46,6 +46,7 @@ const ResultantAudio = ({ id, name, src }: { id: number, name: string, src: stri
             </div>
             <div className='px-3 mt-3 mb-2'>
                 <Slider
+                    className='resultAudioSlider'
                     ref={slider}
                     min={0}
                     max={audioTrackValue?.max}
@@ -57,12 +58,12 @@ const ResultantAudio = ({ id, name, src }: { id: number, name: string, src: stri
                     }}
                 />
             </div>
-            <audio ref={audio} id={`resultantAudio${id}`} src={src || "/Bones.mp4"} preload='metadata' className='hidden'
+            <audio ref={audio} id={`resultantAudio${id}`} src={src || "/audio.mp3"} preload='metadata' className='hidden'
                 onPlay={() => {
                     for (let i = 0; i < 5; i++) {
-                        if(i != id){
+                        if (i != id) {
                             const audioElement = document.getElementById(`resultantAudio${i}`) as HTMLAudioElement;
-                            if(audioElement){
+                            if (audioElement) {
                                 audioElement?.pause()
                             }
                         }
@@ -71,7 +72,7 @@ const ResultantAudio = ({ id, name, src }: { id: number, name: string, src: stri
                     footerAudioPlayer?.pause();
                     const selectedAudio = document.getElementById("selectedAudio") as HTMLAudioElement;
                     selectedAudio?.pause();
-                    
+
                     setPlayAudio(true);
                 }}
                 onPause={() => {
@@ -92,3 +93,44 @@ const ResultantAudio = ({ id, name, src }: { id: number, name: string, src: stri
 }
 
 export default React.memo(ResultantAudio)
+
+//     < div className = "w-9 h-9 rounded-full bg-grayBackground border border-white/20 transition-all duration-200 flex justify-center items-center"
+// onClick = {() => {
+//     if (playAudio) {
+//         audio.current?.pause();
+//     } else {
+//         audio.current?.play();
+//         if (waveformRef.current) {
+//             // setShowWaveForm(true)
+//             wavesurfer.current = WaveSurfer.create({
+//                 container: waveformRef.current,
+//                 // waveColor: "white",
+//                 // progressColor: "purple",
+//                 cursorColor: "transparent",
+//                 barWidth: 3,
+//                 height: 'auto',
+//                 width: '100%',
+//                 barRadius: 50,
+//             });
+
+//             (async () => {
+//                 await wavesurfer.current.load('https://cdn.pixabay.com/audio/2023/09/19/audio_31acfa1a19.mp3');
+//                 // setShowWaveForm(false)
+//             })()
+//         } else {
+//             wavesurfer.current?.destroy();
+//         }
+//     }
+// }}
+// >
+//     {
+//         playAudio?
+//             <Pause size = { 16 } />
+//     :
+// <Play size={16} />
+// }
+// </div >
+// <div ref={waveformRef} className="flex-grow h-10 rounded-lg pointer-events-none" />
+// <div className='flex-grow'>
+// <p className="text-white/60 text-xs">{audio.current?.currentTime ? formatTime(audio.current?.currentTime) : '0.00'} / {audio.current?.duration ? formatTime(audio.current?.duration) : '0.00'}</p>
+// </div>

@@ -4,7 +4,7 @@ import * as React from 'react'
 import { useState, useRef } from "react"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Upload } from "lucide-react"
+import { Trash2, Upload } from "lucide-react"
 import { Slider } from "@/components/ui/slider"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -24,9 +24,11 @@ interface AudioSectionProps {
     setPitch: (pitch: number) => void
     onFileUpload: (file: File) => void
     isPending: boolean
+    audioFile: File | null
+    handleClearAudio: () => void;
 }
 
-function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFileUpload, isPending }: AudioSectionProps) {
+function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFileUpload, isPending, audioFile, handleClearAudio }: AudioSectionProps) {
     const [open, setOpen] = useState(false)
     const [fileName, setFileName] = useState<string | null>(null)
     const fileInputRef = useRef<HTMLInputElement>(null)
@@ -45,11 +47,12 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
         existingAudio?.pause();
 
         if (file) {
-            if (file.size <= 10 * 1024 * 1024 && (file.type === "audio/mpeg" || file.type === "audio/wav")) {
+            if (file.size <= 15 * 1024 * 1024 && (file.type === "audio/mpeg" || file.type === "audio/wav")) {
                 setFileName(file.name)
                 onFileUpload(file)
+                setShowErrorAboutAudio('')
             } else {
-                alert("Please upload an MP3 or WAV file under 10MB.")
+                alert("Please upload an MP3 or WAV file under 15MB.")
             }
         }
     }
@@ -74,11 +77,12 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
 
         const file = event.dataTransfer.files?.[0]
         if (file) {
-            if (file.size <= 10 * 1024 * 1024 && (file.type === "audio/mpeg" || file.type === "audio/wav")) {
+            if (file.size <= 15 * 1024 * 1024 && (file.type === "audio/mpeg" || file.type === "audio/wav")) {
                 setFileName(file.name)
                 onFileUpload(file)
+                setShowErrorAboutAudio('')
             } else {
-                alert("Please upload an MP3 or WAV file under 10MB.")
+                alert("Please upload an MP3 or WAV file under 15MB.")
             }
         }
     }
@@ -86,7 +90,26 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
     return (
         <div className="space-y-4">
             <div className="space-y-1">
-                <Label className="text-white/60 uppercase text-xs">Upload Audio</Label>
+                <div className='flex items-center justify-between mb-2'>
+                    <Label className="text-white/60 uppercase text-xs">Upload Audio</Label>
+                    {audioFile &&
+                        <div
+                            data-disabled={isGenerating?.toLocaleLowerCase() == 'pending' || isPending}
+                            className="flex justify-center gap-2 uppercase text-xs items-center text-destructive/60 hover:text-destructive/80 cursor-pointer data-[disabled=true]:opacity-50 data-[disabled=true]:pointer-events-none"
+                            onClick={() => {
+                                setFileName(null);
+                                localStorage.removeItem('job_id');
+                                localStorage.removeItem('audioLinks');
+                                localStorage.removeItem('isGenerating');
+                                fileInputRef.current.value = '';
+                                handleClearAudio()
+                            }}
+                        >
+                            Clear
+                            <Trash2 className="h-4 w-4 mr-1" />
+                        </div>
+                    }
+                </div>
                 <div
                     ref={dropRef}
                     data-disabled={isGenerating?.toLocaleLowerCase() == 'pending' || isPending}
@@ -100,11 +123,13 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                     onClick={handleChooseFile}
                 >
                     <input type="file" ref={fileInputRef} onChange={handleFileChange} accept=".mp3,.wav" className="hidden" />
-                    <Button variant="ghost" className="text-white text-xs h-6 cursor-pointer">
+                    <Button variant="ghost" className="w-full text-white text-xs h-6 cursor-pointer">
                         <Upload className="h-3 w-3 mr-1" />
-                        {fileName || "Choose File"}
+                        <span className="max-w-[80%] truncate">
+                            {fileName || "Choose File"}
+                        </span>
                     </Button>
-                    <p className="text-xs text-gray-400 mt-1">Supported formats: MP3, WAV (max 10MB)</p>
+                    <p className="text-xs text-gray-400 mt-1">Supported formats: MP3, WAV (max 15MB)</p>
                 </div>
             </div>
 
@@ -137,7 +162,7 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                                                     setShowErrorAboutAudio('Please first choose a valid Audio file.')
                                                     return
                                                 }
-                                                if(selectedVoices.length == 2 && !selectedVoices.includes(value)) {
+                                                if (selectedVoices.length == 2 && !selectedVoices.includes(value)) {
                                                     setOpen(false)
                                                     setShowErrorAboutAudio('You can only choose two models.')
                                                     return
@@ -145,10 +170,10 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                                                     const newSelected = selectedVoices.includes(voice.name)
                                                         ? selectedVoices.filter((name) => name !== voice.name)
                                                         : [...selectedVoices, voice.name]
-                                                        setSelectedVoices(newSelected)
-                                                        setShowErrorAboutAudio('')
-                                                    }
-                                                }}
+                                                    setSelectedVoices(newSelected)
+                                                    setShowErrorAboutAudio('')
+                                                }
+                                            }}
                                             className="text-white cursor-pointer flex"
                                         >
                                             <Check
@@ -167,7 +192,7 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                         </Command>
                     </PopoverContent>
                 </Popover>
-                {showErrorAboutAudio &&
+                {(showErrorAboutAudio) &&
                     <p className="text-sm text-destructive/70 mt-1">{showErrorAboutAudio}</p>
                 }
             </div>

@@ -45,7 +45,7 @@ const plans: PlanInterface[] = [
 
 const Pricing = () => {
     return (
-        <div className="flex-1 container mx-auto px-4 pt-6 pb-4">
+        <div className="flex-1 container mx-auto px-4 pt-6 pb-1">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
                 {plans.map(plan => (
                     <PlanTemplate key={plan.name} plan={plan} />
