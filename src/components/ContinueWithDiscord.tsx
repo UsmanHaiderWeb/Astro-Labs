@@ -1,19 +1,18 @@
 import * as React from 'react'
 import { Button } from './ui/button'
 import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { ContinueWithDiscordCall } from '@/lib/AxiosCalls';
 import { RefreshCcw } from 'lucide-react';
+import { showToast } from '@/lib/ShowToast';
 
 const ContinueWithDiscord = () => {
     const { mutate, isPending } = useMutation({
         mutationKey: ['Google Login'],
         mutationFn: ContinueWithDiscordCall,
-        onError: (error: AxiosError<{ detail: string }>) => {
-            console.log("ContinueWithDiscord error: ", error);
+        onError: () => {
+            showToast('Something went wrong. Please try again later.')
         },
         onSuccess: (data: { oauth_url: string }) => {
-            console.log("oauth_url: ", data?.oauth_url)
             window.location.href = data.oauth_url;
             // localStorage.setItem("astraToken", data.oauth_url)
             // navigate('/', { replace: true });

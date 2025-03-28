@@ -66,7 +66,6 @@ const Test = () => {
             </button>
             <audio ref={audio} id='footerAudioPlayer' src="/Bones.mp4" controls
                 onEnded={() => {
-                    console.log('working')
                     audio.current.src = '/Bones.mp4'
                     audio.current.play();
                 }}
@@ -76,11 +75,7 @@ const Test = () => {
                 onPause={() => {
                     setPlayMusic(false);
                 }}
-                onVolumeChange={() => {
-                    console.log('volume')
-                }}
                 onLoadedMetadata={(e: any) => {
-                    console.log("e.target?.duration: ", e.target?.duration)
                     setAudioTrackValue(prev => ({ ...prev, max: Math.floor(e.target?.duration) }))
                 }}
                 onTimeUpdate={(e: React.ChangeEvent<HTMLAudioElement>) => {
@@ -94,9 +89,8 @@ const Test = () => {
                     max={audioTrackValue?.max}
                     step={1}
                     value={[audioTrackValue?.value || 0]}
-                    onClick={() => console.log('clicking')}
+                    onClick={() => {}}
                     onValueChange={([val]) => {
-                        console.log('working')
                         audio.current.currentTime = val;
                     }}
                 />

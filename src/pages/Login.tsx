@@ -11,10 +11,10 @@ import { useMutation } from '@tanstack/react-query'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoginSchema } from '@/lib/ZodSchemas'
 import { Controller, useForm } from 'react-hook-form'
-import { AxiosError } from 'axios'
 import FormFieldError from '@/components/FormFieldError'
 import { RefreshCcw } from 'lucide-react'
 import { setToken } from '@/lib/utils'
+import { showToast } from '@/lib/ShowToast'
 
 function Login() {
     const navigate = useNavigate();
@@ -35,9 +35,9 @@ function Login() {
     const { mutate, isPending } = useMutation({
         mutationKey: ['Login'],
         mutationFn: LoginCall,
-        onError: (error: AxiosError<{ detail: string }>) => {
+        onError: () => {
             setError('root', { message: 'Email or password is invalid.' })
-            console.log("signup error: ", error);
+            showToast('Email or password is invalid.')
         },
         onSuccess: (data: { access_token: string }) => {
             setToken(data.access_token)

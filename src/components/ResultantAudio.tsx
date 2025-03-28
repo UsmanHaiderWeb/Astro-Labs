@@ -52,7 +52,7 @@ const ResultantAudio = ({ id, name, src }: { id: number, name: string, src: stri
                     max={audioTrackValue?.max}
                     step={1}
                     value={[audioTrackValue?.value || 0]}
-                    onClick={() => console.log('clicking')}
+                    onClick={() => {}}
                     onValueChange={([val]) => {
                         audio.current.currentTime = val;
                     }}
@@ -77,9 +77,6 @@ const ResultantAudio = ({ id, name, src }: { id: number, name: string, src: stri
                 }}
                 onPause={() => {
                     setPlayAudio(false);
-                }}
-                onVolumeChange={() => {
-                    console.log('volume')
                 }}
                 onLoadedMetadata={(e: any) => {
                     setAudioTrackValue(prev => ({ ...prev, max: Math.floor(e.target?.duration) }))

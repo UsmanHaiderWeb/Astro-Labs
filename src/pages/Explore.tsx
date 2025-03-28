@@ -66,14 +66,12 @@ const Explore = () => {
         mutationKey: ['generate audios', (tab ? audioFile : youtubeUrl)],
         mutationFn: generateAudioCall,
         onError: (error: AxiosError<{ detail: string }>) => {
-            console.log("generateAudio error: ", error);
             localStorage.setItem('isGenerating', 'failed');
             if (error.status == 401) return showToast("Please login to generate audio.");
             showToast("Something went wrong. Please try again.");
             setIsGenerating('failed');
         },
         onSuccess: (data: { job_id: string, status: 'queued' | 'failed' }) => {
-            console.log("generateAudio success: ", data);
             localStorage.setItem('job_id', data.job_id);
             if (data.status == 'queued') {
                 localStorage.setItem('isGenerating', 'pending');
@@ -91,7 +89,6 @@ const Explore = () => {
         mutationKey: ['handleFileStoringOnCloud', audioUrl],
         mutationFn: uploadAudioCall,
         onError: (error: AxiosError<{ detail: string }>) => {
-            console.log("handleFileStoringOnCloud error: ", error);
             localStorage.setItem('isGenerating', 'failed');
             if (error.status == 401) return showToast("Please login to generate audio.");
             showToast("Something went wrong. Please try again.");
@@ -166,14 +163,12 @@ const Explore = () => {
             if (youtubeUrl && youtubeUrl.includes("https://www.youtube.com/watch?v=")) {
                 const videoId = youtubeUrl.split("watch?v=")[1];
                 const videoDetails = await axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=contentDetails,snippet&key=AIzaSyBEt1oYb9Hv6GOGVqeJUdZpzhmWDYQnsGE`)
-                console.log("videoDetails: ", videoDetails.data?.items?.[0]?.contentDetails?.duration);
                 const durationString = videoDetails.data?.items?.[0]?.contentDetails?.duration;
                 const match = durationString.match(/PT(\d+M)?(\d+S)?/);
                 const minutes = match[1] ? parseInt(match[1].slice(0, -1)) : 0;
                 const seconds = match[2] ? parseInt(match[2].slice(0, -1)) : 0;
                 const totalSeconds = minutes * 60 + seconds;
                 setYoutubeTimeRange([0, totalSeconds]);
-                console.log("totalSeconds: ", totalSeconds)
                 setYoutubeDuration(totalSeconds);
             }
         })();

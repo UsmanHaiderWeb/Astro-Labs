@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 const GoogleRedirect = () => {
 	const navigate = useNavigate();
 	const searchParams: {code?: string} = useSearchParamsObject();
-	console.log("searchParams: ", searchParams)
 
 	const { data, isError }: any = useQuery({
 		queryKey: ['send google code to backend', searchParams?.code],
@@ -21,7 +20,6 @@ const GoogleRedirect = () => {
 	});
 
 	React.useEffect(() => {
-		console.log('data: ', data);
 		if(data?.access_token){
             setToken(data?.access_token)
             navigate('/', { replace: true });

@@ -44,7 +44,6 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
     //     if(storedFilename) setFileName(storedFilename);
     //     const storedAudioFile = localStorage.getItem('audioFile');
     //     // if(storedAudioFile) onFileUpload(JSON.parse(storedAudioFile));
-    //     console.log("storedAudioFile: ", storedAudioFile)
     // }, [])
 
     // React.useEffect(() => {
@@ -59,7 +58,6 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
         const file = event.target.files?.[0]
 
         const existingAudio = document.getElementById('selectedAudio') as HTMLAudioElement
-        console.log("existingAudio: ", existingAudio)
         existingAudio?.pause();
 
         if (file) {
@@ -178,9 +176,9 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                                                     setShowErrorAboutAudio('Please first choose a valid Audio file.')
                                                     return
                                                 }
-                                                if (selectedVoices.length == 2 && !selectedVoices.includes(value)) {
+                                                if (selectedVoices.length == 1 && !selectedVoices.includes(value)) {
                                                     setOpen(false)
-                                                    setShowErrorAboutAudio('You can only choose two models.')
+                                                    setShowErrorAboutAudio('You can only choose one model.')
                                                     return
                                                 } else {
                                                     const newSelected = selectedVoices.includes(voice.name)

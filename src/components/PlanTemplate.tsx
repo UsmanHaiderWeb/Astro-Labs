@@ -5,8 +5,8 @@ import { Check, RefreshCcw } from 'lucide-react'
 import { Badge } from './ui/badge'
 import { PlanInterface } from '@/lib/interfaces&types'
 import { useMutation } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
 import { FetchStripeUrlCall } from '@/lib/AxiosCalls'
+import { showToast } from '@/lib/ShowToast'
 
 const PlanTemplate = ({ plan }: { plan: PlanInterface }) => {
     const token = localStorage.getItem("astraToken");
@@ -15,8 +15,8 @@ const PlanTemplate = ({ plan }: { plan: PlanInterface }) => {
     const { mutate, isPending } = useMutation({
         mutationKey: ['fetch stripe url'],
         mutationFn: FetchStripeUrlCall,
-        onError: (error: AxiosError<{ detail: string }>) => {
-            console.log("signup error: ", error);
+        onError: () => {
+            showToast('Something went wrong. Please try again later.')
         },
         onSuccess: (data: { checkout_url: string }) => {
             window.location.href = data?.checkout_url;

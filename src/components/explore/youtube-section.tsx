@@ -79,10 +79,9 @@ export function YouTubeSection({
                                                     setShowErrorAboutUrl('Please first enter a valid YouTube link.')
                                                     return
                                                 }
-                                                console.log("selectedVoices: ", selectedVoices)
-                                                if(selectedVoices.length == 2 && !selectedVoices.includes(value)) {
+                                                if(selectedVoices.length == 1 && !selectedVoices.includes(value)) {
                                                     setOpen(false)
-                                                    setShowErrorAboutUrl('You can only choose two models.')
+                                                    setShowErrorAboutUrl('You can only choose one model.')
                                                     return
                                                 } else {
                                                     const newSelected = selectedVoices.includes(voice?.name)

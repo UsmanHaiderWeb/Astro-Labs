@@ -11,9 +11,9 @@ import { SignupSchema } from '@/lib/ZodSchemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { SignupCall } from '@/lib/AxiosCalls'
-import { AxiosError } from 'axios'
 import FormFieldError from '@/components/FormFieldError'
 import { RefreshCcw } from 'lucide-react'
+import { showToast } from '@/lib/ShowToast'
 
 function Signup() {
     const navigate = useNavigate();
@@ -35,8 +35,8 @@ function Signup() {
     const { mutate, isPending } = useMutation({
         mutationKey: ['Signup'],
         mutationFn: SignupCall,
-        onError: (error: AxiosError) => {
-            console.log("signup error: ", error)
+        onError: () => {
+            showToast('Something went wrong. Please try again later.')
         },
         onSuccess: () => {
             navigate('/login', { replace: true });

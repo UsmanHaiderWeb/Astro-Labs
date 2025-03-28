@@ -135,7 +135,6 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
                 }
             })
         } else if (url && tab == 'youtube') {
-            console.log('working');
             ctx.fillStyle = "#333333"
             ctx.font = "10px Arial"
             const timeIntervals = [];
@@ -380,14 +379,9 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
                                         setPlayMusic(true);
                                     }}
                                     onPause={() => {
-                                        console.log('hello')
                                         setPlayMusic(false);
                                     }}
-                                    onVolumeChange={() => {
-                                        console.log('volume')
-                                    }}
                                     onLoadedMetadata={(e: any) => {
-                                        console.log("e.target?.duration: ", e.target?.duration)
                                         setAudioTrackValue(prev => ({ ...prev, max: Math.floor(e.target?.duration) }))
                                     }}
                                     onTimeUpdate={(e: React.ChangeEvent<HTMLAudioElement>) => {
