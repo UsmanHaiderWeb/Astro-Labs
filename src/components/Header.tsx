@@ -70,16 +70,16 @@ function Header({userDetails}: {userDetails: {email: string}}) {
                             <DropdownMenuContent className="w-56 bg-grayBackground border-white/30 border-solid border-[1px] text-white" align="end">
                                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                                 <DropdownMenuSeparator className='bg-white/10' />
-                                <DropdownMenuItem>
+                                <DropdownMenuItem className='cursor-pointer'>
                                     <Mail className="mr-2 h-4 w-4" />
                                     <span>{userDetails?.email || 'info@example.com'}</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator className='bg-white/10' />
-                                <DropdownMenuItem className="text-red-600" onClick={() => {
+                                <DropdownMenuItem className="text-red-600 cursor-pointer" onClick={() => {
                                     removeToken();
-                                    localStorage.removeItem('job_id');
-                                    localStorage.removeItem('audioLinks');
-                                    localStorage.removeItem('isGenerating');
+                                    // localStorage.removeItem('job_id');
+                                    // localStorage.removeItem('audioLinks');
+                                    // localStorage.removeItem('isGenerating');
                                     window.location.href = '/login';
                                 }}>
                                     <LogOut className="mr-2 h-4 w-4" />

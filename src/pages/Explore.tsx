@@ -121,12 +121,12 @@ const Explore = () => {
                 formData.append('singer1_start', new Date(voiceSelections[0].range[0] * 1000).toISOString().substring(11, 19));
                 formData.append('singer1_end', new Date(voiceSelections[0].range[1] * 1000).toISOString().substring(11, 19));
 
-                if (voiceSelections.length == 1) return;
-
-                formData.append('voice_two', voiceSelections[1].voice);
-                formData.append('pitch_two', audioPitch.toString());
-                formData.append('singer2_start', new Date(voiceSelections[1].range[0] * 1000).toISOString().substring(11, 19));
-                formData.append('singer2_end', new Date(voiceSelections[1].range[1] * 1000).toISOString().substring(11, 19));
+                if (voiceSelections.length == 2){
+                    formData.append('voice_two', voiceSelections[1].voice);
+                    formData.append('pitch_two', audioPitch.toString());
+                    formData.append('singer2_start', new Date(voiceSelections[1].range[0] * 1000).toISOString().substring(11, 19));
+                    formData.append('singer2_end', new Date(voiceSelections[1].range[1] * 1000).toISOString().substring(11, 19));
+                }
             } else {
                 const voices: string | string[] = (
                     audioSelectedVoices?.length == 0 ? "Morgan Freeman RVC v2" : audioSelectedVoices
