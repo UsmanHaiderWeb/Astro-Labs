@@ -9,13 +9,13 @@ const HomePage = React.lazy(() => import('./pages/HomePage'));
 const Explore = React.lazy(() => import('./pages/Explore'));
 const AboutUs = React.lazy(() => import('./pages/AboutUs'));
 const ContactUs = React.lazy(() => import('./pages/ContactUs'));
-const Pricing = React.lazy(() => import('./pages/Pricing'));
-const PurchasePlan = React.lazy(() => import('./pages/PurchasePlan'));
+// const Pricing = React.lazy(() => import('./pages/Pricing'));
+// const PurchasePlan = React.lazy(() => import('./pages/PurchasePlan'));
 const FAQs = React.lazy(() => import('./pages/FAQs'));
 const Login = React.lazy(() => import('./pages/Login'));
 const Signup = React.lazy(() => import('./pages/Signup'));
-const PaymentSuccessPage = React.lazy(() => import('./pages/PaymentSuccessPage'));
-const PaymentErrorPage = React.lazy(() => import('./pages/PaymentErrorPage'));
+// const PaymentSuccessPage = React.lazy(() => import('./pages/PaymentSuccessPage'));
+// const PaymentErrorPage = React.lazy(() => import('./pages/PaymentErrorPage'));
 const NavigateBack = React.lazy(() => import('./components/NavigateBack'));
 const GoogleRedirect = React.lazy(() => import('./components/GoogleRedirect'));
 const DiscordRedirect = React.lazy(() => import('./components/DiscordRedirect'));
@@ -63,22 +63,22 @@ const router = createBrowserRouter([
                     </React.Suspense>
                 )
             },
-            {
-                path: '/pricing',
-                element: (
-                    <React.Suspense fallback={<div></div>}>
-                        <Pricing />
-                    </React.Suspense>
-                )
-            },
-            {
-                path: '/purchase',
-                element: (
-                    <React.Suspense fallback={<div></div>}>
-                        <PurchasePlan />
-                    </React.Suspense>
-                )
-            },
+            // {
+            //     path: '/pricing',
+            //     element: (
+            //         <React.Suspense fallback={<div></div>}>
+            //             <Pricing />
+            //         </React.Suspense>
+            //     )
+            // },
+            // {
+            //     path: '/purchase',
+            //     element: (
+            //         <React.Suspense fallback={<div></div>}>
+            //             <PurchasePlan />
+            //         </React.Suspense>
+            //     )
+            // },
             {
                 path: '/faqs',
                 element: (
@@ -127,22 +127,22 @@ const router = createBrowserRouter([
             </React.Suspense>
         )
     },
-    {
-        path: '/payment-success',
-        element: (
-            <React.Suspense fallback={<div></div>}>
-                <PaymentSuccessPage />
-            </React.Suspense>
-        )
-    },
-    {
-        path: '/payment-cancel',
-        element: (
-            <React.Suspense fallback={<div></div>}>
-                <PaymentErrorPage />
-            </React.Suspense>
-        )
-    },
+    // {
+    //     path: '/payment-success',
+    //     element: (
+    //         <React.Suspense fallback={<div></div>}>
+    //             <PaymentSuccessPage />
+    //         </React.Suspense>
+    //     )
+    // },
+    // {
+    //     path: '/payment-cancel',
+    //     element: (
+    //         <React.Suspense fallback={<div></div>}>
+    //             <PaymentErrorPage />
+    //         </React.Suspense>
+    //     )
+    // },
     {
         path: '/*',
         element: (
