@@ -56,14 +56,34 @@ function ResultSection({ isPending, setIsGenerating, isGenerating }: { isPending
     }, [generatedAudiosData])
 
     return (
-        <div className="bg-[#1a1a1a] rounded-xl py-4">
+        <div className="bg-[#1a1a1a] rounded-xl py-3">
             <h2 className="text-white/60 uppercase text-xs mb-2 px-4">Result</h2>
-            <div className='h-32'>
+            <div className='h-[134px]'>
+                {/* <ScrollArea className='scrollbarAudioResultSection px-5 h-full'>
+                    <div className="grid grid-cols-2 gap-3">
+                        {['1','2','3', '4']?.map((result: string, idx) => {
+                            return <ResultantAudio key={idx.toString()} id={idx} name={
+                                idx == 0 ? 'Cover' :
+                                idx == 1 ? 'Main Vocals' :
+                                idx == 2 ? 'Background Vocals' :
+                                idx == 3 ? 'Instrumentals' :
+                                ''
+                            } src={result} />
+                        })}
+                    </div>
+                </ScrollArea> */}
+
                 {(audioLinks && Object.values(audioLinks)?.length > 0 && isGenerating?.toLocaleLowerCase() == 'done') ? (
                     <ScrollArea className='scrollbarAudioResultSection px-5 h-full'>
                         <div className="grid grid-cols-2 gap-3">
                             {Object.values(audioLinks)?.slice(0, 4)?.map((result: string, idx) => {
-                                return <ResultantAudio key={idx.toString()} id={idx} name={Object.keys(audioLinks)?.[idx]} src={result} />
+                                return <ResultantAudio key={idx.toString()} id={idx} name={
+                                    idx == 0 ? 'Cover' :
+                                    idx == 1 ? 'Main Vocals' :
+                                    idx == 2 ? 'Background Vocals' :
+                                    idx == 3 ? 'Instrumentals' :
+                                    ''
+                                } src={result} />
                             })}
                         </div>
                     </ScrollArea>

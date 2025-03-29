@@ -36,15 +36,12 @@ const ResultantAudio = ({ id, name, src }: { id: number, name: string, src: stri
                     </div>
                 </div>
                 <Button size="icon" variant="ghost" className="flex-grow text-white h-8 w-8" onClick={() => {
-                    const link = document.createElement('a');
-                    link.href = src;
-                    link.download = name;
-                    link.click();
+                    window.open(src, '_blank');
                 }}>
                     <Download className="h-4 w-4" />
                 </Button>
             </div>
-            <div className='px-3 mt-3 mb-2'>
+            {/* <div className='px-3 mt-3 mb-2'>
                 <Slider
                     className='resultAudioSlider'
                     ref={slider}
@@ -57,7 +54,7 @@ const ResultantAudio = ({ id, name, src }: { id: number, name: string, src: stri
                         audio.current.currentTime = val;
                     }}
                 />
-            </div>
+            </div> */}
             <audio ref={audio} id={`resultantAudio${id}`} src={src || "/audio.mp3"} preload='metadata' className='hidden'
                 onPlay={() => {
                     for (let i = 0; i < 5; i++) {

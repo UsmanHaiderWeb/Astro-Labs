@@ -94,11 +94,12 @@ const Explore = () => {
             showToast("Something went wrong. Please try again.");
             setIsGenerating('failed');        },
         onSuccess: (data: { audio_url: string }) => {
+
             const task_type: 'regular' | 'file' | 'advanced' | 'advanced-file' | 'multiple' = (
                 tab == 'audio' ?
                     (isAdvanceSettingsUpdate ?
-                        (audioSelectedVoices?.length == 0 ? 'advanced-file' : 'multiple') :
-                        (audioSelectedVoices?.length == 0 ? 'file' : 'multiple'))
+                        (audioSelectedVoices?.length <= 1 ? 'advanced-file' : 'multiple') :
+                        (audioSelectedVoices?.length >= 1 ? 'file' : 'multiple'))
                     : (isAdvanceSettingsUpdate ? 'advanced' : 'regular')
             )
 
@@ -112,7 +113,7 @@ const Explore = () => {
                 })
             };
 
-            if (voiceSelections.length > 0) {
+            if (voiceSelections.length > 1) {
                 formData.append('voice_one', voiceSelections[0].voice);
                 formData.append('pitch_one', audioPitch.toString());
                 formData.append('singer1_start', new Date(voiceSelections[0].range[0] * 1000).toISOString().substring(11, 19));
@@ -124,6 +125,9 @@ const Explore = () => {
                     formData.append('singer2_start', new Date(voiceSelections[1].range[0] * 1000).toISOString().substring(11, 19));
                     formData.append('singer2_end', new Date(voiceSelections[1].range[1] * 1000).toISOString().substring(11, 19));
                 }
+            } else if (voiceSelections.length == 1) {
+                formData.append('voice', voiceSelections[0].voice);
+                formData.append('pitch', audioPitch.toString());
             } else {
                 const voices: string | string[] = (
                     audioSelectedVoices?.length == 0 ? "Morgan Freeman RVC v2" : audioSelectedVoices

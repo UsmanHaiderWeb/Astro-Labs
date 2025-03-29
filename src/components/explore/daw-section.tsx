@@ -101,39 +101,39 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
             })
 
             // Draw selections for each voice
-            voiceSelections.forEach((selection, index) => {
-                const startX = (selection.range[0] / duration) * rect.width
-                const endX = (selection.range[1] / duration) * rect.width
-                const yOffset = 20 + index * 20 // Stack voice labels
+            // voiceSelections.forEach((selection, index) => {
+            //     const startX = (selection.range[0] / duration) * rect.width
+            //     const endX = (selection.range[1] / duration) * rect.width
+            //     const yOffset = 20 + index * 20 // Stack voice labels
 
-                // Draw selection background
-                ctx.fillStyle = `${selection.color}33` // 20% opacity
-                ctx.fillRect(startX, 0, endX - startX, rect.height)
+            //     // Draw selection background
+            //     ctx.fillStyle = `${selection.color}33` // 20% opacity
+            //     ctx.fillRect(startX, 0, endX - startX, rect.height)
 
-                // Draw voice label
-                ctx.fillStyle = selection.color
-                ctx.font = "12px Arial"
-                ctx.fillText(selection.voice, startX + 5, yOffset)
+            //     // Draw voice label
+            //     ctx.fillStyle = selection.color
+            //     ctx.font = "12px Arial"
+            //     ctx.fillText(selection.voice, startX + 5, yOffset)
 
-                // Draw handles
-                drawHandle(ctx, startX, selection.color, "start")
-                drawHandle(ctx, endX, selection.color, "end")
+            //     // Draw handles
+            //     drawHandle(ctx, startX, selection.color, "start")
+            //     drawHandle(ctx, endX, selection.color, "end")
 
-                // Draw time indicators if dragging
-                if (dragInfo && isDragging?.voice === selection.voice) {
-                    const timeX = (dragInfo.time / duration) * rect.width
-                    const timeY = 15 // Position above the handle
-                    const timeText = formatTime(dragInfo.time)
+            //     // Draw time indicators if dragging
+            //     if (dragInfo && isDragging?.voice === selection.voice) {
+            //         const timeX = (dragInfo.time / duration) * rect.width
+            //         const timeY = 15 // Position above the handle
+            //         const timeText = formatTime(dragInfo.time)
 
-                    ctx.fillStyle = "rgba(0, 0, 0, 0.7)"
-                    ctx.fillRect(timeX - 20, timeY - 12, 40, 16)
+            //         ctx.fillStyle = "rgba(0, 0, 0, 0.7)"
+            //         ctx.fillRect(timeX - 20, timeY - 12, 40, 16)
 
-                    ctx.fillStyle = "#ffffff"
-                    ctx.font = "10px Arial"
-                    ctx.textAlign = "center"
-                    ctx.fillText(timeText, timeX, timeY)
-                }
-            })
+            //         ctx.fillStyle = "#ffffff"
+            //         ctx.font = "10px Arial"
+            //         ctx.textAlign = "center"
+            //         ctx.fillText(timeText, timeX, timeY)
+            //     }
+            // })
         } else if (url && tab == 'youtube') {
             ctx.fillStyle = "#333333"
             ctx.font = "10px Arial"

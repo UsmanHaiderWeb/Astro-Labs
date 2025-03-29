@@ -102,8 +102,8 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
     }
 
     return (
-        <div className="space-y-4">
-            <div className="space-y-1">
+        <div className="space-y-4 w-full">
+            <div className="space-y-1 w-full">
                 <div className='flex items-center justify-between mb-2'>
                     <Label className="text-white/60 uppercase text-xs">Upload Audio</Label>
                     {audioFile &&
@@ -149,17 +149,17 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
 
             <div className="space-y-0.5 w-full">
                 <Label className="text-white/60 uppercase text-xs">Voice</Label>
+                <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className="w-[100%] block text-left bg-black/50 border-none text-white hover:bg-black/50 hover:text-white h-8 cursor-pointer text-ellipsis whitespace-nowrap overflow-hidden"
+                    disabled={isGenerating?.toLocaleLowerCase() == 'pending' || isPending}
+                >
+                    {selectedVoices.length === 0 ? "Select Voice Models" : (selectedVoices.length === 1 ? selectedVoices[0] : `${selectedVoices.length} selected`)}
+                </Button>
                 <Popover open={open} onOpenChange={setOpen}>
-                    <PopoverTrigger asChild>
-                        <Button
-                            variant="outline"
-                            role="combobox"
-                            aria-expanded={open}
-                            className="w-full justify-between bg-black/50 border-none text-white hover:bg-black/50 hover:text-white h-8 cursor-pointer"
-                            disabled={isGenerating?.toLocaleLowerCase() == 'pending' || isPending}
-                        >
-                            {selectedVoices.length === 0 ? "Select Voice Models" : `${selectedVoices.length} selected`}
-                        </Button>
+                    <PopoverTrigger asChild className='w-full overflow-hidden'>
                     </PopoverTrigger>
                     <PopoverContent className="w-[var(--radix-popper-anchor-width)] p-0 bg-[#1a1a1a] border-white/10 z-[202]">
                         <Command className="bg-transparent max-w-full text-secondary">

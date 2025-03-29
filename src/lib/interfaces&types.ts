@@ -20,7 +20,7 @@ export interface AdvanceSettingsInterface {
 export const AdvancedSettingsDefaultData: AdvanceSettingsInterface = {
     f0_method: "rmvpe",
     cover_background_vocals: "false",
-    overall_pitch: -12,
+    overall_pitch: 0,
     main_vocals_volume: 0,
     backup_vocals_volume: 0,
     inst_volume: 0,

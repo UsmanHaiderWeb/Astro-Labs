@@ -29,8 +29,8 @@ function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
     return (
         <div className={cn("bg-grayBackground h-full min-h-screen", className)}>
             <div className="relative">
-                <div className='flex justify-center items-center pt-[21px] pb-4 px-4 sticky z-[10] top-0 left-0 bg-grayBackground'>
-                    <Link to="/" className='flex justify-center items-center'>
+                <div className='flex justify-center items-center py-2 px-4 sticky z-[10] top-0 left-0 bg-grayBackground'>
+                    <Link to="/" className='flex justify-center items-center h-[35px]'>
                         {/* <img src="/logo.png" alt="logo" width={35} height={38} className='h-auto' /> */}
                         <span className="text-white text-[16px]">ASTRA LABS</span>
                     </Link>
