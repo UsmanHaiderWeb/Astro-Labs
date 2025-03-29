@@ -176,17 +176,22 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                                                     setShowErrorAboutAudio('Please first choose a valid Audio file.')
                                                     return
                                                 }
-                                                if (selectedVoices.length == 1 && !selectedVoices.includes(value)) {
-                                                    setOpen(false)
-                                                    setShowErrorAboutAudio('You can only choose one model.')
-                                                    return
-                                                } else {
-                                                    const newSelected = selectedVoices.includes(voice.name)
-                                                        ? selectedVoices.filter((name) => name !== voice.name)
-                                                        : [...selectedVoices, voice.name]
-                                                    setSelectedVoices(newSelected)
-                                                    setShowErrorAboutAudio('')
-                                                }
+
+                                                setSelectedVoices([value])
+                                                setShowErrorAboutAudio('')
+                                                setOpen(false);
+
+                                                // if (selectedVoices.length == 1 && !selectedVoices.includes(value)) {
+                                                //     setOpen(false)
+                                                //     setShowErrorAboutAudio('You can only choose one model.')
+                                                //     return
+                                                // } else {
+                                                //     const newSelected = selectedVoices.includes(voice.name)
+                                                //         ? selectedVoices.filter((name) => name !== voice.name)
+                                                //         : [...selectedVoices, voice.name]
+                                                //     setSelectedVoices(newSelected)
+                                                //     setShowErrorAboutAudio('')
+                                                // }
                                             }}
                                             className="text-white cursor-pointer flex"
                                         >
