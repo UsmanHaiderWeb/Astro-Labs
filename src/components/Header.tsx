@@ -39,9 +39,9 @@ function Header({userDetails}: {userDetails: {email: string}}) {
                     <Link to="/contact-us" className="text-[15px] text-white hover:text-gray-300">
                         CONTACT
                     </Link>
-                    {/* <Link to="/pricing" className="text-[15px] text-white hover:text-gray-300">
+                    <Link to="/pricing" className="text-[15px] text-white hover:text-gray-300">
                         PRICING
-                    </Link> */}
+                    </Link>
                     {/* <Link to="/faqs" className="text-[15px] text-white hover:text-gray-300">
                         FAQ
                     </Link> */}

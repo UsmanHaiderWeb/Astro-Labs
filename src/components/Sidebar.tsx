@@ -5,6 +5,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/t
 import { X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Separator } from './ui/separator'
+import UserPlanInfo from './UserPlanInfo'
 
 // const playlists = [
 //     "Recently Added",
@@ -27,8 +28,8 @@ import { Separator } from './ui/separator'
 
 function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
     return (
-        <div className={cn("bg-grayBackground h-full min-h-screen", className)}>
-            <div className="relative">
+        <div className={cn("w-full bg-grayBackground h-full min-h-screen flex justify-between items-start flex-col", className)}>
+            <div className="w-full relative">
                 <div className='flex justify-center items-center py-2 px-4 sticky z-[10] top-0 left-0 bg-grayBackground'>
                     <Link to="/" className='flex justify-center items-center h-[35px]'>
                         {/* <img src="/logo.png" alt="logo" width={35} height={38} className='h-auto' /> */}
@@ -169,6 +170,8 @@ function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
                     </div>
                 </div> */}
             </div>
+            
+            <UserPlanInfo />
         </div>
     )
 }

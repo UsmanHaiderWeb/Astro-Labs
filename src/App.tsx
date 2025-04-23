@@ -94,7 +94,7 @@ const App = () => {
         >
             <Toaster />
             {isAuthenticated && (
-                <div className='group-data-[sidebaropen=true]:w-[230px] group-data-[sidebaropen=false]:w-0 duration-200 h-screen sticky z-[200] top-0 left-0 overflow-hidden'>
+                <div className='group-data-[sidebaropen=true]:w-[230px] group-data-[sidebaropen=false]:w-0 duration-200 h-screen sticky z-[200] top-0 left-0 overflow-hidden flex-shrink-0'>
                     <ScrollArea className="w-full min-w-[230px] h-full overflow-auto">
                         <Sidebar />
                     </ScrollArea>
