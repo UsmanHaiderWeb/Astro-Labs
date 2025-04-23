@@ -94,11 +94,6 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
             // Draw time markers
             ctx.fillStyle = "#333333"
             ctx.font = "10px Arial"
-            const timeIntervals = [0, 30, 60, 90, 120, 150, 180]
-            timeIntervals.forEach((time) => {
-                const x = (time / duration) * rect.width
-                ctx.fillText(formatTime(time), x, 10)
-            })
 
             // Draw selections for each voice
             // voiceSelections.forEach((selection, index) => {
@@ -137,17 +132,6 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
         } else if (url && tab == 'youtube') {
             ctx.fillStyle = "#333333"
             ctx.font = "10px Arial"
-            const timeIntervals = [];
-            const increaseBy = duration / 15;
-            for (let i = 0; i < duration; i += increaseBy) {
-                timeIntervals.push(i);
-            }
-            if (Array.isArray(timeIntervals)) {
-                timeIntervals.forEach((time) => {
-                    const x = (time / duration) * rect.width
-                    ctx.fillText(formatTime(time), x, 10)
-                })
-            }
 
             if (Array.isArray(voiceSelections)) {
                 voiceSelections.forEach((selection, index) => {
@@ -437,9 +421,9 @@ function DAWSection({ selectedVoices, timeRange, audioBuffer, duration, tab, url
                                 </div> */}
                             </>)}
                         </div>
-                        <div className='bg-black/80 text-white text-xs px-2 py-1 rounded'>
+                        {/* <div className='bg-black/80 text-white text-xs px-2 py-1 rounded'>
                             {(audioBuffer || url) ? `${formatTime(tab == 'youtube' ? 0 : audio.current?.currentTime)} / ${formatTime(duration)}` : "0:00 / 0:00"}{" "}
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

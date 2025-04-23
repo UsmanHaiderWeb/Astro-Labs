@@ -8,7 +8,10 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-const audiosArray = ['/Bones.mp4', '/audio.mp3', '/audio.mp3', '/Bones.mp4']
+const audiosArray = [
+    '/mainAudio.mpeg'
+    // '/Bones.mp4', '/audio.mp3', '/audio.mp3', '/Bones.mp4'
+]
 
 const FooterPlayBtn = () => {
     const [hovering, setHovering] = React.useState<boolean>(false);
@@ -46,7 +49,7 @@ const FooterPlayBtn = () => {
                                     :
                                     <Play className="w-6 h-6 text-white absolute transition-opacity duration-200 opacity-0 group-data-[footerplay=true]:opacity-100" />
                                 }
-                                <audio ref={audio} id='footerAudioPlayer' src='/Bones.mp4' className='hidden'
+                                <audio ref={audio} id='footerAudioPlayer' src='/mainAudio.mpeg' className='hidden'
                                     onEnded={() => {
                                         audio.current.src = audiosArray[currentAudio == audiosArray.length - 1 ? 0 : currentAudio + 1];
                                         setCurrentAudio(prev => (prev == audiosArray.length - 1 ? 0 : prev + 1));

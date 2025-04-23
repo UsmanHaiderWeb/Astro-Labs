@@ -34,8 +34,8 @@ const PlanTemplate = ({ plan }: { plan: PlanInterface }) => {
 
 
     return (
-        <div key={plan?.name} className="bg-[#1a1a1a] rounded-xl overflow-hidden relative flex flex-col">
-            {plan?.name === "Basic" && <Badge className="absolute top-0 right-0 bg-white/90 text-black hover:bg-white/80">Most Popular</Badge>}
+        <div key={plan?.name} className="w-[30vw] bg-[#1a1a1a] rounded-xl overflow-hidden relative flex flex-col">
+            {plan?.name === "Basic" && <Badge className="absolute top-0 right-0 bg-white/90 text-black hover:bg-white/80">50% off</Badge>}
             {plan?.name === "Pro" && <Badge className="absolute top-0 right-0 bg-white/90 text-black hover:bg-white/80">Best Value</Badge>}
             <div className="relative px-6 py-5 flex flex-col items-center text-center border-b border-white/10">
                 {(plan?.name === "Basic" || plan?.name === "Pro") &&

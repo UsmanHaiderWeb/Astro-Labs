@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react'
 import ResultantAudio from '../ResultantAudio'
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAudioLinksCall } from '@/lib/AxiosCalls';
 import QueueSize from '../QueueSize';
 import { RefreshCcw } from 'lucide-react';
@@ -19,6 +19,7 @@ function ResultSection({ isPending, setIsGenerating, isGenerating }: { isPending
     const audioLinksLocal = JSON.parse(localStorage.getItem('audioLinks') || '[]');
     const [audioLinks, setAudioLinks] = React.useState<string>(null);
     const token = localStorage.getItem('astraToken');
+    const queryClient = useQueryClient();
 
     React.useEffect(() => {
         if (audioLinksLocal) setAudioLinks(audioLinksLocal);
@@ -27,33 +28,42 @@ function ResultSection({ isPending, setIsGenerating, isGenerating }: { isPending
     const { data: generatedAudiosData } = useQuery({
         queryKey: ['generatedAudiosData'],
         queryFn: () => getAudioLinksCall({ token, job_id }),
-        refetchInterval: 30000,
+        refetchInterval: 3000,
         refetchOnWindowFocus: false,
         enabled: !!job_id && Object.values(audioLinksLocal)?.length == 0 && isGenerating == 'pending'
     });
 
     React.useEffect(() => {
-        if (generatedAudiosData?.error || generatedAudiosData?.status == 'failed' || generatedAudiosData?.result?.error) {
+        if (generatedAudiosData?.error || generatedAudiosData?.job_status?.status == 'failed' || generatedAudiosData?.result?.error) {
             localStorage.setItem('isGenerating', 'failed');
             setIsGenerating('failed');
             return;
         }
 
-        if (generatedAudiosData?.status == 'done') {
+
+        if (generatedAudiosData?.job_status?.status == 'done') {
+            queryClient.setQueryData(['userData'], (oldData: { quota_used: string }) => {
+                if (oldData && generatedAudiosData?.user?.quota_used) {
+                    console.log("oldData:", oldData)
+                    return { ...oldData, quota_used: generatedAudiosData?.user?.quota_used }
+                }
+                return oldData
+            })
             localStorage.setItem('isGenerating', 'done');
             setIsGenerating('done');
         }
 
-        if (generatedAudiosData?.status == 'in-progress') {
+        if (generatedAudiosData?.job_status?.status == 'in-progress') {
             localStorage.setItem('isGenerating', 'pending');
             setIsGenerating('pending');
         }
 
-        if (generatedAudiosData?.result && Object.keys(generatedAudiosData?.result).length > 0) {
-            localStorage.setItem('audioLinks', JSON.stringify(generatedAudiosData?.result));
-            setAudioLinks(generatedAudiosData?.result);
+        if (generatedAudiosData?.job_status?.result && Object.keys(generatedAudiosData?.job_status?.result).length > 0) {
+            localStorage.setItem('audioLinks', JSON.stringify(generatedAudiosData?.job_status?.result));
+            setAudioLinks(generatedAudiosData?.job_status?.result);
         }
-    }, [generatedAudiosData])
+
+    }, [generatedAudiosData, generatedAudiosData?.job_status])
 
     return (
         <div className="bg-[#1a1a1a] rounded-xl py-3">
@@ -79,10 +89,10 @@ function ResultSection({ isPending, setIsGenerating, isGenerating }: { isPending
                             {Object.values(audioLinks)?.slice(0, 4)?.map((result: string, idx) => {
                                 return <ResultantAudio key={idx.toString()} id={idx} name={
                                     idx == 0 ? 'Cover' :
-                                    idx == 1 ? 'Main Vocals' :
-                                    idx == 2 ? 'Background Vocals' :
-                                    idx == 3 ? 'Instrumentals' :
-                                    ''
+                                        idx == 1 ? 'Main Vocals' :
+                                            idx == 2 ? 'Background Vocals' :
+                                                idx == 3 ? 'Instrumentals' :
+                                                    ''
                                 } src={result} />
                             })}
                         </div>

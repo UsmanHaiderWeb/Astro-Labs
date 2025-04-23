@@ -5,40 +5,27 @@ import { fetchUserDetails } from '@/lib/AxiosCalls'
 const UserPlanInfo = () => {
     const token = localStorage.getItem('astraToken')
 
-    const { data: userData, isLoading } = useQuery({
+    const { data: userData, isPending } = useQuery({
         queryKey: ['userData'],
         queryFn: async () => fetchUserDetails(token),
         enabled: !!token,
         refetchOnWindowFocus: false
     })
 
-    if (isLoading) {
+    if (isPending) {
         return (
-            <div className="w-full p-4">
-                <div className="flex flex-col gap-2">
-                    <div className="flex items-center justify-center gap-2">
-                        <span className="text-sm font-medium w-16 text-right">Plan: </span>
-                        <span className="text-sm text-muted-foreground w-16"></span>
-                    </div>
-                    <div className="flex items-center justify-center gap-2">
-                        <span className="text-sm font-medium w-16 text-right">Credits: </span>
-                        <span className="text-sm text-muted-foreground w-16"></span>
-                    </div>
-                </div>
-            </div>
+            <div></div>
         )
     }
 
     return (
-        <div className="w-full p-4">
-            <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-center gap-2">
-                    <span className="text-sm font-medium w-16 text-right">Plan: </span>
-                    <span className="text-sm text-muted-foreground w-16">{userData?.plan || 'Free'}</span>
+        <div className="w-full p-4 flex justify-center">
+            <div className="flex flex-col">
+                <div className="flex items-center">
+                    <span className="text-sm font-medium flex">Plan: {userData?.role || 'Free'}</span>
                 </div>
-                <div className="flex items-center justify-center gap-2">
-                    <span className="text-sm font-medium w-16 text-right">Credits: </span>
-                    <span className="text-sm text-muted-foreground w-16">{userData?.x || 0}/{userData?.maxCredits || 80}</span>
+                <div className="flex items-center">
+                    <span className="text-sm font-medium flex items-center">Credits:&nbsp;{(userData?.role == 'free' || !userData?.role) ? `${userData?.quota_used || 0} / 100` : "Unlimited"}</span>
                 </div>
             </div>
         </div>

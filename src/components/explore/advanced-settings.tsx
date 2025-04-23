@@ -28,24 +28,26 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                     <div className="grid sm:grid-cols-2 gap-x-8 gap-y-4 items-start py-6">
                         <div className="space-y-4">
                             <div className="space-y-1">
-                                <Label className="text-white text-sm">Pitch Method:</Label>
+                                <Label className="text-white text-sm flex justify-between items-center pr-10">Pitch Method:</Label>
                                 <Select defaultValue={advanceSettings?.f0_method} onValueChange={val => updateAdvanceSetting('f0_method', val)}>
                                     <SelectTrigger className="bg-black border-white/10 h-8 text-sm text-white w-[160px]">
                                         <SelectValue placeholder="rmvpe" />
                                     </SelectTrigger>
                                     <SelectContent className="bg-black border-white/10 text-white z-[301]">
                                         <SelectItem value="rmvpe" className="text-white text-sm">rmvpe (default)</SelectItem>
-                                        <SelectItem value="mangio-crepe" className="text-white text-sm">mangio-crepe</SelectItem>
+                                        {/* <SelectItem value="mangio-crepe" className="text-white text-sm">mangio-crepe</SelectItem> */}
                                     </SelectContent>
                                 </Select>
                                 <p className="text-xs text-gray-400">
-                                    The method rmvpe ensures clarity in the vocals whereas mangio-crepe provides the output with smoother
-                                    vocals.
+                                    The method rmvpe ensures clarity in the vocals
                                 </p>
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-white text-sm">Pitch for Background & Instrumental:</Label>
+                                <Label className="text-white text-sm flex justify-between items-center pr-7">
+                                    Pitch for Background & Instrumental :
+                                    <span>(Default: 0)</span>
+                                </Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
                                         value={[advanceSettings?.overall_pitch]}
@@ -61,7 +63,10 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-white text-sm">Main Vocals Volume:</Label>
+                                <Label className="text-white text-sm flex justify-between items-center pr-8">
+                                    Main Vocals Volume:
+                                    <span>(Default: 0.0)</span>
+                                </Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
                                         value={[advanceSettings?.main_vocals_volume]}
@@ -77,7 +82,10 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-white text-sm">Background Vocals Volume:</Label>
+                                <Label className="text-white text-sm flex justify-between items-center pr-8">
+                                    Background Vocals Volume:
+                                    <span>(Default: 0.0)</span>
+                                </Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
                                         value={[advanceSettings?.backup_vocals_volume]}
@@ -93,7 +101,10 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-white text-sm">Instrumentals Volume:</Label>
+                                <Label className="text-white text-sm flex justify-between items-center pr-8">
+                                    Instrumentals Volume:
+                                    <span>(Default: 0.0)</span>
+                                    </Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
                                         value={[advanceSettings?.inst_volume]}
@@ -111,7 +122,7 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
 
                         <div className="space-y-4">
                             <div className="space-y-1">
-                                <Label className="text-white text-sm">Apply AI on Background Vocals:</Label>
+                                <Label className="text-white text-sm flex justify-between items-center pr-10">Apply AI on Background Vocals:</Label>
                                 <Select value={advanceSettings?.cover_background_vocals} onValueChange={val => updateAdvanceSetting('cover_background_vocals', val)}>
                                     <SelectTrigger className="bg-black border-white/10 h-8 text-sm text-white w-[150px]">
                                         <SelectValue placeholder="false" />
@@ -127,7 +138,10 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-white text-sm">Index Rate:</Label>
+                                <Label className="text-white text-sm flex justify-between items-center pr-10">
+                                    Index Rate:
+                                    <span>(Default: 0.50)</span>
+                                    </Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
                                         value={[advanceSettings?.index_rate]}
@@ -143,7 +157,10 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-white text-sm">Filter Radius:</Label>
+                                <Label className="text-white text-sm flex justify-between items-center pr-10">
+                                    Filter Radius:
+                                    <span>(Default: 3.0)</span>
+                                    </Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
                                         value={[advanceSettings?.filter_radius]}
@@ -159,7 +176,10 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-white text-sm">RMS Mix Rate:</Label>
+                                <Label className="text-white text-sm flex justify-between items-center pr-10">
+                                    RMS Mix Rate:
+                                    <span>(Default: 0.25)</span>
+                                    </Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
                                         value={[advanceSettings?.rms_mix_rate]}
@@ -175,7 +195,10 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-white text-sm">Protect Rate:</Label>
+                                <Label className="text-white text-sm flex justify-between items-center pr-10">
+                                    Protect Rate:
+                                    <span>(Default: 0.33)</span>
+                                    </Label>
                                 <div className="flex items-center space-x-2">
                                     <Slider
                                         value={[advanceSettings?.protect_rate]}

@@ -87,7 +87,7 @@ export const DiscordVerificationCallBackCall = async ({code}: {code: string}) =>
 
 // stripe
 
-export const FetchStripeUrlCall = async ({token, planId}: {token: string, planId: 'pro' | 'premium'}) => {
+export const FetchStripeUrlCall = async ({token, planId}: {token: string, planId: 'basic'}) => {
     const { data } = await api.post(`/payments/create-checkout-session`,
         {role: planId},
         {
