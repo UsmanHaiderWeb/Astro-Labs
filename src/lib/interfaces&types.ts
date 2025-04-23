@@ -31,7 +31,7 @@ export const AdvancedSettingsDefaultData: AdvanceSettingsInterface = {
 }
 
 export interface PlanInterface {
-    id: 'free' | 'premium' | 'pro',
+    id: 'free' | 'basic' | 'pro',
     name: string,
     price: number,
     features: string[],

@@ -15,7 +15,7 @@ const plans: PlanInterface[] = [
         ],
     },
     {
-        id: 'premium',
+        id: 'basic',
         name: "Basic",
         price: 9.99,
         features: [
