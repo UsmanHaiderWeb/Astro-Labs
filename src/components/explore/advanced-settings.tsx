@@ -138,7 +138,7 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-white text-sm flex justify-between items-center pr-10">
+                                <Label className="text-white text-sm flex justify-between items-center pr-11">
                                     Index Rate:
                                     <span>(Default: 0.50)</span>
                                     </Label>
@@ -157,7 +157,7 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-white text-sm flex justify-between items-center pr-10">
+                                <Label className="text-white text-sm flex justify-between items-center pr-9">
                                     Filter Radius:
                                     <span>(Default: 3.0)</span>
                                     </Label>
@@ -176,7 +176,7 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-white text-sm flex justify-between items-center pr-10">
+                                <Label className="text-white text-sm flex justify-between items-center pr-11">
                                     RMS Mix Rate:
                                     <span>(Default: 0.25)</span>
                                     </Label>
@@ -195,7 +195,7 @@ export function AdvancedSettings({ open, onOpenChange, advanceSettings, updateAd
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-white text-sm flex justify-between items-center pr-10">
+                                <Label className="text-white text-sm flex justify-between items-center pr-11">
                                     Protect Rate:
                                     <span>(Default: 0.33)</span>
                                     </Label>

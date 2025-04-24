@@ -22,7 +22,7 @@ const UserPlanInfo = () => {
         <div className="w-full p-4 flex justify-center">
             <div className="flex flex-col">
                 <div className="flex items-center">
-                    <span className="text-sm font-medium flex">Plan: {userData?.role || 'Free'}</span>
+                    <span className="text-sm font-medium flex capitalize">Plan: {userData?.role || 'Free'}</span>
                 </div>
                 <div className="flex items-center">
                     <span className="text-sm font-medium flex items-center">Credits:&nbsp;{(userData?.role == 'free' || !userData?.role) ? `${userData?.quota_used || 0} / 100` : "Unlimited"}</span>
