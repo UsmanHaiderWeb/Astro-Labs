@@ -5,18 +5,17 @@ import * as React from 'react'
 import { useState, useRef } from "react"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Trash2, Upload } from "lucide-react"
+import { RefreshCcw, Trash2, Upload } from "lucide-react"
 import { Slider } from "@/components/ui/slider"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { Command, CommandInput, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
-import voicesData from "@/lib/voices.json"
+import { useMutation } from '@tanstack/react-query'
+import { getVoiceModelsCall } from '@/lib/AxiosCalls'
 
-const voiceModels = voicesData.voices.map((voice, index) => ({
-    id: (index + 1).toString(),
-    name: voice.name
-}))
+
+type modelType = { name: string, model_url: string }
 
 interface AudioSectionProps {
     selectedVoices: string[]
@@ -29,15 +28,74 @@ interface AudioSectionProps {
     handleClearAudio: () => void;
 }
 
+const dummyModels: modelType[] = [
+    {
+        name: "Morgan Freeman RVC v2",
+        model_url: "https://huggingface.co/CxronaBxndit/Morgan-Freeman/resolve/main/Morgan-Freeman.zip"
+    },
+    {
+        name: "Ai Hoshino_(U)(Oshi No Ko)|RVC v2| 5000 Epochs| rmvpe| Jp, En, Ru",
+        model_url: "https://huggingface.co/MUSTAR/Hoshino_Ai_U/resolve/main/Hoshino_Ai_U.zip"
+    },
+    {
+        name: "Bella Poarch (RVC V2 300 Epochs MangioCrepe)",
+        model_url: "https://huggingface.co/datasets/sleepyboyeyes/Bella/resolve/main/Bella.zip"
+    },
+    {
+        name: "DavidK - RVC V2 - 100 Epochs",
+        model_url: "https://huggingface.co/rayzox57/DavidK_RVC/resolve/main/DavidK_v2_100e.zip"
+    },
+    {
+        name: "Taylor Swift - RVC V2 - 525 EPOCHS",
+        model_url: "https://huggingface.co/damnedraxx/TaylorSwift/resolve/main/TaylorSwift.zip"
+    },
+    {
+        name: "Adventure Time - Jake the Dog - Original/English (RVC V2) (450 Epochs)",
+        model_url: "https://huggingface.co/DieseKartoffel/jake-the-dog-voice-rvc/resolve/main/model.zip"
+    },
+    {
+        name: "Sarah (Ed, Edd n Eddy) RVC v2 - 200 Epochs (Beta)",
+        model_url: "https://huggingface.co/KennyFromPH/SarahEENE/resolve/main/SarahEENE200Epochs.zip"
+    },
+    {
+        name: "Buddy Holly (RVC v2) (500 Epochs)",
+        model_url: "https://huggingface.co/SUP3RMASS1VE/Buddy-Holly/resolve/main/Buddy-Holly.zip"
+    },
+    {
+        name: "Minecraft Villager [Retrained | Villager News] [RVC v2 | 300 Epochs]",
+        model_url: "https://huggingface.co/SyberGen/Minecraft-VModels/resolve/main/VillagerElemAnim-v2.zip"
+    },
+    {
+        name: "Hololive Model Collection (RVC v2)",
+        model_url: "https://huggingface.co/yeey5/TokinoSoraRVCV2/resolve/main/TokinoSora.zip"
+    },
+    {
+        name: "Squidward Tentacles, 1500 Epochs, RVC v2, rmvpe (Spongebob)",
+        model_url: "https://huggingface.co/lepifort/squidwardRVC/resolve/main/squidward.zip"
+    }
+]
+
 function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFileUpload, isPending, audioFile, handleClearAudio }: AudioSectionProps) {
-    const [open, setOpen] = useState(false)
-    const [fileName, setFileName] = useState<string | null>(null)
-    const fileInputRef = useRef<HTMLInputElement>(null)
-    const dropRef = React.useRef<HTMLDivElement>(null)
-    const [isDragging, setIsDragging] = React.useState(false);
-    const [showErrorAboutAudio, setShowErrorAboutAudio] = React.useState<string>(null)
+    const [open, setOpen] = useState<boolean>(false);
+    const [fileName, setFileName] = useState<string | null>(null);
+    const token = localStorage.getItem('astraToken') || '';
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const dropRef = React.useRef<HTMLDivElement>(null);
+    const [isDragging, setIsDragging] = React.useState<boolean>(false);
+    const [isTyping, setIsTyping] = React.useState<boolean>(false);
+    const [inputValue, setInputValue] = React.useState<string>('');
+    const [voiceModels, setVoiceModels] = React.useState<modelType[]>(dummyModels);
+    const [showErrorAboutAudio, setShowErrorAboutAudio] = React.useState<string>(null);
 
     const isGenerating = localStorage.getItem('isGenerating');
+
+    const { mutate, isPending: isVoiceModelsPending } = useMutation({
+        mutationKey: ['getVoiceModels', inputValue],
+        mutationFn: getVoiceModelsCall,
+        onSuccess: (data: modelType[]) => {
+            setVoiceModels(data);
+        }
+    })
 
     // React.useEffect(() => {
     //     const storedFilename = localStorage.getItem('fileName');
@@ -101,6 +159,16 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
         }
     }
 
+    React.useEffect(() => {
+        if (!isTyping && inputValue) {
+            console.log("{token, search: inputValue}: ", { token, search: inputValue });
+            mutate({ token, search: inputValue });
+        }
+        if(inputValue) {
+            setVoiceModels(dummyModels);
+        }
+    }, [isTyping])
+
     return (
         <div className="space-y-4 w-full">
             <div className="space-y-1 w-full">
@@ -163,50 +231,60 @@ function AudioSection({ selectedVoices, setSelectedVoices, pitch, setPitch, onFi
                     </PopoverTrigger>
                     <PopoverContent className="w-[var(--radix-popper-anchor-width)] p-0 bg-[#1a1a1a] border-white/10 z-[202]">
                         <Command className="bg-transparent max-w-full text-secondary">
-                            <CommandInput placeholder="Search voice models..." className="text-white w-full" />
+                            <CommandInput placeholder="Search voice models..." className="text-white w-full" onValueChange={(e: string) => {
+                                setInputValue(e);
+                                setIsTyping(true);
+                                setTimeout(() => {
+                                    setIsTyping(false);
+                                }, 1000)
+                            }} />
                             <CommandList>
-                                <CommandEmpty>No voice model found.</CommandEmpty>
-                                <CommandGroup>
-                                    {voiceModels.map((voice) => (
-                                        <CommandItem
-                                            key={voice.id}
-                                            onSelect={(value: string) => {
-                                                if (!fileName) {
-                                                    setOpen(false)
-                                                    setShowErrorAboutAudio('Please first choose a valid Audio file.')
-                                                    return
-                                                }
+                                {(isVoiceModelsPending || isTyping || voiceModels.length == 0) ?
+                                    <div className='py-6 text-center text-sm flex justify-center items-center'>
+                                        {(isVoiceModelsPending || isTyping) && <RefreshCcw className='w-5 h-5 animate-spin duration-200' />}
+                                        {voiceModels.length == 0 && "No voice model found."}
+                                    </div>
+                                    : <>
+                                        {voiceModels?.map((voice: modelType) => (
+                                            <div
+                                                key={voice.name}
+                                                onClick={() => {
+                                                    if (!fileName) {
+                                                        setOpen(false)
+                                                        setShowErrorAboutAudio('Please first choose a valid Audio file.')
+                                                        return
+                                                    }
 
-                                                setSelectedVoices([value])
-                                                setShowErrorAboutAudio('')
-                                                setOpen(false);
+                                                    setSelectedVoices([voice.name])
+                                                    setShowErrorAboutAudio('')
+                                                    setOpen(false);
 
-                                                // if (selectedVoices.length == 1 && !selectedVoices.includes(value)) {
-                                                //     setOpen(false)
-                                                //     setShowErrorAboutAudio('You can only choose one model.')
-                                                //     return
-                                                // } else {
-                                                //     const newSelected = selectedVoices.includes(voice.name)
-                                                //         ? selectedVoices.filter((name) => name !== voice.name)
-                                                //         : [...selectedVoices, voice.name]
-                                                //     setSelectedVoices(newSelected)
-                                                //     setShowErrorAboutAudio('')
-                                                // }
-                                            }}
-                                            className="text-white cursor-pointer flex"
-                                        >
-                                            <Check
-                                                className={cn(
-                                                    "mr-2 h-4 w-4",
-                                                    selectedVoices.includes(voice.name) ? "opacity-100" : "opacity-0",
-                                                )}
-                                            />
-                                            <span className="text-ellipsis whitespace-nowrap overflow-hidden">
-                                                {voice.name}
-                                            </span>
-                                        </CommandItem>
-                                    ))}
-                                </CommandGroup>
+                                                    // if (selectedVoices.length == 1 && !selectedVoices.includes(value)) {
+                                                    //     setOpen(false)
+                                                    //     setShowErrorAboutAudio('You can only choose one model.')
+                                                    //     return
+                                                    // } else {
+                                                    //     const newSelected = selectedVoices.includes(voice.name)
+                                                    //         ? selectedVoices.filter((name) => name !== voice.name)
+                                                    //         : [...selectedVoices, voice.name]
+                                                    //     setSelectedVoices(newSelected)
+                                                    //     setShowErrorAboutAudio('')
+                                                    // }
+                                                }}
+                                                className="text-white cursor-pointer flex relative gap-2 select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                                            >
+                                                <Check
+                                                    className={cn(
+                                                        "mr-2 h-4 w-4",
+                                                        selectedVoices.includes(voice.name) ? "opacity-100" : "opacity-0",
+                                                    )}
+                                                />
+                                                <span className="text-ellipsis whitespace-nowrap overflow-hidden">
+                                                    {voice.name}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </>}
                             </CommandList>
                         </Command>
                     </PopoverContent>

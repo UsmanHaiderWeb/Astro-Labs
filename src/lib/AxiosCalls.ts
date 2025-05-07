@@ -156,3 +156,16 @@ export const getQueueSizeCall = async ({token}: {token: string}) => {
 
     return data;
 }
+
+export const getVoiceModelsCall = async ({token, search}: {token: string, search: string}) => {
+    const { data } = await api.get(`/model/search?q=${search}`,
+        {
+            headers: {
+                Authorization: `bearer ${token}`
+            },
+            withCredentials: true
+        },
+    )
+
+    return data;
+}
