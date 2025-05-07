@@ -10,12 +10,9 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
-import voicesData from "@/lib/voices.json"
 
-const voiceModels = voicesData.voices.map((voice, index) => ({
-    id: (index + 1).toString(),
-    name: voice.name
-}))
+
+type modelType = { name: string, model_url: string }
 
 interface YouTubeSectionProps {
     url: string
@@ -26,6 +23,54 @@ interface YouTubeSectionProps {
     setPitch: (pitch: number) => void
     duration: number
 }
+
+const voiceModels: modelType[] = [
+    {
+        name: "Morgan Freeman RVC v2",
+        model_url: "https://huggingface.co/CxronaBxndit/Morgan-Freeman/resolve/main/Morgan-Freeman.zip"
+    },
+    {
+        name: "Ai Hoshino_(U)(Oshi No Ko)|RVC v2| 5000 Epochs| rmvpe| Jp, En, Ru",
+        model_url: "https://huggingface.co/MUSTAR/Hoshino_Ai_U/resolve/main/Hoshino_Ai_U.zip"
+    },
+    {
+        name: "Bella Poarch (RVC V2 300 Epochs MangioCrepe)",
+        model_url: "https://huggingface.co/datasets/sleepyboyeyes/Bella/resolve/main/Bella.zip"
+    },
+    {
+        name: "DavidK - RVC V2 - 100 Epochs",
+        model_url: "https://huggingface.co/rayzox57/DavidK_RVC/resolve/main/DavidK_v2_100e.zip"
+    },
+    {
+        name: "Taylor Swift - RVC V2 - 525 EPOCHS",
+        model_url: "https://huggingface.co/damnedraxx/TaylorSwift/resolve/main/TaylorSwift.zip"
+    },
+    {
+        name: "Adventure Time - Jake the Dog - Original/English (RVC V2) (450 Epochs)",
+        model_url: "https://huggingface.co/DieseKartoffel/jake-the-dog-voice-rvc/resolve/main/model.zip"
+    },
+    {
+        name: "Sarah (Ed, Edd n Eddy) RVC v2 - 200 Epochs (Beta)",
+        model_url: "https://huggingface.co/KennyFromPH/SarahEENE/resolve/main/SarahEENE200Epochs.zip"
+    },
+    {
+        name: "Buddy Holly (RVC v2) (500 Epochs)",
+        model_url: "https://huggingface.co/SUP3RMASS1VE/Buddy-Holly/resolve/main/Buddy-Holly.zip"
+    },
+    {
+        name: "Minecraft Villager [Retrained | Villager News] [RVC v2 | 300 Epochs]",
+        model_url: "https://huggingface.co/SyberGen/Minecraft-VModels/resolve/main/VillagerElemAnim-v2.zip"
+    },
+    {
+        name: "Hololive Model Collection (RVC v2)",
+        model_url: "https://huggingface.co/yeey5/TokinoSoraRVCV2/resolve/main/TokinoSora.zip"
+    },
+    {
+        name: "Squidward Tentacles, 1500 Epochs, RVC v2, rmvpe (Spongebob)",
+        model_url: "https://huggingface.co/lepifort/squidwardRVC/resolve/main/squidward.zip"
+    }
+]
+
 
 export function YouTubeSection({
     url,
@@ -69,9 +114,9 @@ export function YouTubeSection({
                             <CommandList>
                                 <CommandEmpty>No voice model found.</CommandEmpty>
                                 <CommandGroup>
-                                    {voiceModels.map((voice) => (
+                                    {voiceModels.map((voice: modelType) => (
                                         <CommandItem
-                                            key={voice.id}
+                                            key={voice.name}
                                             value={voice.name}
                                             onSelect={(value: string) => {
                                                 if (!url || !duration) {
