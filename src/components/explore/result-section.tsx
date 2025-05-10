@@ -14,10 +14,17 @@ import { ScrollArea } from '../ui/scroll-area';
 //     { id: 4, name: "Instrumentals", src: '/Bones.mp4' },
 // ]
 
+type audioLinksType = {
+    main_vocals_url: string;
+    cover_url: string;
+    background_vocals_url: string;
+    instrumentals_url: string;
+}
+
 function ResultSection({ isPending, setIsGenerating, isGenerating }: { isPending: boolean, setIsGenerating: React.Dispatch<React.SetStateAction<'pending' | 'failed' | 'done'>>, isGenerating: 'pending' | 'failed' | 'done' }) {
     const job_id = localStorage.getItem('job_id');
     const audioLinksLocal = JSON.parse(localStorage.getItem('audioLinks') || '[]');
-    const [audioLinks, setAudioLinks] = React.useState<string>(null);
+    const [audioLinks, setAudioLinks] = React.useState<string | audioLinksType>(null);
     const token = localStorage.getItem('astraToken');
     const queryClient = useQueryClient();
 
@@ -86,20 +93,32 @@ function ResultSection({ isPending, setIsGenerating, isGenerating }: { isPending
                 {(audioLinks && Object.values(audioLinks)?.length > 0 && isGenerating?.toLocaleLowerCase() == 'done') ? (
                     <ScrollArea className='scrollbarAudioResultSection px-5 h-full'>
                         <div className="grid grid-cols-2 gap-3">
-                            {Object.values(audioLinks)?.slice(0, 4)?.map((result: string, idx) => {
-                                return <ResultantAudio key={idx.toString()} id={idx} name={
-                                    idx == 0 ? 'Cover' :
-                                        idx == 1 ? 'Main Vocals' :
-                                            idx == 2 ? 'Background Vocals' :
-                                                idx == 3 ? 'Instrumentals' :
-                                                    ''
-                                } src={result} />
-                            })}
+                            {(
+                                (audioLinks as audioLinksType)?.main_vocals_url &&
+                                (audioLinks as audioLinksType)?.cover_url &&
+                                (audioLinks as audioLinksType)?.background_vocals_url &&
+                                (audioLinks as audioLinksType)?.instrumentals_url
+                            ) ?
+                                Object.keys(audioLinks)?.slice(0, 4)?.map((key: string, idx) => {
+                                    return <ResultantAudio key={idx.toString()} id={idx} name={
+                                        key == "main_vocals_url" ? `Main Vocals` :
+                                            key == 'cover_url' ? `Cover` :
+                                                key == 'background_vocals_url' ? `Background Vocals` :
+                                                    key == 'instrumentals_url' ? `Instrumentals` : ''
+                                    } src={audioLinks?.[key]} />
+                                })
+                                :
+                                <h6 className="text-white/60 uppercase text-xs mb-2 text-center">
+                                    Nothing to Show.<br />Please try Converting.
+                                </h6>
+                            }
                         </div>
                     </ScrollArea>
                 ) : (
                     <div className='w-full h-full flex justify-center items-center'>
-                        <h3 className="text-white/60 uppercase text-xs mb-2 text-center">{(isPending || isGenerating?.toLocaleLowerCase() == 'pending') ? <span className='flex items-center gap-2'>Converting <RefreshCcw size={18} className='animate-spin duration-300' /></span> : <>Nothing to Show.<br />Please try converting something.</>}</h3>
+                        <h6 className="text-white/60 uppercase text-xs mb-2 text-center">
+                            {(isPending || isGenerating?.toLocaleLowerCase() == 'pending') ? <span className='flex items-center gap-2'>Converting <RefreshCcw size={18} className='animate-spin duration-300' /></span> : <>Nothing to Show.<br />Please try converting something.</>}
+                        </h6>
                     </div>
                 )}
             </div>
